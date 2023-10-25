@@ -1,34 +1,25 @@
+#include "player.h"
 #include <SFML/Graphics.hpp>
 
 constexpr unsigned ANTIALIASING_LEVEL = 8;
-constexpr unsigned WINDOW_WIDTH = 800;
-constexpr unsigned WINDOW_HEIGHT = 600;
 constexpr unsigned MAX_FPS = 60;
 
 void createWindow(sf::RenderWindow& window);
-void initializePackman(sf::CircleShape& shape);
-void handleEvents(sf::RenderWindow& window);
-void update(sf::Clock& clock, sf::CircleShape& shape);
-void render(sf::RenderWindow& window, sf::CircleShape& shape);
+void handleEvents(sf::RenderWindow& window, Player* player);
+void update(sf::Clock& clock, Player* player);
+void render(sf::RenderWindow& window, Player* player);
 
 void createWindow(sf::RenderWindow& window)
 {
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = ANTIALIASING_LEVEL;
 	window.create(
-		sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
-		"Journey of the Prairie King", sf::Style::Default, settings);
+		sf::VideoMode::getDesktopMode(),
+		"Journey of the Prairie King", sf::Style::Fullscreen, settings);
 	window.setFramerateLimit(MAX_FPS);
 }
 
-void initializePlayer(sf::CircleShape& shape)
-{
-	shape.setRadius(20);
-	shape.setFillColor(sf::Color::Green);
-	shape.setPosition(100, 0);
-}
-
-void handleEvents(sf::RenderWindow& window)
+void handleEvents(sf::RenderWindow& window, Player* player)
 {
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -37,39 +28,43 @@ void handleEvents(sf::RenderWindow& window)
 		{
 			window.close();
 		}
+		else if (event.type == sf::Event::KeyPressed)
+		{
+			player->handleKeyPress(event.key);
+		}
+		else if (event.type == sf::Event::KeyReleased)
+		{
+			player->handleKeyRelease(event.key);
+		}
 	}
 }
 
-void update(sf::Clock& clock)
+void update(sf::Clock& clock, Player* player)
 {
-	const float elapsedTime = clock.getElapsedTime().asSeconds();
-	clock.restart();
-	//updateGameScene(scene, elapsedTime);
+	const float elapsedSeconds = clock.restart().asSeconds();
+	player->update(elapsedSeconds);
 }
 
-void render(sf::RenderWindow& window)
+void render(sf::RenderWindow& window, Player* player)
 {
-	window.clear();
-	//drawGameScene(window, scene);
+	window.clear(sf::Color::White);
+	window.draw(player->getShape());
 	window.display();
 }
 
 int main(int, char* [])
 {
-	sf::ContextSettings settings;
-	settings.antialiasingLevel = 4;
-	sf::RenderWindow window(sf::VideoMode(800, 800), "Journey of the Prairie King Game Clone", sf::Style::Close, settings);
+	sf::RenderWindow window;
+	createWindow(window);
+
+	std::unique_ptr<Player> player = std::make_unique<Player>();
 
 	sf::Clock clock;
-//	GameScene scene;
-//	initializeGameScene(scene, sf::Vector2f(window.getSize()));
-
 	while (window.isOpen())
 	{
-		handleEvents(window);
-		update(clock);
-//		window.setTitle(getGameSceneWindowTitle(scene));
-		render(window);
+		handleEvents(window, player.get());
+		update(clock, player.get());
+		render(window, player.get());
 	}
 
 	return 0;
