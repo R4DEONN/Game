@@ -12,6 +12,7 @@ class Field
 	static sf::Vector2f getPlayerStartPosition();
 	sf::Vector2f checkFieldWallsCollision(const sf::FloatRect &oldBounds, sf::Vector2f &movement);
  private:
+	sf::Vector2f checkFieldGameCollision(const sf::FloatRect &oldBounds, sf::Vector2f &movement);
 	size_t width = 0;
 	size_t height = 0;
 	std::vector<Cell> cells;
