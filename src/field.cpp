@@ -159,7 +159,7 @@ sf::Vector2f Field::checkFieldGameCollision(const sf::FloatRect& oldBounds, sf::
 	if (newBounds.left < CENTER_OFFSET
 		&& movement.x < 0)
 	{
-		movement.x = 0 - oldBounds.left + CENTER_OFFSETaaaaaaaawas;
+		movement.x = 0 - oldBounds.left + CENTER_OFFSET;
 	}
 	if (newBounds.left + newBounds.width > this->width * BLOCK_SIZE + CENTER_OFFSET
 		&& movement.x > 0)
