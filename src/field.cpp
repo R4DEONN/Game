@@ -102,14 +102,14 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, sf:
 					 && (oldBounds.left<BLOCK_SIZE + CENTER_OFFSET
 										|| oldBounds.left + oldBounds.width>(this->width - 1) * BLOCK_SIZE
 						 + CENTER_OFFSET)))
-				&& oldBounds.top > BLOCK_SIZE
+				&& oldBounds.top >= BLOCK_SIZE
 				&& movement.y < 0)
 			{
 				movement.y = cellBound.top + cellBound.height - oldBounds.top;
 			}
 			if ((cellBound.top + cellBound.height == this->height * BLOCK_SIZE
 				 || (cellBound.top == (this->height / 2 + 1) * BLOCK_SIZE
-					 && (oldBounds.left<BLOCK_SIZE + CENTER_OFFSET
+					 && (oldBounds.left < BLOCK_SIZE + CENTER_OFFSET
 										|| oldBounds.left + oldBounds.width>(this->width - 1) * BLOCK_SIZE
 						 + CENTER_OFFSET)))
 				&& oldBounds.top + oldBounds.height < this->height * BLOCK_SIZE
