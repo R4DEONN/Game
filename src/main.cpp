@@ -1,4 +1,5 @@
 #include "player.h"
+#include "field.h"
 #include <SFML/Graphics.hpp>
 
 constexpr unsigned ANTIALIASING_LEVEL = 8;
@@ -7,7 +8,7 @@ constexpr unsigned MAX_FPS = 60;
 void createWindow(sf::RenderWindow& window);
 void handleEvents(sf::RenderWindow& window, Player* player);
 void update(sf::Clock& clock, Player* player);
-void render(sf::RenderWindow& window, Player* player);
+void render(sf::RenderWindow& window, Player* player, Field* field);
 
 void createWindow(sf::RenderWindow& window)
 {
@@ -19,7 +20,7 @@ void createWindow(sf::RenderWindow& window)
 	window.setFramerateLimit(MAX_FPS);
 }
 
-void handleEvents(sf::RenderWindow& window, Player* player)
+void handleEvents(sf::RenderWindow& window, Player& player)
 {
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -30,25 +31,28 @@ void handleEvents(sf::RenderWindow& window, Player* player)
 		}
 		else if (event.type == sf::Event::KeyPressed)
 		{
-			player->handleKeyPress(event.key);
+			player.handleKeyPress(event.key);
 		}
 		else if (event.type == sf::Event::KeyReleased)
 		{
-			player->handleKeyRelease(event.key);
+			player.handleKeyRelease(event.key);
 		}
 	}
 }
 
-void update(sf::Clock& clock, Player* player)
+void update(sf::Clock& clock, Player& player, Field& field)
 {
-	const float elapsedSeconds = clock.restart().asSeconds();
-	player->update(elapsedSeconds);
+	const float elapsedSeconds = clock.getElapsedTime().asSeconds();
+	clock.restart();
+	player.update(elapsedSeconds, field);
 }
 
-void render(sf::RenderWindow& window, Player* player)
+void render(sf::RenderWindow& window, Player& player, Field& field)
 {
-	window.clear(sf::Color::White);
-	window.draw(player->getShape());
+	window.clear();
+	//TODO Убрать отрисовку через поле
+	field.draw(window);
+	window.draw(player);
 	window.display();
 }
 
@@ -57,14 +61,15 @@ int main(int, char* [])
 	sf::RenderWindow window;
 	createWindow(window);
 
-	std::unique_ptr<Player> player = std::make_unique<Player>();
+	Field field;
+	Player player(Field::getPlayerStartPosition());
 
 	sf::Clock clock;
 	while (window.isOpen())
 	{
-		handleEvents(window, player.get());
-		update(clock, player.get());
-		render(window, player.get());
+		handleEvents(window, player);
+		update(clock, player, field);
+		render(window, player, field);
 	}
 
 	return 0;

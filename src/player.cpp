@@ -1,13 +1,14 @@
 #include "player.h"
+#include "field.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
 
 const char PLAYER_TEXTURE[] = "../res/player.png";
 
-constexpr float PLAYER_SPEED = 50.f;
+constexpr float PLAYER_SPEED = 300.f;
 
-Player::Player()
+Player::Player(sf::Vector2f const position)
 {
 	if (!this->texture.loadFromFile(PLAYER_TEXTURE))
 	{
@@ -21,54 +22,60 @@ Player::Player()
 		PLAYER_SIZE,
 		PLAYER_SIZE
 	});
-	this->shape.setPosition(
-		sf::VideoMode::getDesktopMode().width / 2,
-		sf::VideoMode::getDesktopMode().height / 2
-	);;
-	this->shape.setTexture(&this->texture);
+	this->shape.setPosition(position);
+//	this->shape.setTexture(&this->texture);
 	this->shape.setOrigin(
 		PLAYER_SIZE / 2,
 		PLAYER_SIZE / 2
 	);
 }
 
-void Player::update(float elapsedTime)
+void Player::update(float elapsedTime, Field& field)
 {
 	const float step = PLAYER_SPEED * elapsedTime;
-	sf::Vector2f position = this->shape.getPosition();
+	sf::Vector2f movement(0.f, 0.f);
 	switch (this->moveDirection)
 	{
 	case Direction::UP:
-		position.y -= step;
+		movement.y -= step;
 		break;
 	case Direction::UP_LEFT:
-		position.x -= step * std::sqrt(2) / 2;
-		position.y -= step * std::sqrt(2) / 2;
+		movement.x -= step * std::sqrt(2) / 2;
+		movement.y -= step * std::sqrt(2) / 2;
 		break;
 	case Direction::UP_RIGHT:
-		position.x += step * std::sqrt(2) / 2;
-		position.y -= step * std::sqrt(2) / 2;
+		movement.x += step * std::sqrt(2) / 2;
+		movement.y -= step * std::sqrt(2) / 2;
 		break;
 	case Direction::DOWN:
-		position.y += step;
+		movement.y += step;
 		break;
 	case Direction::DOWN_LEFT:
-		position.x -= step * std::sqrt(2) / 2;
-		position.y += step * std::sqrt(2) / 2;
+		movement.x -= step * std::sqrt(2) / 2;
+		movement.y += step * std::sqrt(2) / 2;
 		break;
 	case Direction::DOWN_RIGHT:
-		position.x += step * std::sqrt(2) / 2;
-		position.y += step * std::sqrt(2) / 2;
+		movement.x += step * std::sqrt(2) / 2;
+		movement.y += step * std::sqrt(2) / 2;
 		break;
 	case Direction::LEFT:
-		position.x -= step;
+		movement.x -= step;
 		break;
 	case Direction::RIGHT:
-		position.x += step;
+		movement.x += step;
 		break;
 	case Direction::NONE:
 		break;
 	}
+
+	const sf::FloatRect playerBounds = this->shape.getGlobalBounds();
+	movement = field.checkFieldWallsCollision(playerBounds, movement);
+//	if (!field.checkFieldWallsCollision(playerBounds, movement))
+//	{
+		//TODO Вынести move в Player
+		this->shape.move(movement);
+//		this->moveDirection = Direction::NONE;
+//	}
 
 	//TODO implement
 	switch (this->attackDirection)
@@ -92,8 +99,6 @@ void Player::update(float elapsedTime)
 	case Direction::NONE:
 		break;
 	}
-
-	this->shape.setPosition(position);
 }
 
 void Player::handleKeyPress(const sf::Event::KeyEvent& event)
@@ -398,6 +403,16 @@ void Player::handleKeyRelease(const sf::Event::KeyEvent& event)
 			this->attackDirection = Direction::NONE;
 		}
 	}
+}
+
+//void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+//	states.transform *= getTransform();
+//	target.draw(this->shape, states);
+//}
+
+void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    target.draw(this->shape, states);
 }
 
 sf::RectangleShape Player::getShape()
