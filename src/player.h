@@ -3,19 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "field.h"
-
-enum class Direction
-{
-	NONE,
-	UP,
-	UP_RIGHT,
-	UP_LEFT,
-	DOWN,
-	DOWN_RIGHT,
-	DOWN_LEFT,
-	LEFT,
-	RIGHT
-};
+#include "direction.h"
 
 extern const char PLAYER_TEXTURE[];
 

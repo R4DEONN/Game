@@ -70,12 +70,8 @@ void Player::update(float elapsedTime, Field& field)
 
 	const sf::FloatRect playerBounds = this->shape.getGlobalBounds();
 	movement = field.checkFieldWallsCollision(playerBounds, movement);
-//	if (!field.checkFieldWallsCollision(playerBounds, movement))
-//	{
-		//TODO Вынести move в Player
-		this->shape.move(movement);
-//		this->moveDirection = Direction::NONE;
-//	}
+	//TODO Вынести move в Player
+	this->shape.move(movement);
 
 	//TODO implement
 	switch (this->attackDirection)
@@ -404,11 +400,6 @@ void Player::handleKeyRelease(const sf::Event::KeyEvent& event)
 		}
 	}
 }
-
-//void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-//	states.transform *= getTransform();
-//	target.draw(this->shape, states);
-//}
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

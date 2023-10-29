@@ -5,8 +5,6 @@
 static const float BLOCK_SIZE = sf::VideoMode::getDesktopMode().height / 16;
 static const float CENTER_OFFSET =
 	(sf::VideoMode::getDesktopMode().width - sf::VideoMode::getDesktopMode().height) / 2;
-static const size_t FIELD_WIDTH = 16;
-static const size_t FIELD_HEIGHT = 16;
 //TODO Сделать проходы по 3 ячейки
 static const char FIELD_MAZE[] = {
 	1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
@@ -32,8 +30,6 @@ static const sf::Color PRAIRIE_COLOR = sf::Color(50, 168, 82);
 
 Field::Field()
 {
-	this->width = FIELD_WIDTH;
-	this->height = FIELD_HEIGHT;
 	for (size_t y = 0; y < this->height; y++)
 	{
 		for (size_t x = 0; x < this->width; x++)
@@ -84,6 +80,11 @@ sf::Vector2f Field::getPlayerStartPosition()
 sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, sf::Vector2f& movement)
 {
 	this->checkFieldGameCollision(oldBounds, movement);
+	if (movement == sf::Vector2f{ 0, 0 })
+	{
+		return movement;
+	}
+
 	sf::FloatRect newBounds = moveRect(oldBounds, movement);
 	for (size_t i = 0, n = this->width * this->height; i < n; i++)
 	{
@@ -107,30 +108,33 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, sf:
 			{
 				movement.y = cellBound.top + cellBound.height - oldBounds.top;
 			}
+
 			if ((cellBound.top + cellBound.height == this->height * BLOCK_SIZE
 				 || (cellBound.top == (this->height / 2 + 1) * BLOCK_SIZE
-					 && (oldBounds.left < BLOCK_SIZE + CENTER_OFFSET
+					 && (oldBounds.left<BLOCK_SIZE + CENTER_OFFSET
 										|| oldBounds.left + oldBounds.width>(this->width - 1) * BLOCK_SIZE
 						 + CENTER_OFFSET)))
-				&& oldBounds.top + oldBounds.height < this->height * BLOCK_SIZE
+				&& oldBounds.top + oldBounds.height <= (this->height - 1) * BLOCK_SIZE
 				&& movement.y > 0)
 			{
 				movement.y = cellBound.top - oldBounds.height - oldBounds.top;
 			}
+
 			if ((cellBound.left == CENTER_OFFSET
 				 || (cellBound.left + cellBound.width == (this->width / 2 - 1) * BLOCK_SIZE + CENTER_OFFSET
 					 && (oldBounds.top<BLOCK_SIZE
 									   || oldBounds.top + oldBounds.height>(this->height - 1) * BLOCK_SIZE)))
-				&& oldBounds.left > CENTER_OFFSET
+				&& oldBounds.left >= BLOCK_SIZE + CENTER_OFFSET
 				&& movement.x < 0)
 			{
 				movement.x = cellBound.left + cellBound.width - oldBounds.left;
 			}
+
 			if ((cellBound.left + cellBound.width == this->width * BLOCK_SIZE + CENTER_OFFSET
 				 || (cellBound.left == (this->width / 2 + 1) * BLOCK_SIZE + CENTER_OFFSET
 					 && (oldBounds.top<BLOCK_SIZE
 									   || oldBounds.top + oldBounds.height>(this->height - 1) * BLOCK_SIZE)))
-				&& oldBounds.left + oldBounds.width < this->width * BLOCK_SIZE + CENTER_OFFSET
+				&& oldBounds.left + oldBounds.width <= (this->width - 1) * BLOCK_SIZE + CENTER_OFFSET
 				&& movement.x > 0)
 			{
 				movement.x = cellBound.left - oldBounds.width - oldBounds.left;
