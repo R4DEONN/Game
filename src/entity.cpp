@@ -4,31 +4,32 @@
 
 Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 {
-	if (!this->texture.loadFromFile(texturePath))
+	if (!texture.loadFromFile(texturePath))
 	{
 		//TODO Нормальео обрабатывать ошибку
 		std::wcerr << L"Не удалось загрузить изображение" << std::endl;
 		exit(1);
 	}
 
-	this->shape.setSize({
+	shape.setSize({
 		GameConstants::BLOCK_SIZE,
 		GameConstants::BLOCK_SIZE,
 	});
-	this->shape.setPosition(position);
-
-	this->shape.setOrigin(
+	shape.setPosition(position);
+	shape.setTexture(&texture);
+	shape.setOrigin(
 		GameConstants::BLOCK_SIZE / 2,
 		GameConstants::BLOCK_SIZE / 2
 	);
+
+	isAlive = true;
+	health = 1;
 }
+
+void Entity::update(float elapsedTime, Field& field)
+{}
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(this->shape, states);
-}
-
-sf::RectangleShape Entity::getShape()
-{
-	return this->shape;
+	target.draw(shape, states);
 }

@@ -1,37 +1,37 @@
 #include "cmath"
 #include "bullet.h"
 
-constexpr const float BULLET_SPEED = 1000.f;
 const float FORTY_FIVE_DEGREES_COEF = float(std::sqrt(2)) / 2;
 
-Bullet::Bullet(sf::Vector2f position, Direction direction)
+Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction direction)
+: Entity(texturePath, position)
 {
-	this->position = position;
+	speed = 1000.f;
 	switch (direction)
 	{
 	case Direction::UP:
-		this->direction = {0, -BULLET_SPEED};
+		step = {0, -speed};
 		break;
 	case Direction::UP_LEFT:
-		this->direction = {-BULLET_SPEED * FORTY_FIVE_DEGREES_COEF, -BULLET_SPEED * FORTY_FIVE_DEGREES_COEF};
+		step = {-speed * FORTY_FIVE_DEGREES_COEF, -speed * FORTY_FIVE_DEGREES_COEF};
 		break;
 	case Direction::UP_RIGHT:
-		this->direction = {+BULLET_SPEED * FORTY_FIVE_DEGREES_COEF, -BULLET_SPEED * FORTY_FIVE_DEGREES_COEF};
+		step = {+speed * FORTY_FIVE_DEGREES_COEF, -speed * FORTY_FIVE_DEGREES_COEF};
 		break;
 	case Direction::DOWN:
-		this->direction = {0, +BULLET_SPEED};
+		step = {0, +speed};
 		break;
 	case Direction::DOWN_LEFT:
-		this->direction = {-BULLET_SPEED * FORTY_FIVE_DEGREES_COEF, +BULLET_SPEED * FORTY_FIVE_DEGREES_COEF};
+		step = {-speed * FORTY_FIVE_DEGREES_COEF, +speed * FORTY_FIVE_DEGREES_COEF};
 		break;
 	case Direction::DOWN_RIGHT:
-		this->direction = {+BULLET_SPEED * FORTY_FIVE_DEGREES_COEF, +BULLET_SPEED * FORTY_FIVE_DEGREES_COEF};
+		step = {+speed * FORTY_FIVE_DEGREES_COEF, +speed * FORTY_FIVE_DEGREES_COEF};
 		break;
 	case Direction::LEFT:
-		this->direction = {-BULLET_SPEED, 0};
+		step = {-speed, 0};
 		break;
 	case Direction::RIGHT:
-		this->direction = {+BULLET_SPEED, 0};
+		step = {+speed, 0};
 		break;
 	case Direction::NONE:
 		break;
@@ -40,5 +40,6 @@ Bullet::Bullet(sf::Vector2f position, Direction direction)
 
 void Bullet::update(float elapsedTime, Field& field)
 {
-	const float step = BULLET_SPEED * elapsedTime;
+	const sf::Vector2f movement = step * elapsedTime;
+	shape.move(movement);
 }

@@ -5,37 +5,17 @@
 #include <iostream>
 #include <cmath>
 
-const char PLAYER_TEXTURE[] = "../res/player.png";
-
-constexpr float PLAYER_SPEED = 250.f;
-
-Player::Player(sf::Vector2f const position)
+Player::Player(const std::string& texturePath, sf::Vector2f position)
+	: Entity(texturePath, position)
 {
-	if (!this->texture.loadFromFile(PLAYER_TEXTURE))
-	{
-		std::wcerr << L"Не удалось загрузить изображение" << std::endl;
-		exit(1);
-	}
-
-	const float PLAYER_SIZE = GameConstants::BLOCK_SIZE;
-
-	this->shape.setSize({
-		PLAYER_SIZE,
-		PLAYER_SIZE
-	});
-	this->shape.setPosition(position);
-	this->shape.setTexture(&this->texture);
-	this->shape.setOrigin(
-		PLAYER_SIZE / 2,
-		PLAYER_SIZE / 2
-	);
+	speed = 250.f;
 }
 
 void Player::update(float elapsedTime, Field& field)
 {
-	const float step = PLAYER_SPEED * elapsedTime;
+	const float step = speed * elapsedTime;
 	sf::Vector2f movement(0.f, 0.f);
-	switch (this->moveDirection)
+	switch (moveDirection)
 	{
 	case Direction::UP:
 		movement.y -= step;
@@ -69,13 +49,14 @@ void Player::update(float elapsedTime, Field& field)
 		break;
 	}
 
-	const sf::FloatRect playerBounds = this->shape.getGlobalBounds();
+	const sf::FloatRect playerBounds = shape.getGlobalBounds();
 	movement = field.checkFieldWallsCollision(playerBounds, movement);
 	//TODO Вынести move в Player
-	this->shape.move(movement);
+	std::cout << movement.x << '\n';
+	shape.move(movement);
 
 	//TODO implement
-	switch (this->attackDirection)
+	switch (attackDirection)
 	{
 	case Direction::UP:
 		break;
@@ -100,152 +81,153 @@ void Player::update(float elapsedTime, Field& field)
 
 void Player::handleKeyPress(const sf::Event::KeyEvent& event)
 {
+	std::cout << "hello" << "\n";
 	if (event.code == sf::Keyboard::W)
 	{
-		if (this->moveDirection == Direction::UP
-			|| this->moveDirection == Direction::UP_RIGHT
-			|| this->moveDirection == Direction::UP_LEFT)
+		if (moveDirection == Direction::UP
+			|| moveDirection == Direction::UP_RIGHT
+			|| moveDirection == Direction::UP_LEFT)
 		{
 			return;
 		}
 
-		if (this->moveDirection == Direction::LEFT)
+		if (moveDirection == Direction::LEFT)
 		{
-			this->moveDirection = Direction::UP_LEFT;
+			moveDirection = Direction::UP_LEFT;
 		}
-		else if (this->moveDirection == Direction::RIGHT)
+		else if (moveDirection == Direction::RIGHT)
 		{
-			this->moveDirection = Direction::UP_RIGHT;
+			moveDirection = Direction::UP_RIGHT;
 		}
 		else
 		{
-			this->moveDirection = Direction::UP;
+			moveDirection = Direction::UP;
 		}
 	}
 	else if (event.code == sf::Keyboard::S)
 	{
-		if (this->moveDirection == Direction::DOWN
-			|| this->moveDirection == Direction::DOWN_RIGHT
-			|| this->moveDirection == Direction::DOWN_LEFT)
+		if (moveDirection == Direction::DOWN
+			|| moveDirection == Direction::DOWN_RIGHT
+			|| moveDirection == Direction::DOWN_LEFT)
 		{
 			return;
 		}
 
-		if (this->moveDirection == Direction::LEFT)
+		if (moveDirection == Direction::LEFT)
 		{
-			this->moveDirection = Direction::DOWN_LEFT;
+			moveDirection = Direction::DOWN_LEFT;
 		}
-		else if (this->moveDirection == Direction::RIGHT)
+		else if (moveDirection == Direction::RIGHT)
 		{
-			this->moveDirection = Direction::DOWN_RIGHT;
+			moveDirection = Direction::DOWN_RIGHT;
 		}
 		else
 		{
-			this->moveDirection = Direction::DOWN;
+			moveDirection = Direction::DOWN;
 		}
 	}
 	else if (event.code == sf::Keyboard::A)
 	{
-		if (this->moveDirection == Direction::LEFT
-			|| this->moveDirection == Direction::UP_LEFT
-			|| this->moveDirection == Direction::DOWN_LEFT)
+		if (moveDirection == Direction::LEFT
+			|| moveDirection == Direction::UP_LEFT
+			|| moveDirection == Direction::DOWN_LEFT)
 		{
 			return;
 		}
 
-		if (this->moveDirection == Direction::DOWN)
+		if (moveDirection == Direction::DOWN)
 		{
-			this->moveDirection = Direction::DOWN_LEFT;
+			moveDirection = Direction::DOWN_LEFT;
 		}
-		else if (this->moveDirection == Direction::UP)
+		else if (moveDirection == Direction::UP)
 		{
-			this->moveDirection = Direction::UP_LEFT;
+			moveDirection = Direction::UP_LEFT;
 		}
 		else
 		{
-			this->moveDirection = Direction::LEFT;
+			moveDirection = Direction::LEFT;
 		}
 	}
 	else if (event.code == sf::Keyboard::D)
 	{
-		if (this->moveDirection == Direction::RIGHT
-			|| this->moveDirection == Direction::UP_RIGHT
-			|| this->moveDirection == Direction::DOWN_RIGHT)
+		if (moveDirection == Direction::RIGHT
+			|| moveDirection == Direction::UP_RIGHT
+			|| moveDirection == Direction::DOWN_RIGHT)
 		{
 			return;
 		}
 
-		if (this->moveDirection == Direction::DOWN)
+		if (moveDirection == Direction::DOWN)
 		{
-			this->moveDirection = Direction::DOWN_RIGHT;
+			moveDirection = Direction::DOWN_RIGHT;
 		}
-		else if (this->moveDirection == Direction::UP)
+		else if (moveDirection == Direction::UP)
 		{
-			this->moveDirection = Direction::UP_RIGHT;
+			moveDirection = Direction::UP_RIGHT;
 		}
 		else
 		{
-			this->moveDirection = Direction::RIGHT;
+			moveDirection = Direction::RIGHT;
 		}
 	}
 	else if (event.code == sf::Keyboard::Up)
 	{
-		if (this->attackDirection == Direction::LEFT)
+		if (attackDirection == Direction::LEFT)
 		{
-			this->attackDirection = Direction::UP_LEFT;
+			attackDirection = Direction::UP_LEFT;
 		}
-		else if (this->attackDirection == Direction::RIGHT)
+		else if (attackDirection == Direction::RIGHT)
 		{
-			this->attackDirection = Direction::UP_RIGHT;
+			attackDirection = Direction::UP_RIGHT;
 		}
 		else
 		{
-			this->attackDirection = Direction::UP;
+			attackDirection = Direction::UP;
 		}
 	}
 	else if (event.code == sf::Keyboard::Down)
 	{
-		if (this->attackDirection == Direction::LEFT)
+		if (attackDirection == Direction::LEFT)
 		{
-			this->attackDirection = Direction::DOWN_LEFT;
+			attackDirection = Direction::DOWN_LEFT;
 		}
-		else if (this->attackDirection == Direction::RIGHT)
+		else if (attackDirection == Direction::RIGHT)
 		{
-			this->attackDirection = Direction::DOWN_RIGHT;
+			attackDirection = Direction::DOWN_RIGHT;
 		}
 		else
 		{
-			this->attackDirection = Direction::DOWN;
+			attackDirection = Direction::DOWN;
 		}
 	}
 	else if (event.code == sf::Keyboard::Left)
 	{
-		if (this->attackDirection == Direction::DOWN)
+		if (attackDirection == Direction::DOWN)
 		{
-			this->attackDirection = Direction::DOWN_LEFT;
+			attackDirection = Direction::DOWN_LEFT;
 		}
-		else if (this->attackDirection == Direction::UP)
+		else if (attackDirection == Direction::UP)
 		{
-			this->attackDirection = Direction::UP_LEFT;
+			attackDirection = Direction::UP_LEFT;
 		}
 		else
 		{
-			this->attackDirection = Direction::LEFT;
+			attackDirection = Direction::LEFT;
 		}
 	}
 	else if (event.code == sf::Keyboard::Right)
 	{
-		if (this->attackDirection == Direction::DOWN)
+		if (attackDirection == Direction::DOWN)
 		{
-			this->attackDirection = Direction::DOWN_RIGHT;
+			attackDirection = Direction::DOWN_RIGHT;
 		}
-		else if (this->attackDirection == Direction::UP)
+		else if (attackDirection == Direction::UP)
 		{
-			this->attackDirection = Direction::UP_RIGHT;
+			attackDirection = Direction::UP_RIGHT;
 		}
 		else
 		{
-			this->attackDirection = Direction::RIGHT;
+			attackDirection = Direction::RIGHT;
 		}
 	}
 }
@@ -254,160 +236,160 @@ void Player::handleKeyRelease(const sf::Event::KeyEvent& event)
 {
 	if (event.code == sf::Keyboard::W)
 	{
-		if (this->moveDirection != Direction::UP
-			&& this->moveDirection != Direction::UP_LEFT
-			&& this->moveDirection != Direction::UP_RIGHT)
+		if (moveDirection != Direction::UP
+			&& moveDirection != Direction::UP_LEFT
+			&& moveDirection != Direction::UP_RIGHT)
 		{
 			return;
 		}
 
-		if (this->moveDirection == Direction::UP_LEFT)
+		if (moveDirection == Direction::UP_LEFT)
 		{
-			this->moveDirection = Direction::LEFT;
+			moveDirection = Direction::LEFT;
 		}
-		else if (this->moveDirection == Direction::UP_RIGHT)
+		else if (moveDirection == Direction::UP_RIGHT)
 		{
-			this->moveDirection = Direction::RIGHT;
+			moveDirection = Direction::RIGHT;
 		}
 		else
 		{
-			this->moveDirection = Direction::NONE;
+			moveDirection = Direction::NONE;
 		}
 	}
 	else if (event.code == sf::Keyboard::S)
 	{
-		if (this->moveDirection != Direction::DOWN
-			&& this->moveDirection != Direction::DOWN_LEFT
-			&& this->moveDirection != Direction::DOWN_RIGHT)
+		if (moveDirection != Direction::DOWN
+			&& moveDirection != Direction::DOWN_LEFT
+			&& moveDirection != Direction::DOWN_RIGHT)
 		{
 			return;
 		}
 
-		if (this->moveDirection == Direction::DOWN_LEFT)
+		if (moveDirection == Direction::DOWN_LEFT)
 		{
-			this->moveDirection = Direction::LEFT;
+			moveDirection = Direction::LEFT;
 		}
-		else if (this->moveDirection == Direction::DOWN_RIGHT)
+		else if (moveDirection == Direction::DOWN_RIGHT)
 		{
-			this->moveDirection = Direction::RIGHT;
+			moveDirection = Direction::RIGHT;
 		}
 		else
 		{
-			this->moveDirection = Direction::NONE;
+			moveDirection = Direction::NONE;
 		}
 	}
 	else if (event.code == sf::Keyboard::A)
 	{
-		if (this->moveDirection != Direction::LEFT
-			&& this->moveDirection != Direction::UP_LEFT
-			&& this->moveDirection != Direction::DOWN_LEFT)
+		if (moveDirection != Direction::LEFT
+			&& moveDirection != Direction::UP_LEFT
+			&& moveDirection != Direction::DOWN_LEFT)
 		{
 			return;
 		}
 
-		if (this->moveDirection == Direction::DOWN_LEFT)
+		if (moveDirection == Direction::DOWN_LEFT)
 		{
-			this->moveDirection = Direction::DOWN;
+			moveDirection = Direction::DOWN;
 		}
-		else if (this->moveDirection == Direction::UP_LEFT)
+		else if (moveDirection == Direction::UP_LEFT)
 		{
-			this->moveDirection = Direction::UP;
+			moveDirection = Direction::UP;
 		}
 		else
 		{
-			this->moveDirection = Direction::NONE;
+			moveDirection = Direction::NONE;
 		}
 	}
 	else if (event.code == sf::Keyboard::D)
 	{
-		if (this->moveDirection != Direction::RIGHT
-			&& this->moveDirection != Direction::UP_RIGHT
-			&& this->moveDirection != Direction::DOWN_RIGHT)
+		if (moveDirection != Direction::RIGHT
+			&& moveDirection != Direction::UP_RIGHT
+			&& moveDirection != Direction::DOWN_RIGHT)
 		{
 			return;
 		}
 
-		if (this->moveDirection == Direction::DOWN_RIGHT)
+		if (moveDirection == Direction::DOWN_RIGHT)
 		{
-			this->moveDirection = Direction::DOWN;
+			moveDirection = Direction::DOWN;
 		}
-		else if (this->moveDirection == Direction::UP_RIGHT)
+		else if (moveDirection == Direction::UP_RIGHT)
 		{
-			this->moveDirection = Direction::UP;
+			moveDirection = Direction::UP;
 		}
 		else
 		{
-			this->moveDirection = Direction::NONE;
+			moveDirection = Direction::NONE;
 		}
 	}
 	else if (event.code == sf::Keyboard::Up)
 	{
-		if (this->attackDirection == Direction::UP_LEFT)
+		if (attackDirection == Direction::UP_LEFT)
 		{
-			this->attackDirection = Direction::LEFT;
+			attackDirection = Direction::LEFT;
 		}
-		else if (this->attackDirection == Direction::UP_RIGHT)
+		else if (attackDirection == Direction::UP_RIGHT)
 		{
-			this->attackDirection = Direction::RIGHT;
+			attackDirection = Direction::RIGHT;
 		}
 		else
 		{
-			this->attackDirection = Direction::NONE;
+			attackDirection = Direction::NONE;
 		}
 	}
 	else if (event.code == sf::Keyboard::Down)
 	{
-		if (this->attackDirection == Direction::DOWN_LEFT)
+		if (attackDirection == Direction::DOWN_LEFT)
 		{
-			this->attackDirection = Direction::LEFT;
+			attackDirection = Direction::LEFT;
 		}
-		else if (this->attackDirection == Direction::DOWN_RIGHT)
+		else if (attackDirection == Direction::DOWN_RIGHT)
 		{
-			this->attackDirection = Direction::RIGHT;
+			attackDirection = Direction::RIGHT;
 		}
 		else
 		{
-			this->attackDirection = Direction::NONE;
+			attackDirection = Direction::NONE;
 		}
 	}
 	else if (event.code == sf::Keyboard::Left)
 	{
-		if (this->attackDirection == Direction::DOWN_LEFT)
+		if (attackDirection == Direction::DOWN_LEFT)
 		{
-			this->attackDirection = Direction::DOWN;
+			attackDirection = Direction::DOWN;
 		}
-		else if (this->attackDirection == Direction::UP_LEFT)
+		else if (attackDirection == Direction::UP_LEFT)
 		{
-			this->attackDirection = Direction::UP;
+			attackDirection = Direction::UP;
 		}
 		else
 		{
-			this->attackDirection = Direction::NONE;
+			attackDirection = Direction::NONE;
 		}
 	}
 	else if (event.code == sf::Keyboard::Right)
 	{
-		if (this->attackDirection == Direction::DOWN_RIGHT)
+		if (attackDirection == Direction::DOWN_RIGHT)
 		{
-			this->attackDirection = Direction::DOWN;
+			attackDirection = Direction::DOWN;
 		}
-		else if (this->attackDirection == Direction::UP_RIGHT)
+		else if (attackDirection == Direction::UP_RIGHT)
 		{
-			this->attackDirection = Direction::UP;
+			attackDirection = Direction::UP;
 		}
 		else
 		{
-			this->attackDirection = Direction::NONE;
+			attackDirection = Direction::NONE;
 		}
 	}
 }
 
-void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-    target.draw(this->shape, states);
-}
-
-sf::RectangleShape Player::getShape()
-{
-	return this->shape;
-}
+//void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
+//{
+//	target.draw(shape, states);
+//}
+//
+//sf::RectangleShape Player::getShape()
+//{
+//	return shape;
+//}

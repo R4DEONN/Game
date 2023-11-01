@@ -2,24 +2,18 @@
 #define _PLAYER_H_
 
 #include <SFML/Graphics.hpp>
+#include "entity.h"
 #include "field.h"
 #include "direction.h"
 
-extern const char PLAYER_TEXTURE[];
-
-class Player : public sf::Drawable
+class Player : public Entity
 {
  public:
-	explicit Player(sf::Vector2f position);
-	~Player() override = default;
-	void update(float elapsedTime, Field& field);
+	Player(const std::string& texturePath, sf::Vector2f position);
+	void update(float elapsedTime, Field& field) override;
 	void handleKeyPress(const sf::Event::KeyEvent& event);
 	void handleKeyRelease(const sf::Event::KeyEvent& event);
-	sf::RectangleShape getShape();
  private:
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	sf::RectangleShape shape;
-	sf::Texture texture;
 	Direction moveDirection = Direction::NONE;
 	Direction attackDirection = Direction::NONE;
 };

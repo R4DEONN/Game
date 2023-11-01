@@ -4,20 +4,15 @@
 #include <SFML/Graphics.hpp>
 #include "field.h"
 #include "direction.h"
+#include "entity.h"
 
-class Bullet //: public sf::Drawable
+class Bullet : public Entity
 {
  public:
-	Bullet(sf::Vector2f position, Direction direction);
-	//~Bullet() override = default;
+	Bullet(const std::string& texturePath, sf::Vector2f position, Direction direction);
 	void update(float elapsedTime, Field& field);
-//	sf::RectangleShape getShape();
  private:
-//	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	sf::RectangleShape shape;
-	sf::Texture texture;
-	sf::Vector2f position;
-	sf::Vector2f direction;
+	sf::Vector2f step;
 };
 
 #endif //_BULLET_H_

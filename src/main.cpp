@@ -1,5 +1,6 @@
 #include "player.h"
 #include "field.h"
+#include "bullet.h"
 #include <SFML/Graphics.hpp>
 
 constexpr unsigned ANTIALIASING_LEVEL = 8;
@@ -52,6 +53,12 @@ void render(sf::RenderWindow& window, Player& player, Field& field)
 	window.clear();
 	//TODO Убрать отрисовку через поле
 	field.draw(window);
+	Bullet bullet{
+		"../res/player.png",
+		Field::getPlayerStartPosition(),
+		Direction::UP
+	};
+	window.draw(bullet);
 	window.draw(player);
 	window.display();
 }
@@ -62,7 +69,7 @@ int main(int, char* [])
 	createWindow(window);
 
 	Field field;
-	Player player(Field::getPlayerStartPosition());
+	Player player("../res/player.png", Field::getPlayerStartPosition());
 
 	sf::Clock clock;
 	while (window.isOpen())
