@@ -12,7 +12,6 @@ class Entity : public sf::Drawable
 		const std::string& texturePath,
 		sf::Vector2f position
 		);
-	~Entity() override = default;
 	void update(float elapsedTime, Field& field);
 	sf::RectangleShape getShape();
  private:

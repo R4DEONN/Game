@@ -16,7 +16,7 @@ void createWindow(sf::RenderWindow& window)
 	settings.antialiasingLevel = ANTIALIASING_LEVEL;
 	window.create(
 		sf::VideoMode::getDesktopMode(),
-		"Journey of the Prairie King", sf::Style::Fullscreen, settings);
+		"Journey of the Prairie King", sf::Style::Default, settings);
 	window.setFramerateLimit(MAX_FPS);
 }
 

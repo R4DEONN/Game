@@ -1,12 +1,13 @@
 #include "player.h"
 #include "field.h"
+#include "gameConstants.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
 
 const char PLAYER_TEXTURE[] = "../res/player.png";
 
-constexpr float PLAYER_SPEED = 300.f;
+constexpr float PLAYER_SPEED = 250.f;
 
 Player::Player(sf::Vector2f const position)
 {
@@ -16,14 +17,14 @@ Player::Player(sf::Vector2f const position)
 		exit(1);
 	}
 
-	const float PLAYER_SIZE = sf::VideoMode::getDesktopMode().height / 16.f;
+	const float PLAYER_SIZE = GameConstants::BLOCK_SIZE;
 
 	this->shape.setSize({
 		PLAYER_SIZE,
 		PLAYER_SIZE
 	});
 	this->shape.setPosition(position);
-//	this->shape.setTexture(&this->texture);
+	this->shape.setTexture(&this->texture);
 	this->shape.setOrigin(
 		PLAYER_SIZE / 2,
 		PLAYER_SIZE / 2
