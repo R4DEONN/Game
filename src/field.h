@@ -10,9 +10,9 @@ class Field
 	Field();
 	void draw(sf::RenderWindow &window);
 	static sf::Vector2f getPlayerStartPosition();
-	sf::Vector2f checkFieldWallsCollision(const sf::FloatRect &oldBounds, sf::Vector2f &movement);
+	sf::Vector2f checkFieldWallsCollision(const sf::FloatRect &oldBounds, const sf::Vector2f &movement);
  private:
-	sf::Vector2f checkFieldGameCollision(const sf::FloatRect &oldBounds, sf::Vector2f &movement);
+	sf::Vector2f checkFieldGameCollision(const sf::FloatRect &oldBounds, const sf::Vector2f &movement);
 	size_t width = 16;
 	size_t height = 16;
 	std::vector<Cell> cells;

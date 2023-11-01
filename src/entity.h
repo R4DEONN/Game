@@ -13,6 +13,7 @@ class Entity : public sf::Drawable
 		sf::Vector2f position
 		);
 	virtual void update(float elapsedTime, Field& field);
+	bool getIsAlive();
  private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	sf::Texture texture;

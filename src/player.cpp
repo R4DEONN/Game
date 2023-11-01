@@ -1,6 +1,7 @@
 #include "player.h"
 #include "field.h"
 #include "gameConstants.h"
+#include "bullet.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
@@ -8,10 +9,11 @@
 Player::Player(const std::string& texturePath, sf::Vector2f position)
 	: Entity(texturePath, position)
 {
+	health = 3;
 	speed = 250.f;
 }
 
-void Player::update(float elapsedTime, Field& field)
+void Player::update(float elapsedTime, Field& field, std::vector<Entity*>& entities)
 {
 	const float step = speed * elapsedTime;
 	sf::Vector2f movement(0.f, 0.f);
@@ -52,8 +54,21 @@ void Player::update(float elapsedTime, Field& field)
 	const sf::FloatRect playerBounds = shape.getGlobalBounds();
 	movement = field.checkFieldWallsCollision(playerBounds, movement);
 	//TODO Вынести move в Player
-	std::cout << movement.x << '\n';
 	shape.move(movement);
+
+	const sf::Vector2f playerCenter = {
+		shape.getPosition().x + playerBounds.width / 2,
+		shape.getPosition().y + playerBounds.height / 2,
+	};
+	if (attackDirection != Direction::NONE)
+	{
+		Bullet* bullet = new Bullet{
+			"../res/player.png",
+			playerCenter,
+			attackDirection
+		};
+		entities.push_back(bullet);
+	}
 
 	//TODO implement
 	switch (attackDirection)
@@ -81,7 +96,6 @@ void Player::update(float elapsedTime, Field& field)
 
 void Player::handleKeyPress(const sf::Event::KeyEvent& event)
 {
-	std::cout << "hello" << "\n";
 	if (event.code == sf::Keyboard::W)
 	{
 		if (moveDirection == Direction::UP
@@ -383,13 +397,3 @@ void Player::handleKeyRelease(const sf::Event::KeyEvent& event)
 		}
 	}
 }
-
-//void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
-//{
-//	target.draw(shape, states);
-//}
-//
-//sf::RectangleShape Player::getShape()
-//{
-//	return shape;
-//}

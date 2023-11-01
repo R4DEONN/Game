@@ -6,11 +6,6 @@
 constexpr unsigned ANTIALIASING_LEVEL = 8;
 constexpr unsigned MAX_FPS = 60;
 
-void createWindow(sf::RenderWindow& window);
-void handleEvents(sf::RenderWindow& window, Player* player);
-void update(sf::Clock& clock, Player* player);
-void render(sf::RenderWindow& window, Player* player, Field* field);
-
 void createWindow(sf::RenderWindow& window)
 {
 	sf::ContextSettings settings;
@@ -21,7 +16,7 @@ void createWindow(sf::RenderWindow& window)
 	window.setFramerateLimit(MAX_FPS);
 }
 
-void handleEvents(sf::RenderWindow& window, Player& player)
+void handleEvents(sf::RenderWindow& window, Player& player, std::vector<Entity*>& entities)
 {
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -41,24 +36,48 @@ void handleEvents(sf::RenderWindow& window, Player& player)
 	}
 }
 
-void update(sf::Clock& clock, Player& player, Field& field)
+void update(sf::Clock& clock, Player& player, Field& field, std::vector<Entity*>& entities)
 {
 	const float elapsedSeconds = clock.getElapsedTime().asSeconds();
 	clock.restart();
-	player.update(elapsedSeconds, field);
+	player.update(elapsedSeconds, field, entities);
+	std::vector<int> indexesToDelete;
+	for (int i = 0; i < entities.size(); i++)
+	{
+		if (entities[i]->getIsAlive())
+		{
+			entities[i]->update(elapsedSeconds, field);
+		}
+		else
+		{
+			indexesToDelete.push_back(i);
+		}
+	}
+	for (int index : indexesToDelete)
+	{
+		Entity* entity = entities[index];
+		entities.erase(entities.begin() + index);
+		for (int i = 0; i < indexesToDelete.size(); ++i)
+		{
+			if (indexesToDelete[i] > index)
+			{
+				--indexesToDelete[i];
+			}
+		}
+		delete entity;
+	}
 }
 
-void render(sf::RenderWindow& window, Player& player, Field& field)
+void render(sf::RenderWindow& window, Player& player, Field& field, std::vector<Entity*>& entities)
 {
 	window.clear();
 	//TODO Убрать отрисовку через поле
 	field.draw(window);
-	Bullet bullet{
-		"../res/player.png",
-		Field::getPlayerStartPosition(),
-		Direction::UP
-	};
-	window.draw(bullet);
+	std::vector<int> indexesToDelete;
+	for (Entity* entity : entities)
+	{
+		window.draw(*entity);
+	}
 	window.draw(player);
 	window.display();
 }
@@ -71,12 +90,14 @@ int main(int, char* [])
 	Field field;
 	Player player("../res/player.png", Field::getPlayerStartPosition());
 
+	std::vector<Entity*> entities;
+
 	sf::Clock clock;
 	while (window.isOpen())
 	{
-		handleEvents(window, player);
-		update(clock, player, field);
-		render(window, player, field);
+		handleEvents(window, player, entities);
+		update(clock, player, field, entities);
+		render(window, player, field, entities);
 	}
 
 	return 0;

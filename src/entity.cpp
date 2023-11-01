@@ -26,6 +26,11 @@ Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 	health = 1;
 }
 
+bool Entity::getIsAlive()
+{
+	return isAlive;
+}
+
 void Entity::update(float elapsedTime, Field& field)
 {}
 
