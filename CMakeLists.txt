@@ -11,7 +11,7 @@ set(EXECUTABLE_OUTPUT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/bin")
 
 find_package(Freetype REQUIRED)
 find_package(JPEG REQUIRED)
-find_package(SFML 2 COMPONENTS window graphics system REQUIRED)
+find_package(SFML 2 COMPONENTS audio window graphics system REQUIRED)
 
 file(GLOB SRC "src/*.cpp" "src/*.h")
 add_executable(game ${SRC})

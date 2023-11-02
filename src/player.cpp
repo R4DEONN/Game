@@ -10,7 +10,8 @@ Player::Player(const std::string& texturePath, sf::Vector2f position)
 	: Entity(texturePath, position)
 {
 	health = 3;
-	speed = 250.f;
+	speed = 150.f;
+	type = EntityType::PLAYER;
 }
 
 void Player::update(float elapsedTime, Field& field, std::vector<Entity*>& entities)
@@ -56,20 +57,20 @@ void Player::update(float elapsedTime, Field& field, std::vector<Entity*>& entit
 	//TODO Вынести move в Player
 	shape.move(movement);
 
-	if (secondsFromLastShot < 0.25f)
+	if (secondsFromLastShot < 1)
 	{
 		secondsFromLastShot += elapsedTime;
 		return;
 	}
 
-	secondsFromLastShot = 0;
-	const sf::Vector2f playerCenter = {
-		shape.getPosition().x + playerBounds.width / 2,
-		shape.getPosition().y + playerBounds.height / 2,
-	};
 	if (attackDirection != Direction::NONE)
 	{
-		Bullet* bullet = new Bullet{
+		secondsFromLastShot = 0;
+		const sf::Vector2f playerCenter = {
+			shape.getPosition().x + playerBounds.width / 2,
+			shape.getPosition().y + playerBounds.height / 2,
+		};
+		auto bullet = new Bullet{
 			"../res/player.png",
 			playerCenter,
 			attackDirection

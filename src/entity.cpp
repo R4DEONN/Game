@@ -17,6 +17,7 @@ Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 	});
 	shape.setPosition(position);
 	shape.setTexture(&texture);
+	shape.setTextureRect(sf::IntRect(0, 0, GameConstants::BLOCK_SIZE, GameConstants::BLOCK_SIZE));
 	shape.setOrigin(
 		GameConstants::BLOCK_SIZE / 2,
 		GameConstants::BLOCK_SIZE / 2
@@ -41,12 +42,23 @@ sf::RectangleShape Entity::getShape()
 	return shape;
 }
 
-void Entity::setIsAlive(bool isAlive)
+EntityType Entity::getType()
 {
-	isAlive = isAlive;
+	return type;
+}
+
+void Entity::setIsAlive(bool IsAlive)
+{
+	isAlive = IsAlive;
 }
 
 void Entity::update(float elapsedTime, Field& field, std::vector<Entity*>& vector)
+{}
+
+void Entity::handleKeyRelease(const sf::Event::KeyEvent& event)
+{}
+
+void Entity::handleKeyPress(const sf::Event::KeyEvent& event)
 {}
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const

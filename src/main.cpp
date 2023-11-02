@@ -3,6 +3,8 @@
 #include "bullet.h"
 #include "Enemy.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <iostream>
 
 constexpr unsigned ANTIALIASING_LEVEL = 8;
 constexpr unsigned MAX_FPS = 60;
@@ -17,7 +19,7 @@ void createWindow(sf::RenderWindow& window)
 	window.setFramerateLimit(MAX_FPS);
 }
 
-void handleEvents(sf::RenderWindow& window, Player& player, std::vector<Entity*>& entities)
+void handleEvents(sf::RenderWindow& window, Entity* player)
 {
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -28,20 +30,21 @@ void handleEvents(sf::RenderWindow& window, Player& player, std::vector<Entity*>
 		}
 		else if (event.type == sf::Event::KeyPressed)
 		{
-			player.handleKeyPress(event.key);
+			player->handleKeyPress(event.key);
 		}
 		else if (event.type == sf::Event::KeyReleased)
 		{
-			player.handleKeyRelease(event.key);
+			player->handleKeyRelease(event.key);
 		}
 	}
 }
 
-void update(sf::Clock& clock, Player& player, Field& field, std::vector<Entity*>& entities)
+void update(sf::Clock& clock, Field& field, std::vector<Entity*>& entities)
 {
 	const float elapsedSeconds = clock.getElapsedTime().asSeconds();
 	clock.restart();
-	player.update(elapsedSeconds, field, entities);
+	field.update(elapsedSeconds);
+	entities[0]->update(elapsedSeconds, field, entities);
 	std::vector<int> indexesToDelete;
 	for (int i = 0; i < entities.size(); i++)
 	{
@@ -69,7 +72,7 @@ void update(sf::Clock& clock, Player& player, Field& field, std::vector<Entity*>
 	}
 }
 
-void render(sf::RenderWindow& window, Player& player, Field& field, std::vector<Entity*>& entities)
+void render(sf::RenderWindow& window, Field& field, std::vector<Entity*>& entities)
 {
 	window.clear();
 	//TODO Убрать отрисовку через поле
@@ -79,7 +82,6 @@ void render(sf::RenderWindow& window, Player& player, Field& field, std::vector<
 	{
 		window.draw(*entity);
 	}
-	window.draw(player);
 	window.display();
 }
 
@@ -88,23 +90,28 @@ int main(int, char* [])
 	sf::RenderWindow window;
 	createWindow(window);
 
-	Field field;
-	Player player("../res/player.png", Field::getPlayerStartPosition());
+	sf::Music music;
+	music.openFromFile("../res/Overworld.wav");
+	music.play();
 
+	Field field;
 	std::vector<Entity*> entities;
 
+	auto player = new Player("../res/player.png", Field::getPlayerStartPosition());
+	entities.push_back(player);
+
 	auto enemy = new Enemy(
-		"../res/player.png",
-		Field::getPlayerStartPosition()
+		"../res/orc.png",
+		{Field::getPlayerStartPosition().x - 100, Field::getPlayerStartPosition().y - 100}
 		);
 	entities.push_back(enemy);
 
 	sf::Clock clock;
 	while (window.isOpen())
 	{
-		handleEvents(window, player, entities);
-		update(clock, player, field, entities);
-		render(window, player, field, entities);
+		handleEvents(window, entities[0]);
+		update(clock, field, entities);
+		render(window, field, entities);
 	}
 
 	return 0;

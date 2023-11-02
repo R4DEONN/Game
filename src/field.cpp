@@ -54,7 +54,7 @@ Field::Field()
 				y * BLOCK_SIZE + CENTER_OFFSET_Y
 			};
 			const sf::Vector2f size = { BLOCK_SIZE, BLOCK_SIZE };
-			Cell cell(
+			auto cell = new Cell(
 				category,
 				position,
 				size,
@@ -90,13 +90,13 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, con
 	sf::FloatRect newBounds = moveRect(oldBounds, newMovement);
 	for (size_t i = 0, n = this->width * this->height; i < n; i++)
 	{
-		const Cell& cell = this->cells[i];
+		Cell& cell = *this->cells[i];
 		if (cell.getCategory() == CellCategory::PRAIRIE)
 		{
 			continue;
 		}
 
-		sf::FloatRect cellBound = cell.getBounds().getGlobalBounds();
+		sf::FloatRect cellBound = cell.getBounds()->getGlobalBounds();
 		if (newBounds.intersects(cellBound))
 		{
 			//TODO Вынести в булевы переменные
@@ -177,10 +177,30 @@ sf::Vector2f Field::checkFieldGameCollision(const sf::FloatRect& oldBounds, cons
 	return newMovement;
 }
 
+void Field::update(float elapsedTime)
+{
+	moveTimer += elapsedTime;
+	for (Cell* cell : this->cells)
+	{
+		if (cell->getCategory() == CellCategory::WALL)
+		{
+			const char maxImages = 2;
+			const float frameDuration = 1;
+			const char frameSize = GameConstants::BLOCK_SIZE;
+			const int curPixel = (int(moveTimer / frameDuration) % maxImages) * frameSize;
+			cell->getBounds()->setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
+			if (moveTimer > 2 * frameDuration)
+			{
+				moveTimer = 0;
+			}
+		}
+	}
+}
+
 void Field::draw(sf::RenderWindow& window)
 {
 	for (size_t i = 0; i < this->width * this->height; i++)
 	{
-		window.draw(this->cells[i]);
+		window.draw(*this->cells[i]);
 	}
 }

@@ -5,6 +5,13 @@
 #include "cstring"
 #include "field.h"
 
+enum class EntityType
+{
+	PLAYER,
+	ENEMY,
+	BULLET
+};
+
 class Entity : public sf::Drawable
 {
  public:
@@ -15,12 +22,17 @@ class Entity : public sf::Drawable
 	virtual void update(float elapsedTime, Field& field, std::vector<Entity*>& vector);
 	bool getIsAlive();
 	float getSpeed();
-	void setIsAlive(bool isAlive);
+	void setIsAlive(bool IsAlive);
 	sf::RectangleShape getShape();
+	EntityType getType();
+	virtual void handleKeyPress(const sf::Event::KeyEvent& event);
+	virtual void handleKeyRelease(const sf::Event::KeyEvent& event);
  private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	sf::Texture texture;
  protected:
+	float moveTimer = 0;
+	EntityType type;
 	sf::RectangleShape shape;
 	bool isAlive;
 	int health;

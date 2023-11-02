@@ -12,13 +12,14 @@ enum struct CellCategory
 class Cell : public sf::Drawable
 {
  public:
-	Cell(CellCategory category, sf::Vector2f position, sf::Vector2f size, sf::Color color);
-	CellCategory getCategory() const;
-	sf::RectangleShape getBounds() const;
+	Cell(CellCategory Category, sf::Vector2f position, sf::Vector2f size, sf::Color color);
+	CellCategory getCategory();
+	sf::RectangleShape* getBounds();
  private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	CellCategory category;
 	sf::RectangleShape bounds;
+	sf::Texture texture;
 };
 
 #endif //_CELL_H_
