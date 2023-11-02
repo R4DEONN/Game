@@ -31,7 +31,22 @@ bool Entity::getIsAlive()
 	return isAlive;
 }
 
-void Entity::update(float elapsedTime, Field& field)
+float Entity::getSpeed()
+{
+	return speed;
+}
+
+sf::RectangleShape Entity::getShape()
+{
+	return shape;
+}
+
+void Entity::setIsAlive(bool isAlive)
+{
+	isAlive = isAlive;
+}
+
+void Entity::update(float elapsedTime, Field& field, std::vector<Entity*>& vector)
 {}
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const

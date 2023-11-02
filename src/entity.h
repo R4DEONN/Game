@@ -12,8 +12,11 @@ class Entity : public sf::Drawable
 		const std::string& texturePath,
 		sf::Vector2f position
 		);
-	virtual void update(float elapsedTime, Field& field);
+	virtual void update(float elapsedTime, Field& field, std::vector<Entity*>& vector);
 	bool getIsAlive();
+	float getSpeed();
+	void setIsAlive(bool isAlive);
+	sf::RectangleShape getShape();
  private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	sf::Texture texture;

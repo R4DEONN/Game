@@ -56,6 +56,13 @@ void Player::update(float elapsedTime, Field& field, std::vector<Entity*>& entit
 	//TODO Вынести move в Player
 	shape.move(movement);
 
+	if (secondsFromLastShot < 0.25f)
+	{
+		secondsFromLastShot += elapsedTime;
+		return;
+	}
+
+	secondsFromLastShot = 0;
 	const sf::Vector2f playerCenter = {
 		shape.getPosition().x + playerBounds.width / 2,
 		shape.getPosition().y + playerBounds.height / 2,
@@ -68,29 +75,6 @@ void Player::update(float elapsedTime, Field& field, std::vector<Entity*>& entit
 			attackDirection
 		};
 		entities.push_back(bullet);
-	}
-
-	//TODO implement
-	switch (attackDirection)
-	{
-	case Direction::UP:
-		break;
-	case Direction::UP_LEFT:
-		break;
-	case Direction::UP_RIGHT:
-		break;
-	case Direction::DOWN:
-		break;
-	case Direction::DOWN_LEFT:
-		break;
-	case Direction::DOWN_RIGHT:
-		break;
-	case Direction::LEFT:
-		break;
-	case Direction::RIGHT:
-		break;
-	case Direction::NONE:
-		break;
 	}
 }
 

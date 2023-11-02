@@ -1,6 +1,7 @@
 #include "player.h"
 #include "field.h"
 #include "bullet.h"
+#include "Enemy.h"
 #include <SFML/Graphics.hpp>
 
 constexpr unsigned ANTIALIASING_LEVEL = 8;
@@ -46,7 +47,7 @@ void update(sf::Clock& clock, Player& player, Field& field, std::vector<Entity*>
 	{
 		if (entities[i]->getIsAlive())
 		{
-			entities[i]->update(elapsedSeconds, field);
+			entities[i]->update(elapsedSeconds, field, entities);
 		}
 		else
 		{
@@ -91,6 +92,12 @@ int main(int, char* [])
 	Player player("../res/player.png", Field::getPlayerStartPosition());
 
 	std::vector<Entity*> entities;
+
+	auto enemy = new Enemy(
+		"../res/player.png",
+		Field::getPlayerStartPosition()
+		);
+	entities.push_back(enemy);
 
 	sf::Clock clock;
 	while (window.isOpen())
