@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "cstring"
 #include "field.h"
+#include "memory"
 
 enum class EntityType
 {
@@ -19,14 +20,12 @@ class Entity : public sf::Drawable
 		const std::string& texturePath,
 		sf::Vector2f position
 		);
-	virtual void update(float elapsedTime, Field& field, std::vector<Entity*>& vector);
+	virtual void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities);
 	bool getIsAlive();
 	float getSpeed();
 	void setIsAlive(bool IsAlive);
 	sf::RectangleShape getShape();
 	EntityType getType();
-	virtual void handleKeyPress(const sf::Event::KeyEvent& event);
-	virtual void handleKeyRelease(const sf::Event::KeyEvent& event);
  private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	sf::Texture texture;

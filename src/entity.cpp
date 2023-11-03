@@ -52,13 +52,7 @@ void Entity::setIsAlive(bool IsAlive)
 	isAlive = IsAlive;
 }
 
-void Entity::update(float elapsedTime, Field& field, std::vector<Entity*>& vector)
-{}
-
-void Entity::handleKeyRelease(const sf::Event::KeyEvent& event)
-{}
-
-void Entity::handleKeyPress(const sf::Event::KeyEvent& event)
+void Entity::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities)
 {}
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const

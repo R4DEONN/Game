@@ -10,7 +10,7 @@ class Bullet : public Entity
 {
  public:
 	Bullet(const std::string& texturePath, sf::Vector2f position, Direction direction);
-	void update(float elapsedTime, Field& field, std::vector<Entity*>& vector) override;
+	void update(float elapsedTime, Field& field);
  private:
 	sf::Vector2f step;
 };

@@ -10,13 +10,20 @@ class Player : public Entity
 {
  public:
 	Player(const std::string& texturePath, sf::Vector2f position);
-	void update(float elapsedTime, Field& field, std::vector<Entity*>& entities) override;
-	void handleKeyPress(const sf::Event::KeyEvent& event) override;
-	void handleKeyRelease(const sf::Event::KeyEvent& event) override;
+	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities) override;
+	void updateDirection(
+		Direction& direction,
+		sf::Keyboard::Key UpKey,
+		sf::Keyboard::Key LeftKey,
+		sf::Keyboard::Key DownKey,
+		sf::Keyboard::Key RightKey
+	);
  private:
 	float secondsFromLastShot = 1;
 	Direction moveDirection = Direction::NONE;
 	Direction attackDirection = Direction::NONE;
+
+	sf::Vector2f getMovement(const float elapsedTime, Field& field);
 };
 
 #endif //_PLAYER_H_

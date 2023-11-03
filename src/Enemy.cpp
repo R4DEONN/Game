@@ -1,5 +1,6 @@
 #include <cmath>
 #include <iostream>
+#include <functional>
 #include "Enemy.h"
 #include "gameConstants.h"
 
@@ -12,7 +13,7 @@ Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 	speed = 200.f;
 }
 
-void Enemy::update(float elapsedTime, Field& field, std::vector<Entity*>& entities)
+void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities)
 {
 	moveTimer += elapsedTime;
 	const char maxImages = 2;
@@ -64,7 +65,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<Entity*>& entiti
 	movement = field.checkFieldWallsCollision(enemyBounds, movement);
 	//TODO Вынести move в Player
 	shape.move(movement);
-	for (Entity* entity : entities)
+	for (std::shared_ptr<Entity> entity : entities)
 	{
 		if (entity->getType() == EntityType::BULLET)
 		{

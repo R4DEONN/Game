@@ -14,7 +14,7 @@ class Cell : public sf::Drawable
  public:
 	Cell(CellCategory Category, sf::Vector2f position, sf::Vector2f size, sf::Color color);
 	CellCategory getCategory();
-	sf::RectangleShape* getBounds();
+	sf::RectangleShape& getBounds();
  private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	CellCategory category;

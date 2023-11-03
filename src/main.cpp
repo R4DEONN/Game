@@ -1,7 +1,7 @@
 #include "player.h"
 #include "field.h"
-#include "bullet.h"
 #include "Enemy.h"
+#include "gameScene.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
@@ -19,7 +19,7 @@ void createWindow(sf::RenderWindow& window)
 	window.setFramerateLimit(MAX_FPS);
 }
 
-void handleEvents(sf::RenderWindow& window, Entity* player)
+void handleEvents(sf::RenderWindow& window)
 {
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -28,23 +28,17 @@ void handleEvents(sf::RenderWindow& window, Entity* player)
 		{
 			window.close();
 		}
-		else if (event.type == sf::Event::KeyPressed)
-		{
-			player->handleKeyPress(event.key);
-		}
-		else if (event.type == sf::Event::KeyReleased)
-		{
-			player->handleKeyRelease(event.key);
-		}
 	}
 }
 
-void update(sf::Clock& clock, Field& field, std::vector<Entity*>& entities)
+void update(sf::Clock& clock, GameScene& scene)
 {
 	const float elapsedSeconds = clock.getElapsedTime().asSeconds();
 	clock.restart();
+	auto field = scene.getField();
+	auto entities = scene.getEntities();
 	field.update(elapsedSeconds);
-	entities[0]->update(elapsedSeconds, field, entities);
+	scene.getPlayer().update(elapsedSeconds, field, entities);
 	std::vector<int> indexesToDelete;
 	for (int i = 0; i < entities.size(); i++)
 	{
@@ -59,26 +53,26 @@ void update(sf::Clock& clock, Field& field, std::vector<Entity*>& entities)
 	}
 	for (int index : indexesToDelete)
 	{
-		Entity* entity = entities[index];
+		auto entity = entities[index];
 		entities.erase(entities.begin() + index);
-		for (int i = 0; i < indexesToDelete.size(); ++i)
+		for (int indexToDelete : indexesToDelete)
 		{
-			if (indexesToDelete[i] > index)
+			if (indexToDelete > index)
 			{
-				--indexesToDelete[i];
+				--indexToDelete;
 			}
 		}
-		delete entity;
+		entity.reset();
 	}
 }
 
-void render(sf::RenderWindow& window, Field& field, std::vector<Entity*>& entities)
+void render(sf::RenderWindow& window, GameScene& scene)
 {
 	window.clear();
 	//TODO Убрать отрисовку через поле
-	field.draw(window);
-	std::vector<int> indexesToDelete;
-	for (Entity* entity : entities)
+	scene.getField().draw(window);
+	auto entities = scene.getEntities();
+	for (auto entity : entities)
 	{
 		window.draw(*entity);
 	}
@@ -90,28 +84,30 @@ int main(int, char* [])
 	sf::RenderWindow window;
 	createWindow(window);
 
-	sf::Music music;
-	music.openFromFile("../res/Overworld.wav");
-	music.play();
+	GameScene scene;
 
-	Field field;
-	std::vector<Entity*> entities;
-
-	auto player = new Player("../res/player.png", Field::getPlayerStartPosition());
-	entities.push_back(player);
-
-	auto enemy = new Enemy(
-		"../res/orc.png",
-		{Field::getPlayerStartPosition().x - 100, Field::getPlayerStartPosition().y - 100}
-		);
-	entities.push_back(enemy);
+//	sf::Music music;
+//	music.openFromFile("../res/Overworld.wav");
+//	music.play();
+//
+//	Field field;
+//	std::vector<Entity*> entities;
+//
+//	auto player = new Player("../res/player.png", Field::getPlayerStartPosition());
+//	entities.push_back(player);
+//
+//	auto enemy = new Enemy(
+//		"../res/orc.png",
+//		{Field::getPlayerStartPosition().x - 100, Field::getPlayerStartPosition().y - 100}
+//		);
+//	entities.push_back(enemy);
 
 	sf::Clock clock;
 	while (window.isOpen())
 	{
-		handleEvents(window, entities[0]);
-		update(clock, field, entities);
-		render(window, field, entities);
+		handleEvents(window);
+		update(clock, scene);
+		render(window, scene);
 	}
 
 	return 0;

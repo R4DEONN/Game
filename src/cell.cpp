@@ -29,7 +29,7 @@ CellCategory Cell::getCategory()
 	return this->category;
 }
 
-sf::RectangleShape* Cell::getBounds()
+sf::RectangleShape& Cell::getBounds()
 {
-	return &bounds;
+	return bounds;
 }

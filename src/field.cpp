@@ -96,7 +96,7 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, con
 			continue;
 		}
 
-		sf::FloatRect cellBound = cell.getBounds()->getGlobalBounds();
+		sf::FloatRect cellBound = cell.getBounds().getGlobalBounds();
 		if (newBounds.intersects(cellBound))
 		{
 			//TODO Вынести в булевы переменные
@@ -188,7 +188,7 @@ void Field::update(float elapsedTime)
 			const float frameDuration = 1;
 			const char frameSize = GameConstants::BLOCK_SIZE;
 			const int curPixel = (int(moveTimer / frameDuration) % maxImages) * frameSize;
-			cell->getBounds()->setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
+			cell->getBounds().setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
 			if (moveTimer > 2 * frameDuration)
 			{
 				moveTimer = 0;
