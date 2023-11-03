@@ -1,9 +1,5 @@
-#include "player.h"
-#include "field.h"
-#include "Enemy.h"
 #include "gameScene.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
 #include <iostream>
 
 constexpr unsigned ANTIALIASING_LEVEL = 8;
@@ -35,45 +31,14 @@ void update(sf::Clock& clock, GameScene& scene)
 {
 	const float elapsedSeconds = clock.getElapsedTime().asSeconds();
 	clock.restart();
-	scene.getField().update(elapsedSeconds);
-	scene.getPlayer().update(elapsedSeconds, scene.getField(), scene.getEntities());
-	std::vector<int> indexesToDelete;
-	for (int i = 0; i < scene.getEntities().size(); i++)
-	{
-		if (scene.getEntities()[i]->getIsAlive())
-		{
-			scene.getEntities()[i]->update(elapsedSeconds, scene.getField(), scene.getEntities());
-		}
-		else
-		{
-			indexesToDelete.push_back(i);
-		}
-	}
-	for (int index : indexesToDelete)
-	{
-		auto entity = scene.getEntities()[index];
-		scene.getEntities().erase(scene.getEntities().begin() + index);
-		for (int indexToDelete : indexesToDelete)
-		{
-			if (indexToDelete > index)
-			{
-				--indexToDelete;
-			}
-		}
-		entity.reset();
-	}
+	scene.update(elapsedSeconds);
 }
 
 void render(sf::RenderWindow& window, GameScene& scene)
 {
 	window.clear();
 	//TODO Убрать отрисовку через поле
-	scene.getField().draw(window);
-	auto entities = scene.getEntities();
-	for (auto entity : entities)
-	{
-		window.draw(*entity);
-	}
+	window.draw(scene);
 	window.display();
 }
 
@@ -83,22 +48,6 @@ int main(int, char* [])
 	createWindow(window);
 
 	GameScene scene;
-
-//	sf::Music music;
-//	music.openFromFile("../res/Overworld.wav");
-//	music.play();
-//
-//	Field field;
-//	std::vector<Entity*> entities;
-//
-//	auto player = new Player("../res/player.png", Field::getPlayerStartPosition());
-//	entities.push_back(player);
-//
-//	auto enemy = new Enemy(
-//		"../res/orc.png",
-//		{Field::getPlayerStartPosition().x - 100, Field::getPlayerStartPosition().y - 100}
-//		);
-//	entities.push_back(enemy);
 
 	sf::Clock clock;
 	while (window.isOpen())

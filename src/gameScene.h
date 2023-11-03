@@ -14,18 +14,22 @@ enum class GameState
 	LOSE
 };
 
-class GameScene
+ class GameScene : public sf::Drawable
 {
  public:
 	GameScene();
 	std::vector<std::shared_ptr<Entity>>& getEntities();
-	Entity& getPlayer();
+	std::shared_ptr<Entity> getPlayer();
 	Field& getField();
+
+	void update(float elapsedSeconds);
  private:
 	sf::Music music;
 	Field field;
 	std::vector<std::shared_ptr<Entity>> entities;
 	GameState gameState = GameState::PLAYING;
+
+	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 
 #endif //_GAMESCENE_H_

@@ -198,10 +198,10 @@ void Field::update(float elapsedTime)
 	}
 }
 
-void Field::draw(sf::RenderWindow& window)
+void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	for (size_t i = 0; i < width * height; i++)
 	{
-		window.draw(*cells[i]);
+		target.draw(*cells[i], states);
 	}
 }

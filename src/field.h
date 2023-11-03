@@ -5,7 +5,7 @@
 #include "cell.h"
 #include <memory>
 
-class Field
+ class Field : public sf::Drawable
 {
  public:
 	Field();
@@ -19,6 +19,8 @@ class Field
 	size_t width = 16;
 	size_t height = 16;
 	std::vector<std::shared_ptr<Cell>> cells;
+
+	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 
 #endif //_FIELD_H_
