@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 #include "field.h"
 #include "cell.h"
 #include "gameConstants.h"
@@ -32,11 +33,11 @@ static const sf::Color PRAIRIE_COLOR = sf::Color(50, 168, 82);
 
 Field::Field()
 {
-	for (size_t y = 0; y < this->height; y++)
+	for (size_t y = 0; y < height; y++)
 	{
-		for (size_t x = 0; x < this->width; x++)
+		for (size_t x = 0; x < width; x++)
 		{
-			const size_t offset = x + y * this->width;
+			const size_t offset = x + y * width;
 			CellCategory category;
 			sf::Color color;
 			if (FIELD_MAZE[offset] == 1)
@@ -54,13 +55,13 @@ Field::Field()
 				y * BLOCK_SIZE + CENTER_OFFSET_Y
 			};
 			const sf::Vector2f size = { BLOCK_SIZE, BLOCK_SIZE };
-			auto cell = new Cell(
+			std::shared_ptr<Cell> cell = std::make_shared<Cell>(
 				category,
 				position,
 				size,
 				color
 			);
-			this->cells.push_back(cell);
+			cells.push_back(cell);
 		}
 	}
 }
@@ -180,7 +181,7 @@ sf::Vector2f Field::checkFieldGameCollision(const sf::FloatRect& oldBounds, cons
 void Field::update(float elapsedTime)
 {
 	moveTimer += elapsedTime;
-	for (Cell* cell : this->cells)
+	for (auto cell : cells)
 	{
 		if (cell->getCategory() == CellCategory::WALL)
 		{
@@ -199,8 +200,8 @@ void Field::update(float elapsedTime)
 
 void Field::draw(sf::RenderWindow& window)
 {
-	for (size_t i = 0; i < this->width * this->height; i++)
+	for (size_t i = 0; i < width * height; i++)
 	{
-		window.draw(*this->cells[i]);
+		window.draw(*cells[i]);
 	}
 }

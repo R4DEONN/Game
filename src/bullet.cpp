@@ -43,7 +43,7 @@ Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction 
 	}
 }
 
-void Bullet::update(float elapsedTime, Field& field)
+void Bullet::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities)
 {
 	sf::Vector2f movement = step * elapsedTime;
 

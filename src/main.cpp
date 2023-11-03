@@ -15,7 +15,7 @@ void createWindow(sf::RenderWindow& window)
 	settings.antialiasingLevel = ANTIALIASING_LEVEL;
 	window.create(
 		sf::VideoMode::getDesktopMode(),
-		"Journey of the Prairie King", sf::Style::Default, settings);
+		"Journey of the Prairie King", sf::Style::Close, settings);
 	window.setFramerateLimit(MAX_FPS);
 }
 
@@ -35,16 +35,14 @@ void update(sf::Clock& clock, GameScene& scene)
 {
 	const float elapsedSeconds = clock.getElapsedTime().asSeconds();
 	clock.restart();
-	auto field = scene.getField();
-	auto entities = scene.getEntities();
-	field.update(elapsedSeconds);
-	scene.getPlayer().update(elapsedSeconds, field, entities);
+	scene.getField().update(elapsedSeconds);
+	scene.getPlayer().update(elapsedSeconds, scene.getField(), scene.getEntities());
 	std::vector<int> indexesToDelete;
-	for (int i = 0; i < entities.size(); i++)
+	for (int i = 0; i < scene.getEntities().size(); i++)
 	{
-		if (entities[i]->getIsAlive())
+		if (scene.getEntities()[i]->getIsAlive())
 		{
-			entities[i]->update(elapsedSeconds, field, entities);
+			scene.getEntities()[i]->update(elapsedSeconds, scene.getField(), scene.getEntities());
 		}
 		else
 		{
@@ -53,8 +51,8 @@ void update(sf::Clock& clock, GameScene& scene)
 	}
 	for (int index : indexesToDelete)
 	{
-		auto entity = entities[index];
-		entities.erase(entities.begin() + index);
+		auto entity = scene.getEntities()[index];
+		scene.getEntities().erase(scene.getEntities().begin() + index);
 		for (int indexToDelete : indexesToDelete)
 		{
 			if (indexToDelete > index)

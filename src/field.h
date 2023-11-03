@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "cell.h"
+#include <memory>
 
 class Field
 {
@@ -17,7 +18,7 @@ class Field
 	sf::Vector2f checkFieldGameCollision(const sf::FloatRect &oldBounds, const sf::Vector2f &movement);
 	size_t width = 16;
 	size_t height = 16;
-	std::vector<Cell*> cells;
+	std::vector<std::shared_ptr<Cell>> cells;
 };
 
 #endif //_FIELD_H_
