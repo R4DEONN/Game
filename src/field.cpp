@@ -10,7 +10,7 @@ const float CENTER_OFFSET_Y = GameConstants::CENTER_OFFSET_Y;
 
 //TODO Сделать проходы по 3 ячейки
 static const char FIELD_MAZE[] = {
-	1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -19,13 +19,13 @@ static const char FIELD_MAZE[] = {
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
 };
 
 static const sf::Color WALL_COLOR = sf::Color(163, 58, 3);
@@ -82,16 +82,16 @@ sf::Vector2f Field::getPlayerStartPosition()
 
 sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, const sf::Vector2f& movement)
 {
-	sf::Vector2f newMovement = this->checkFieldGameCollision(oldBounds, movement);
+	sf::Vector2f newMovement = checkFieldGameCollision(oldBounds, movement);
 	if (newMovement == sf::Vector2f{ 0, 0 })
 	{
 		return newMovement;
 	}
 
 	sf::FloatRect newBounds = moveRect(oldBounds, newMovement);
-	for (size_t i = 0, n = this->width * this->height; i < n; i++)
+	for (size_t i = 0, n = width * height; i < n; i++)
 	{
-		Cell& cell = *this->cells[i];
+		Cell& cell = *cells[i];
 		if (cell.getCategory() == CellCategory::PRAIRIE)
 		{
 			continue;
@@ -102,9 +102,9 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, con
 		{
 			//TODO Вынести в булевы переменные
 			if ((cellBound.top == CENTER_OFFSET_Y
-				 || (cellBound.top + cellBound.height == (this->height / 2 - 1) * BLOCK_SIZE + CENTER_OFFSET_Y
+				 || (cellBound.top + cellBound.height == (height / 2 - 1) * BLOCK_SIZE + CENTER_OFFSET_Y
 					 && (oldBounds.left<BLOCK_SIZE + CENTER_OFFSET_X
-										|| oldBounds.left + oldBounds.width>(this->width - 1) * BLOCK_SIZE
+										|| oldBounds.left + oldBounds.width>(width - 1) * BLOCK_SIZE
 						 + CENTER_OFFSET_X)))
 				&& oldBounds.top >= BLOCK_SIZE + CENTER_OFFSET_Y
 				&& newMovement.y < 0)
@@ -112,32 +112,32 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, con
 				newMovement.y = cellBound.top + cellBound.height - oldBounds.top;
 			}
 
-			if ((cellBound.top + cellBound.height == this->height * BLOCK_SIZE + CENTER_OFFSET_Y
-				 || (cellBound.top == (this->height / 2 + 1) * BLOCK_SIZE + CENTER_OFFSET_Y
+			if ((cellBound.top + cellBound.height == height * BLOCK_SIZE + CENTER_OFFSET_Y
+				 || (cellBound.top == (height / 2 + 2) * BLOCK_SIZE + CENTER_OFFSET_Y
 					 && (oldBounds.left<BLOCK_SIZE + CENTER_OFFSET_X
-										|| oldBounds.left + oldBounds.width>(this->width - 1) * BLOCK_SIZE
+										|| oldBounds.left + oldBounds.width>(width - 1) * BLOCK_SIZE
 						 + CENTER_OFFSET_X)))
-				&& oldBounds.top + oldBounds.height <= (this->height - 1) * BLOCK_SIZE + CENTER_OFFSET_Y
+				&& oldBounds.top + oldBounds.height <= (height - 1) * BLOCK_SIZE + CENTER_OFFSET_Y
 				&& newMovement.y > 0)
 			{
 				newMovement.y = cellBound.top - oldBounds.height - oldBounds.top;
 			}
 
 			if ((cellBound.left == CENTER_OFFSET_X
-				 || (cellBound.left + cellBound.width == (this->width / 2 - 1) * BLOCK_SIZE + CENTER_OFFSET_X
+				 || (cellBound.left + cellBound.width == (width / 2 - 1) * BLOCK_SIZE + CENTER_OFFSET_X
 					 && (oldBounds.top<BLOCK_SIZE + CENTER_OFFSET_Y
-									   || oldBounds.top + oldBounds.height>(this->height - 1) * BLOCK_SIZE  + CENTER_OFFSET_Y)))
+									   || oldBounds.top + oldBounds.height>(height - 1) * BLOCK_SIZE  + CENTER_OFFSET_Y)))
 				&& oldBounds.left >= BLOCK_SIZE + CENTER_OFFSET_X
 				&& newMovement.x < 0)
 			{
 				newMovement.x = cellBound.left + cellBound.width - oldBounds.left;
 			}
 
-			if ((cellBound.left + cellBound.width == this->width * BLOCK_SIZE + CENTER_OFFSET_X
-				 || (cellBound.left == (this->width / 2 + 1) * BLOCK_SIZE + CENTER_OFFSET_X
+			if ((cellBound.left + cellBound.width == width * BLOCK_SIZE + CENTER_OFFSET_X
+				 || (cellBound.left == (width / 2 + 2) * BLOCK_SIZE + CENTER_OFFSET_X
 					 && (oldBounds.top<BLOCK_SIZE + CENTER_OFFSET_Y
-									   || oldBounds.top + oldBounds.height>(this->height - 1) * BLOCK_SIZE + CENTER_OFFSET_Y)))
-				&& oldBounds.left + oldBounds.width <= (this->width - 1) * BLOCK_SIZE + CENTER_OFFSET_X
+									   || oldBounds.top + oldBounds.height>(height - 1) * BLOCK_SIZE + CENTER_OFFSET_Y)))
+				&& oldBounds.left + oldBounds.width <= (width - 1) * BLOCK_SIZE + CENTER_OFFSET_X
 				&& newMovement.x > 0)
 			{
 				newMovement.x = cellBound.left - oldBounds.width - oldBounds.left;
@@ -159,20 +159,20 @@ sf::Vector2f Field::checkFieldGameCollision(const sf::FloatRect& oldBounds, cons
 	{
 		newMovement.y = 0 - oldBounds.top + CENTER_OFFSET_Y;
 	}
-	if (newBounds.top + newBounds.height > this->height * BLOCK_SIZE + CENTER_OFFSET_Y
+	if (newBounds.top + newBounds.height > height * BLOCK_SIZE + CENTER_OFFSET_Y
 		&& movement.y > 0)
 	{
-		newMovement.y = this->height * BLOCK_SIZE - (oldBounds.top + oldBounds.height) + CENTER_OFFSET_Y;
+		newMovement.y = height * BLOCK_SIZE - (oldBounds.top + oldBounds.height) + CENTER_OFFSET_Y;
 	}
 	if (newBounds.left < CENTER_OFFSET_X
 		&& movement.x < 0)
 	{
 		newMovement.x = 0 - oldBounds.left + CENTER_OFFSET_X;
 	}
-	if (newBounds.left + newBounds.width > this->width * BLOCK_SIZE + CENTER_OFFSET_X
+	if (newBounds.left + newBounds.width > width * BLOCK_SIZE + CENTER_OFFSET_X
 		&& movement.x > 0)
 	{
-		newMovement.x = this->width * BLOCK_SIZE + CENTER_OFFSET_X - (oldBounds.left + oldBounds.width);
+		newMovement.x = width * BLOCK_SIZE + CENTER_OFFSET_X - (oldBounds.left + oldBounds.width);
 	}
 
 	return newMovement;

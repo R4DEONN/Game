@@ -21,12 +21,12 @@ Cell::Cell(CellCategory Category, sf::Vector2f position, sf::Vector2f size, sf::
 
 void Cell::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(this->bounds, states);
+	target.draw(bounds, states);
 }
 
 CellCategory Cell::getCategory()
 {
-	return this->category;
+	return category;
 }
 
 sf::RectangleShape& Cell::getBounds()
