@@ -10,7 +10,7 @@ class Enemy : public Entity
 	Enemy(const std::string& texturePath, sf::Vector2f position);
 	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities) override;
  private:
-	Direction direction;
+	void updateDirection(sf::Vector2f playerPosition);
 };
 
 #endif //_ENEMY_H_

@@ -20,10 +20,7 @@ class Player : public Entity
 	);
  private:
 	float secondsFromLastShot = 1;
-	Direction moveDirection = Direction::NONE;
 	Direction attackDirection = Direction::NONE;
-
-	sf::Vector2f getMovement(const float elapsedTime, Field& field);
 };
 
 #endif //_PLAYER_H_

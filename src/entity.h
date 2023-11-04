@@ -5,6 +5,7 @@
 #include "cstring"
 #include "field.h"
 #include "memory"
+#include "direction.h"
 
 enum class EntityType
 {
@@ -23,6 +24,7 @@ class Entity : public sf::Drawable
 	virtual void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities);
 	bool getIsAlive();
 	float getSpeed();
+	sf::Vector2f getPosition();
 	void setIsAlive(bool IsAlive);
 	sf::RectangleShape getShape();
 	EntityType getType();
@@ -36,6 +38,9 @@ class Entity : public sf::Drawable
 	bool isAlive;
 	int health;
 	float speed = 0;
+	Direction moveDirection = Direction::NONE;
+
+	sf::Vector2f getMovement(const float elapsedTime, Field& field);
 };
 
 #endif //_ENTITY_H_

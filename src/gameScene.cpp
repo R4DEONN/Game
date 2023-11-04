@@ -17,6 +17,7 @@ GameScene::GameScene()
 
 	music.openFromFile("../res/Overworld.wav");
 	music.play();
+	music.setLoop(true);
 }
 
 std::vector<std::shared_ptr<Entity>>& GameScene::getEntities()
