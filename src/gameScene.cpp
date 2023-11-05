@@ -48,18 +48,9 @@ void GameScene::update(float elapsedSeconds)
 			indexesToDelete.push_back(i);
 		}
 	}
-	for (int index : indexesToDelete)
+	for (int i = indexesToDelete.size() - 1; i >= 0; --i)
 	{
-		auto entity = entities[index];
-		entities.erase(entities.begin() + index);
-		for (int indexToDelete : indexesToDelete)
-		{
-			if (indexToDelete > index)
-			{
-				--indexToDelete;
-			}
-		}
-		entity.reset();
+		entities.erase(entities.begin() + indexesToDelete[i]);
 	}
 }
 

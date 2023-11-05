@@ -51,7 +51,7 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 			shape.getPosition().y + playerBounds.height / 2,
 		};
 		std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(
-			"../res/player.png",
+			"../res/Bullet.png",
 			playerCenter,
 			attackDirection
 			);
