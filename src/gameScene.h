@@ -3,6 +3,7 @@
 
 #include "field.h"
 #include "entity.h"
+#include "Spawner.h"
 #include <vector>
 #include <SFML/Audio.hpp>
 
@@ -28,6 +29,7 @@ enum class GameState
 	Field field;
 	std::vector<std::shared_ptr<Entity>> entities;
 	GameState gameState = GameState::PLAYING;
+	Spawner spawner = *new Spawner(entities);
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };

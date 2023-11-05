@@ -5,17 +5,13 @@
 
 GameScene::GameScene()
 {
+	music.openFromFile("../res/Overworld.wav");
+
 	std::shared_ptr<Field> newField = std::make_shared<Field>();
 	field = *newField;
 	std::shared_ptr<Player> player = std::make_shared<Player>("../res/player.png", Field::getPlayerStartPosition());
 	entities.push_back(player);
-	std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(
-		"../res/orc.png",
-		sf::Vector2f(Field::getPlayerStartPosition().x - 100, Field::getPlayerStartPosition().y - 100)
-	);
-	entities.push_back(enemy);
 
-	music.openFromFile("../res/Overworld.wav");
 	music.play();
 	music.setLoop(true);
 }
@@ -37,6 +33,7 @@ Field& GameScene::getField()
 
 void GameScene::update(float elapsedSeconds)
 {
+	spawner.Spawn(elapsedSeconds);
 	field.update(elapsedSeconds);
 	getPlayer()->update(elapsedSeconds, field, entities);
 	std::vector<int> indexesToDelete;

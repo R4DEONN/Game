@@ -55,8 +55,7 @@ void Entity::setIsAlive(bool IsAlive)
 }
 
 void Entity::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities)
-{
-}
+{}
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

@@ -181,7 +181,7 @@ sf::Vector2f Field::checkFieldGameCollision(const sf::FloatRect& oldBounds, cons
 void Field::update(float elapsedTime)
 {
 	moveTimer += elapsedTime;
-	for (auto cell : cells)
+	for (const auto& cell : cells)
 	{
 		if (cell->getCategory() == CellCategory::WALL)
 		{
@@ -204,4 +204,12 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*cells[i], states);
 	}
+}
+
+sf::Vector2f Field::getFieldPoint(const int x, const int y)
+{
+	return {
+		x * BLOCK_SIZE + CENTER_OFFSET_X + BLOCK_SIZE / 2,
+		y * BLOCK_SIZE + CENTER_OFFSET_Y + BLOCK_SIZE / 2
+	};
 }

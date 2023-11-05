@@ -9,7 +9,7 @@ Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 {
 	health = 1;
 	type = EntityType::ENEMY;
-	speed = 200.f;
+	speed = 120.f;
 }
 
 void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities)
