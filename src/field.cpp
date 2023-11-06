@@ -3,6 +3,7 @@
 #include "field.h"
 #include "cell.h"
 #include "gameConstants.h"
+#include "utils.h"
 
 const float BLOCK_SIZE = GameConstants::BLOCK_SIZE;
 const float CENTER_OFFSET_X = GameConstants::CENTER_OFFSET_X;
@@ -64,20 +65,6 @@ Field::Field()
 			cells.push_back(cell);
 		}
 	}
-}
-
-static sf::FloatRect moveRect(const sf::FloatRect& rect, const sf::Vector2f& offset)
-{
-	return { rect.left + offset.x, rect.top + offset.y, rect.width, rect.height };
-}
-
-sf::Vector2f Field::getPlayerStartPosition()
-{
-	sf::Vector2f position(
-		sf::VideoMode::getDesktopMode().width / 2,
-		sf::VideoMode::getDesktopMode().height / 2
-	);
-	return position;
 }
 
 sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, const sf::Vector2f& movement)
@@ -204,12 +191,4 @@ void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*cells[i], states);
 	}
-}
-
-sf::Vector2f Field::getFieldPoint(const int x, const int y)
-{
-	return {
-		x * BLOCK_SIZE + CENTER_OFFSET_X + BLOCK_SIZE / 2,
-		y * BLOCK_SIZE + CENTER_OFFSET_Y + BLOCK_SIZE / 2
-	};
 }

@@ -2,6 +2,7 @@
 #include "field.h"
 #include "player.h"
 #include "Enemy.h"
+#include "utils.h"
 
 GameScene::GameScene()
 {
@@ -9,7 +10,7 @@ GameScene::GameScene()
 
 	std::shared_ptr<Field> newField = std::make_shared<Field>();
 	field = *newField;
-	std::shared_ptr<Player> player = std::make_shared<Player>("../res/player.png", Field::getPlayerStartPosition());
+	std::shared_ptr<Player> player = std::make_shared<Player>("../res/player.png", getPlayerStartPosition());
 	entities.push_back(player);
 
 	music.play();
@@ -35,7 +36,6 @@ void GameScene::update(float elapsedSeconds)
 {
 	spawner.Spawn(elapsedSeconds);
 	field.update(elapsedSeconds);
-	getPlayer()->update(elapsedSeconds, field, entities);
 	std::vector<int> indexesToDelete;
 	for (int i = 0; i < entities.size(); i++)
 	{

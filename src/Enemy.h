@@ -11,6 +11,7 @@ class Enemy : public Entity
 	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities) override;
  private:
 	void updateDirection(sf::Vector2f playerPosition);
+	void handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shared_ptr<Entity>>& entities);
 };
 
 #endif //_ENEMY_H_

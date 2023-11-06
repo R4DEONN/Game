@@ -1,20 +1,21 @@
 #include "Spawner.h"
 #include "field.h"
 #include "Enemy.h"
+#include "utils.h"
 
 const sf::Vector2f SPAWN_POINTS[] = {
-	Field::getFieldPoint(7, 0),
-	Field::getFieldPoint(8, 0),
-	Field::getFieldPoint(9, 0),
-	Field::getFieldPoint(15, 7),
-	Field::getFieldPoint(15, 8),
-	Field::getFieldPoint(15, 9),
-	Field::getFieldPoint(7, 15),
-	Field::getFieldPoint(8, 15),
-	Field::getFieldPoint(9, 15),
-	Field::getFieldPoint(0, 7),
-	Field::getFieldPoint(0, 8),
-	Field::getFieldPoint(0, 9),
+	getFieldPoint(7, 0),
+	getFieldPoint(8, 0),
+	getFieldPoint(9, 0),
+	getFieldPoint(15, 7),
+	getFieldPoint(15, 8),
+	getFieldPoint(15, 9),
+	getFieldPoint(7, 15),
+	getFieldPoint(8, 15),
+	getFieldPoint(9, 15),
+	getFieldPoint(0, 7),
+	getFieldPoint(0, 8),
+	getFieldPoint(0, 9),
 };
 
 Spawner::Spawner(std::vector<std::shared_ptr<Entity>>& Entities)
@@ -30,7 +31,7 @@ void Spawner::Spawn(float elapsedSeconds)
 		return;
 	}
 
-	timeToSpawn = 1;
+	timeToSpawn = 2;
 
 	for (unsigned char i = 0; i < amountEnemiesToSpawn; ++i)
 	{

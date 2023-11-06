@@ -22,8 +22,8 @@ class Entity : public sf::Drawable
 		sf::Vector2f position
 		);
 	virtual void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities);
-	bool getIsAlive();
-	float getSpeed();
+	bool getIsAlive() const;
+	float getSpeed() const;
 	sf::Vector2f getPosition();
 	void setIsAlive(bool IsAlive);
 	sf::RectangleShape getShape();

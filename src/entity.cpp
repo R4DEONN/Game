@@ -29,12 +29,12 @@ Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 	health = 1;
 }
 
-bool Entity::getIsAlive()
+bool Entity::getIsAlive() const
 {
 	return isAlive;
 }
 
-float Entity::getSpeed()
+float Entity::getSpeed() const
 {
 	return speed;
 }
@@ -111,5 +111,5 @@ sf::Vector2f Entity::getPosition()
 {
 	float x = shape.getPosition().x + GameConstants::BLOCK_SIZE / 2;
 	float y = shape.getPosition().y + GameConstants::BLOCK_SIZE / 2;
-	return sf::Vector2f(x, y);
+	return {x, y};
 }

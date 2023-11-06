@@ -1,6 +1,7 @@
 #include "player.h"
 #include "field.h"
 #include "bullet.h"
+#include "SFML/Audio/SoundBuffer.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
@@ -9,8 +10,10 @@
 Player::Player(const std::string& texturePath, sf::Vector2f position)
 	: Entity(texturePath, position)
 {
+	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
+	shoot.setBuffer(shootBuffer);
 	health = 3;
-	speed = 150.f;
+	speed = 220.f;
 	type = EntityType::PLAYER;
 	shape.setTextureRect(sf::IntRect(0, 0, 256, 256));
 }
@@ -36,7 +39,7 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 	//TODO Вынести move в Player
 	shape.move(movement);
 
-	if (secondsFromLastShot < 0.75)
+	if (secondsFromLastShot < 0.3)
 	{
 		secondsFromLastShot += elapsedTime;
 		return;
@@ -56,6 +59,7 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 			attackDirection
 			);
 		entities.push_back(bullet);
+		shoot.play();
 	}
 }
 

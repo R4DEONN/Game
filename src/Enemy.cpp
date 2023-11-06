@@ -3,6 +3,8 @@
 #include <functional>
 #include "Enemy.h"
 #include "gameConstants.h"
+#include "field.h"
+#include "utils.h"
 
 Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 	: Entity(texturePath, position)
@@ -27,6 +29,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 
 	updateDirection(entities[0]->getPosition());
 	auto movement = getMovement(elapsedTime, field);
+	handleEnemiesCollision(movement, entities);
 	//TODO Вынести move в Player
 	shape.move(movement);
 	for (std::shared_ptr<Entity> entity : entities)
@@ -47,7 +50,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 			sf::FloatRect playerBounds = entity->getShape().getGlobalBounds();
 			if (enemyBounds.intersects(playerBounds))
 			{
-				entity->setIsAlive(false);
+//				entity->setIsAlive(false);
 				return;
 			}
 		}
@@ -100,6 +103,53 @@ void Enemy::updateDirection(sf::Vector2f playerPosition)
 		else
 		{
 			moveDirection = Direction::DOWN_LEFT;
+		}
+	}
+}
+
+void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shared_ptr<Entity>>& entities)
+{
+	const sf::FloatRect oldBounds = shape.getGlobalBounds();
+	sf::FloatRect newBounds = moveRect(oldBounds, movement);
+	for (const std::shared_ptr<Entity>& entity : entities)
+	{
+		if (entity->getType() != EntityType::ENEMY
+			|| entity->getPosition() == getPosition())
+		{
+			continue;
+		}
+
+		sf::FloatRect entityBound = entity->getShape().getGlobalBounds();
+		if (newBounds.intersects(entityBound))
+		{
+			const auto delta = entity->getPosition() - getPosition();
+
+			if (delta.y < 0
+				&& std::abs(delta.y) >= std::abs(delta.x)
+				&& movement.y < 0)
+			{
+				movement.y = entityBound.top + entityBound.height - oldBounds.top;
+			}
+			else if (delta.y > 0
+					 && std::abs(delta.y) >= std::abs(delta.x)
+					 && movement.y > 0)
+			{
+				movement.y = entityBound.top - oldBounds.height - oldBounds.top;
+			}
+			else if (delta.x > 0
+					 && std::abs(delta.y) <= std::abs(delta.x)
+					 && movement.x < 0)
+			{
+				movement.x = entityBound.left + entityBound.width - oldBounds.left;
+			}
+			else if (delta.x > 0
+					 && std::abs(delta.y) <= std::abs(delta.x)
+					 && movement.x > 0)
+			{
+				movement.x = entityBound.left - oldBounds.width - oldBounds.left;
+			}
+
+			newBounds = moveRect(oldBounds, movement);
 		}
 	}
 }
