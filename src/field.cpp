@@ -11,26 +11,23 @@ const float CENTER_OFFSET_Y = GameConstants::CENTER_OFFSET_Y;
 
 //TODO Сделать проходы по 3 ячейки
 static const char FIELD_MAZE[] = {
-	1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-	1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 4, 3, 4, 1, 1, 1, 1, 1, 1,
+	1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+	1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1,
+	1, 2, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 2, 1,
+	1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1,
+	1, 2, 0, 0, 0, 5, 0, 0, 0, 0, 0, 5, 0, 0, 2, 1,
+	1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1,
+	4, 2, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 2, 3,
+	3, 2, 0, 0, 5, 0, 0, 0, 0, 0, 0, 5, 0, 0, 2, 4,
+	3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 2, 3,
+	1, 2, 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1,
+	1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1,
+	1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1,
+	1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 5, 0, 2, 1,
+	1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,
+	1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 1, 1, 1, 1, 1, 1,
 };
-
-static const sf::Color WALL_COLOR = sf::Color(163, 58, 3);
-static const sf::Color PRAIRIE_COLOR = sf::Color(50, 168, 82);
 
 Field::Field()
 {
@@ -40,16 +37,25 @@ Field::Field()
 		{
 			const size_t offset = x + y * width;
 			CellCategory category;
-			sf::Color color;
-			if (FIELD_MAZE[offset] == 1)
+			switch (FIELD_MAZE[offset])
 			{
+			case 0:
+				category = CellCategory::SAND;
+				break;
+			case 1:
 				category = CellCategory::WALL;
-				color = WALL_COLOR;
-			}
-			else
-			{
-				category = CellCategory::PRAIRIE;
-				color = PRAIRIE_COLOR;
+				break;
+			case 2:
+				category = CellCategory::STONES;
+				break;
+			case 3:
+				category = CellCategory::BONES;
+				break;
+			case 4:
+				category = CellCategory::BLOOD;
+				break;
+			case 5:
+				category = CellCategory::GRASS;
 			}
 			const sf::Vector2f position = {
 				x * BLOCK_SIZE + CENTER_OFFSET_X,
@@ -59,8 +65,7 @@ Field::Field()
 			std::shared_ptr<Cell> cell = std::make_shared<Cell>(
 				category,
 				position,
-				size,
-				color
+				size
 			);
 			cells.push_back(cell);
 		}
@@ -78,7 +83,7 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, con
 	sf::FloatRect newBounds = moveRect(oldBounds, newMovement);
 	for (const auto& cell : cells)
 	{
-		if (cell->getCategory() == CellCategory::PRAIRIE)
+		if (cell->getCategory() != CellCategory::WALL)
 		{
 			continue;
 		}
@@ -124,8 +129,8 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, con
 
 sf::Vector2f Field::checkFieldGameCollision(const sf::FloatRect& oldBounds, const sf::Vector2f& movement)
 {
-	sf::FloatRect newBounds = moveRect(oldBounds, movement);
-	sf::Vector2f newMovement = movement;
+	auto newBounds = moveRect(oldBounds, movement);
+	auto newMovement = movement;
 	//TODO Вынести в булевы переменные
 	if (newBounds.top < CENTER_OFFSET_Y
 		&& movement.y < 0)
@@ -163,7 +168,7 @@ void Field::update(float elapsedTime)
 			const char frameSize = GameConstants::BLOCK_SIZE;
 			const int curPixel = (int(moveTimer / frameDuration) % maxImages) * frameSize;
 			cell->getBounds().setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
-			if (moveTimer > 2 * frameDuration)
+			if (moveTimer > maxImages * frameDuration)
 			{
 				moveTimer = 0;
 			}
@@ -173,8 +178,8 @@ void Field::update(float elapsedTime)
 
 void Field::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	for (size_t i = 0; i < width * height; i++)
+	for (const auto& cell : cells)
 	{
-		target.draw(*cells[i], states);
+		target.draw(*cell, states);
 	}
 }

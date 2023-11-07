@@ -6,13 +6,17 @@
 enum struct CellCategory
 {
 	WALL,
-	PRAIRIE,
+	SAND,
+	BONES,
+	BLOOD,
+	STONES,
+	GRASS,
 };
 
 class Cell : public sf::Drawable
 {
  public:
-	Cell(CellCategory Category, sf::Vector2f position, sf::Vector2f size, sf::Color color);
+	Cell(CellCategory Category, sf::Vector2f position, sf::Vector2f size);
 	CellCategory getCategory();
 	sf::RectangleShape& getBounds();
  private:

@@ -22,7 +22,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 	const char frameSize = GameConstants::BLOCK_SIZE;
 	const int curPixel = (int(moveTimer / frameDuration) % maxImages) * frameSize;
 	shape.setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
-	if (moveTimer > 2)
+	if (moveTimer > maxImages * frameDuration)
 	{
 		moveTimer = 0;
 	}
@@ -34,7 +34,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 	shape.move(movement);
 	for (const auto& entity : entities)
 	{
-		const sf::FloatRect enemyBounds = shape.getGlobalBounds();
+		const auto enemyBounds = shape.getGlobalBounds();
 		if (entity->getType() == EntityType::BULLET)
 		{
 			sf::FloatRect bulletBounds = entity->getShape().getGlobalBounds();
@@ -50,7 +50,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 			sf::FloatRect playerBounds = entity->getShape().getGlobalBounds();
 			if (enemyBounds.intersects(playerBounds))
 			{
-//				entity->setIsAlive(false);
+				entity->setIsAlive(false);
 				return;
 			}
 		}

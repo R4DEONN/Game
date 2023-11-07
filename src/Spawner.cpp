@@ -31,7 +31,7 @@ void Spawner::Spawn(float elapsedSeconds)
 		return;
 	}
 
-	timeToSpawn = 10;
+	timeToSpawn = 1;
 
 	for (unsigned char i = 0; i < amountEnemiesToSpawn; ++i)
 	{

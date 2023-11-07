@@ -9,10 +9,8 @@
 {
  public:
 	Field();
-	static sf::Vector2f getPlayerStartPosition();
 	sf::Vector2f checkFieldWallsCollision(const sf::FloatRect &oldBounds, const sf::Vector2f &movement);
 	void update(float elapsedTime);
-	static sf::Vector2f getFieldPoint(int x, int y);
  private:
 	float moveTimer = 0;
 	sf::Vector2f checkFieldGameCollision(const sf::FloatRect &oldBounds, const sf::Vector2f &movement);

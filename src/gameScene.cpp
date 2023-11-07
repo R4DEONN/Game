@@ -8,7 +8,7 @@ GameScene::GameScene()
 {
 	music.openFromFile("../res/Overworld.wav");
 
-	std::shared_ptr<Field> newField = std::make_shared<Field>();
+	std::unique_ptr<Field> newField = std::make_unique<Field>();
 	field = *newField;
 	std::shared_ptr<Player> player = std::make_shared<Player>("../res/player.png", getPlayerStartPosition());
 	entities.push_back(player);
