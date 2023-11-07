@@ -32,7 +32,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 	handleEnemiesCollision(movement, entities);
 	//TODO Вынести move в Player
 	shape.move(movement);
-	for (std::shared_ptr<Entity> entity : entities)
+	for (const auto& entity : entities)
 	{
 		const sf::FloatRect enemyBounds = shape.getGlobalBounds();
 		if (entity->getType() == EntityType::BULLET)
@@ -111,7 +111,7 @@ void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shar
 {
 	const sf::FloatRect oldBounds = shape.getGlobalBounds();
 	sf::FloatRect newBounds = moveRect(oldBounds, movement);
-	for (const std::shared_ptr<Entity>& entity : entities)
+	for (const auto& entity : entities)
 	{
 		if (entity->getType() != EntityType::ENEMY
 			|| entity->getPosition() == getPosition())
@@ -136,7 +136,7 @@ void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shar
 			{
 				movement.y = entityBound.top - oldBounds.height - oldBounds.top;
 			}
-			else if (delta.x > 0
+			else if (delta.x < 0
 					 && std::abs(delta.y) <= std::abs(delta.x)
 					 && movement.x < 0)
 			{

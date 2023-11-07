@@ -5,12 +5,13 @@
 #include <memory>
 #include <vector>
 #include <random>
+#include <chrono>
 
 class Randomer {
 	std::mt19937 gen_;
 	std::uniform_int_distribution<size_t> dist_;
  public:
-	Randomer(size_t min, size_t max, unsigned int seed = std::random_device{}())
+	Randomer(size_t min, size_t max, unsigned int seed = std::chrono::system_clock::now().time_since_epoch().count())
 		: gen_{seed}, dist_{min, max} {
 	}
 

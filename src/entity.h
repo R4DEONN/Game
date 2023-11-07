@@ -40,7 +40,7 @@ class Entity : public sf::Drawable
 	float speed = 0;
 	Direction moveDirection = Direction::NONE;
 
-	sf::Vector2f getMovement(const float elapsedTime, Field& field);
+	sf::Vector2f getMovement(float elapsedTime, Field& field);
 };
 
 #endif //_ENTITY_H_
