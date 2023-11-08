@@ -29,7 +29,7 @@ enum class GameState
 	Field field;
 	std::vector<std::shared_ptr<Entity>> entities;
 	GameState gameState = GameState::PLAYING;
-	Spawner spawner = *new Spawner(entities);
+	Spawner spawner;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };

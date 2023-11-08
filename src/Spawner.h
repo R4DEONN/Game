@@ -23,13 +23,13 @@ class Randomer {
 class Spawner
 {
  public:
-	explicit Spawner(std::vector<std::shared_ptr<Entity>>& Entities);
+	void setEntities(std::vector<std::shared_ptr<Entity>>& Entities);
 	void Spawn(float elapsedSeconds);
  private:
-	std::vector<std::shared_ptr<Entity>>* entities;
+	std::vector<std::shared_ptr<Entity>>* entities = {};
 	unsigned char amountEnemiesToSpawn = 2;
 	float timeToSpawn = 1;
-	Randomer randomer{0, 11};
+	Randomer randomer = {0, 11};
 };
 
 #endif //_SPAWNER_H_
