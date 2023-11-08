@@ -11,9 +11,17 @@
 class Player : public Entity
 {
  public:
-	Player(const std::string& texturePath, sf::Vector2f position);
+	Player(const std::string& texturePath, const std::string& footTexturePath, sf::Vector2f position);
 	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities) override;
  private:
+	float secondsFromLastShot = 1;
+	Direction attackDirection = Direction::NONE;
+	sf::Sound shoot;
+	sf::SoundBuffer shootBuffer;
+	sf::Texture footTexture;
+	sf::RectangleShape foot;
+	float footMoveTimer;
+
 	void updateDirection(
 		Direction& direction,
 		sf::Keyboard::Key UpKey,
@@ -21,10 +29,8 @@ class Player : public Entity
 		sf::Keyboard::Key DownKey,
 		sf::Keyboard::Key RightKey
 	);
-	float secondsFromLastShot = 1;
-	Direction attackDirection = Direction::NONE;
-	sf::Sound shoot;
-	sf::SoundBuffer shootBuffer;
+
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
 
 #endif //_PLAYER_H_

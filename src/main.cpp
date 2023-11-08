@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-constexpr unsigned ANTIALIASING_LEVEL = 8;
-constexpr unsigned MAX_FPS = 60;
+constexpr const unsigned ANTIALIASING_LEVEL = 8;
+constexpr const unsigned MAX_FPS = 60;
 
 void createWindow(sf::RenderWindow& window)
 {

@@ -9,7 +9,7 @@ GameScene::GameScene()
 	music.openFromFile("../res/Overworld.wav");
 
 	spawner.setEntities(entities);
-	std::shared_ptr<Player> player = std::make_shared<Player>("../res/player.png", getPlayerStartPosition());
+	std::shared_ptr<Player> player = std::make_shared<Player>("../res/body.png", "../res/foot.png", getPlayerStartPosition());
 	entities.push_back(player);
 
 	music.play();
@@ -56,7 +56,7 @@ void GameScene::update(float elapsedSeconds)
 void GameScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 	target.draw(field, states);
-	for (auto entity : entities)
+	for (const auto& entity : entities)
 	{
 		target.draw(*entity, states);
 	}
