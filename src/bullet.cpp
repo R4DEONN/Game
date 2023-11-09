@@ -6,6 +6,7 @@ const float FORTY_FIVE_DEGREES_COEF = float(std::sqrt(2)) / 2;
 Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction direction)
 : Entity(texturePath, position)
 {
+	health = 0;
 	shape.setTextureRect(sf::IntRect(0, 0, 12, 12));
 	type = EntityType::BULLET;
 	speed = 500.f;

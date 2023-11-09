@@ -31,14 +31,33 @@ Field& GameScene::getField()
 	return field;
 }
 
+void GameScene::setState(GameState newState)
+{
+	gameState = newState;
+}
+
+void GameScene::restartGame()
+{
+	const int entitiesSize = entities.size();
+	for (int i = 0; i < entitiesSize - 1; i++)
+	{
+		entities.erase(entities.end());
+	}
+}
+
 void GameScene::update(float elapsedSeconds)
 {
+	if (gameState == GameState::RESTARTING)
+	{
+		restartGame();
+		gameState = GameState::PLAYING;
+	}
 	spawner.Spawn(elapsedSeconds);
 	field.update(elapsedSeconds);
 	std::vector<int> indexesToDelete;
 	for (int i = 0; i < entities.size(); i++)
 	{
-		if (entities[i]->getIsAlive())
+		if (entities[i]->getHealth() >= 0)
 		{
 			entities[i]->update(elapsedSeconds, field, entities);
 		}

@@ -36,7 +36,7 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 
 	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
 	shoot.setBuffer(shootBuffer);
-	health = 3;
+	health = 2;
 	speed = 220.f;
 	type = EntityType::PLAYER;
 }

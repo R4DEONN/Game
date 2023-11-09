@@ -9,7 +9,7 @@
 Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 	: Entity(texturePath, position)
 {
-	health = 1;
+	health = 0;
 	type = EntityType::ENEMY;
 	speed = 120.f;
 }
@@ -40,8 +40,8 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 			sf::FloatRect bulletBounds = entity->getShape().getGlobalBounds();
 			if (enemyBounds.intersects(bulletBounds))
 			{
-				isAlive = false;
-				entity->setIsAlive(false);
+				decrementHealth();
+				entity->decrementHealth();
 				return;
 			}
 		}
@@ -50,7 +50,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 			sf::FloatRect playerBounds = entity->getShape().getGlobalBounds();
 			if (enemyBounds.intersects(playerBounds))
 			{
-				entity->setIsAlive(false);
+				entity->decrementHealth();
 				return;
 			}
 		}

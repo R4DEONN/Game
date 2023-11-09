@@ -39,6 +39,16 @@ float Entity::getSpeed() const
 	return speed;
 }
 
+int Entity::getHealth() const
+{
+	return health;
+}
+
+void Entity::decrementHealth()
+{
+	health--;
+}
+
 sf::RectangleShape Entity::getShape()
 {
 	return shape;

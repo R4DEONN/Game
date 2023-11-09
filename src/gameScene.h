@@ -22,6 +22,8 @@ enum class GameState
 	std::vector<std::shared_ptr<Entity>>& getEntities();
 	std::shared_ptr<Entity> getPlayer();
 	Field& getField();
+	void setState(GameState newState);
+	void restartGame();
 
 	void update(float elapsedSeconds);
  private:
