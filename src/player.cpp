@@ -8,8 +8,8 @@
 #include <cmath>
 #include <memory>
 
-constexpr const float BODY_SIZE = 39;
-constexpr const float FOOT_SIZE = 9;
+const float BODY_SIZE = GameConstants::BLOCK_SIZE * 39 / 48;
+const float FOOT_SIZE = GameConstants::BLOCK_SIZE * 9 / 48;
 
 Player::Player(const std::string& bodyTexturePath, const std::string& footTexturePath, sf::Vector2f position)
 	: Entity(bodyTexturePath, position)
@@ -26,13 +26,13 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 		BODY_SIZE,
 	});
 	foot.setSize({
-		32,
+        GameConstants::BLOCK_SIZE * 32 / 48,
 		FOOT_SIZE
 	});
 	foot.setTexture(&footTexture);
-	foot.setTextureRect(sf::IntRect(0, 10, 32, FOOT_SIZE));
-	foot.setPosition(shape.getPosition().x - 17, shape.getPosition().y + 12);
-	shape.setTextureRect(sf::IntRect(GameConstants::BLOCK_SIZE * 2, 0, GameConstants::BLOCK_SIZE, BODY_SIZE));
+	foot.setTextureRect(sf::IntRect(0, 10, 32, 9));
+	foot.setPosition(shape.getPosition().x - 26, shape.getPosition().y + 19);
+	shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 
 	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
 	shoot.setBuffer(shootBuffer);
@@ -70,7 +70,7 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 		const float frameDuration = 0.1;
 		const char frameSize = 32;
 		const int curPixel = (int(moveTimer / frameDuration) % maxImages) * FOOT_SIZE;
-		foot.setTextureRect(sf::IntRect(0, curPixel, frameSize, FOOT_SIZE));
+		foot.setTextureRect(sf::IntRect(0, curPixel, frameSize, 9));
 		if (moveTimer > maxImages * frameDuration)
 		{
 			moveTimer = 0;
@@ -81,18 +81,18 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 			&& attackDirection != Direction::DOWN_RIGHT
 			&& attackDirection != Direction::DOWN_LEFT)
 		{
-			shape.setTextureRect(sf::IntRect(0, 0, GameConstants::BLOCK_SIZE, BODY_SIZE));
+			shape.setTextureRect(sf::IntRect(0, 0, 48, 39));
 		}
 		else
 		{
-			shape.setTextureRect(sf::IntRect(GameConstants::BLOCK_SIZE * 2, 0, GameConstants::BLOCK_SIZE, BODY_SIZE));
+			shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 		}
 	}
 	else
 	{
 		moveTimer = 0;
-		foot.setTextureRect(sf::IntRect(0, 9, 32, FOOT_SIZE));
-		shape.setTextureRect(sf::IntRect(GameConstants::BLOCK_SIZE * 2, 0, GameConstants::BLOCK_SIZE, BODY_SIZE));
+		foot.setTextureRect(sf::IntRect(0, 9, 32, 9));
+		shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 	}
 
 

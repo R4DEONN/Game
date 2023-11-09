@@ -19,7 +19,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 	moveTimer += elapsedTime;
 	const char maxImages = 2;
 	const float frameDuration = 0.25;
-	const char frameSize = GameConstants::BLOCK_SIZE;
+	const char frameSize = 48;
 	const int curPixel = (int(moveTimer / frameDuration) % maxImages) * frameSize;
 	shape.setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
 	if (moveTimer > maxImages * frameDuration)

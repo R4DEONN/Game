@@ -1,5 +1,6 @@
 #include "cmath"
 #include "bullet.h"
+#include "gameConstants.h"
 
 const float FORTY_FIVE_DEGREES_COEF = float(std::sqrt(2)) / 2;
 
@@ -11,8 +12,8 @@ Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction 
 	type = EntityType::BULLET;
 	speed = 500.f;
 	shape.setSize({
-		12,
-		12
+		GameConstants::BLOCK_SIZE / 4,
+		GameConstants::BLOCK_SIZE / 4,
 	});
 	switch (direction)
 	{
@@ -54,7 +55,7 @@ void Bullet::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 
 	if (movement != newMovement)
 	{
-		isAlive = false;
+        decrementHealth();
 	}
 	else
 	{

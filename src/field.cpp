@@ -165,7 +165,7 @@ void Field::update(float elapsedTime)
 		{
 			const char maxImages = 2;
 			const float frameDuration = 1;
-			const char frameSize = GameConstants::BLOCK_SIZE;
+			const char frameSize = 48;
 			const int curPixel = (int(moveTimer / frameDuration) % maxImages) * frameSize;
 			cell->getBounds().setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
 			if (moveTimer > maxImages * frameDuration)
