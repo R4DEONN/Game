@@ -1,6 +1,6 @@
 #include "cmath"
-#include "bullet.h"
-#include "gameConstants.h"
+#include "Bullet.h"
+#include "../Common/GameConstants.h"
 
 const float FORTY_FIVE_DEGREES_COEF = float(std::sqrt(2)) / 2;
 

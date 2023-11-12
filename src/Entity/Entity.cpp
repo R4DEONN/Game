@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cmath>
-#include "entity.h"
-#include "gameConstants.h"
-#include "direction.h"
+#include "Entity.h"
+#include "../Common/GameConstants.h"
+#include "../Common/Direction.h"
 
 Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 {
@@ -46,6 +46,10 @@ int Entity::getHealth() const
 
 void Entity::decrementHealth()
 {
+    if (type == EntityType::PLAYER)
+    {
+        std::cout << "Before dec: " << health << std::endl;
+    }
 	health--;
 }
 

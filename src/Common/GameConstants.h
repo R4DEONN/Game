@@ -1,7 +1,7 @@
 #ifndef _GAMECONSTANTS_H_
 #define _GAMECONSTANTS_H_
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 
 class GameConstants
 {

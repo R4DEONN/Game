@@ -1,7 +1,7 @@
 #include "Spawner.h"
-#include "field.h"
-#include "Enemy.h"
-#include "utils.h"
+#include "Field/Field.h"
+#include "Entity/Enemy.h"
+#include "Utils/Utils.h"
 
 const sf::Vector2f SPAWN_POINTS[] = {
 	getFieldPoint(7, 0),

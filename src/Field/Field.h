@@ -1,8 +1,8 @@
 #ifndef _FIELD_H_
 #define _FIELD_H_
 
-#include <SFML/Graphics.hpp>
-#include "cell.h"
+#include "SFML/Graphics.hpp"
+#include "Cell.h"
 #include <memory>
 
  class Field : public sf::Drawable

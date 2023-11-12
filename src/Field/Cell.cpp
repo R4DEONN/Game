@@ -1,5 +1,5 @@
-#include "cell.h"
-#include "gameConstants.h"
+#include "Cell.h"
+#include "../Common/GameConstants.h"
 
 Cell::Cell(CellCategory Category, sf::Vector2f position, sf::Vector2f size)
 {

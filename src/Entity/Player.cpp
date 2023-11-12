@@ -1,9 +1,9 @@
-#include "player.h"
-#include "field.h"
-#include "bullet.h"
+#include "Player.h"
+#include "../Field/Field.h"
+#include "Bullet.h"
 #include "SFML/Audio/SoundBuffer.hpp"
-#include "gameConstants.h"
-#include <SFML/Graphics.hpp>
+#include "../Common/GameConstants.h"
+#include "SFML/Graphics.hpp"
 #include <iostream>
 #include <cmath>
 #include <memory>
@@ -36,7 +36,7 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 
 	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
 	shoot.setBuffer(shootBuffer);
-	health = 2;
+	health = 3;
 	speed = 220.f;
 	type = EntityType::PLAYER;
 }

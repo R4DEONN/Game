@@ -1,8 +1,8 @@
 #ifndef _GAMESCENE_H_
 #define _GAMESCENE_H_
 
-#include "field.h"
-#include "entity.h"
+#include "Field/Field.h"
+#include "Entity/Entity.h"
 #include "Spawner.h"
 #include <vector>
 #include <SFML/Audio.hpp>
@@ -33,6 +33,7 @@ enum class GameState
 	GameState gameState = GameState::PLAYING;
 	Spawner spawner;
 
+    bool handleCollision();
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 

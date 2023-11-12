@@ -1,8 +1,8 @@
 #ifndef _ENEMY_H_
 #define _ENEMY_H_
 
-#include "entity.h"
-#include "direction.h"
+#include "Entity.h"
+#include "../Common/Direction.h"
 
 class Enemy : public Entity
 {

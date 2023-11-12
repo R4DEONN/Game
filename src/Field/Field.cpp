@@ -1,9 +1,9 @@
 #include <iostream>
 #include <memory>
-#include "field.h"
-#include "cell.h"
-#include "gameConstants.h"
-#include "utils.h"
+#include "Field.h"
+#include "Cell.h"
+#include "../Common/GameConstants.h"
+#include "../Utils/Utils.h"
 
 const float BLOCK_SIZE = GameConstants::BLOCK_SIZE;
 const float CENTER_OFFSET_X = GameConstants::CENTER_OFFSET_X;

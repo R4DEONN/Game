@@ -1,11 +1,11 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 #include "cstring"
-#include "field.h"
+#include "../Field/Field.h"
 #include "memory"
-#include "direction.h"
+#include "../Common/Direction.h"
 
 enum class EntityType
 {

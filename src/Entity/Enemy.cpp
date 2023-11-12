@@ -2,9 +2,9 @@
 #include <iostream>
 #include <functional>
 #include "Enemy.h"
-#include "gameConstants.h"
-#include "field.h"
-#include "utils.h"
+#include "../Common/GameConstants.h"
+#include "../Field/Field.h"
+#include "../Utils/Utils.h"
 
 Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 	: Entity(texturePath, position)
@@ -41,15 +41,6 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 			if (enemyBounds.intersects(bulletBounds))
 			{
 				decrementHealth();
-				entity->decrementHealth();
-				return;
-			}
-		}
-		else if (entity->getType() == EntityType::PLAYER)
-		{
-			sf::FloatRect playerBounds = entity->getShape().getGlobalBounds();
-			if (enemyBounds.intersects(playerBounds))
-			{
 				entity->decrementHealth();
 				return;
 			}

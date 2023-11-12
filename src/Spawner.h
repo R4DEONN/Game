@@ -1,7 +1,7 @@
 #ifndef _SPAWNER_H_
 #define _SPAWNER_H_
 
-#include "entity.h"
+#include "Entity/Entity.h"
 #include <memory>
 #include <vector>
 #include <random>

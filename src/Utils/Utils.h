@@ -1,8 +1,8 @@
 #ifndef _UTILS_H_
 #define _UTILS_H_
 
-#include <SFML/Graphics.hpp>
-#include "gameConstants.h"
+#include "SFML/Graphics.hpp"
+#include "../Common/GameConstants.h"
 
 static sf::FloatRect moveRect(const sf::FloatRect& rect, const sf::Vector2f& offset)
 {

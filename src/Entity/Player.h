@@ -1,10 +1,10 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 
-#include <SFML/Graphics.hpp>
-#include "entity.h"
-#include "field.h"
-#include "direction.h"
+#include "SFML/Graphics.hpp"
+#include "Entity.h"
+#include "../Field/Field.h"
+#include "../Common/Direction.h"
 #include "SFML/Audio/Sound.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
 
