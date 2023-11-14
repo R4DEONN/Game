@@ -30,14 +30,14 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 		FOOT_SIZE
 	});
 	foot.setTexture(&footTexture);
-	foot.setTextureRect(sf::IntRect(0, 10, 32, 9));
+	foot.setTextureRect(sf::IntRect(0, 9, 32, 9));
 	foot.setPosition(shape.getPosition().x - 26, shape.getPosition().y + 19);
 	shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 
 	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
 	shoot.setBuffer(shootBuffer);
 	health = 3;
-	speed = 220.f;
+	speed = BLOCK_SIZE * 4;
 	type = EntityType::PLAYER;
 }
 
@@ -67,9 +67,9 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 	{
 		moveTimer += elapsedTime;
 		const char maxImages = 4;
-		const float frameDuration = 0.1;
+	const float frameDuration = 0.15;
 		const char frameSize = 32;
-		const int curPixel = (int(moveTimer / frameDuration) % maxImages) * FOOT_SIZE;
+		const int curPixel = (int(moveTimer / frameDuration) % maxImages) * 9;
 		foot.setTextureRect(sf::IntRect(0, curPixel, frameSize, 9));
 		if (moveTimer > maxImages * frameDuration)
 		{

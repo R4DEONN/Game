@@ -1,7 +1,9 @@
 #include "Spawner.h"
-#include "Field/Field.h"
-#include "Entity/Enemy.h"
-#include "Utils/Utils.h"
+#include "../Field/Field.h"
+#include "../Entity/Enemy.h"
+#include "../Utils/Utils.h"
+
+const constexpr float SPAWNER_COOLDOWN = 1.5;
 
 const sf::Vector2f SPAWN_POINTS[] = {
 	getFieldPoint(7, 0),
@@ -21,6 +23,7 @@ const sf::Vector2f SPAWN_POINTS[] = {
 Spawner::Spawner(std::vector<std::shared_ptr<Enemy>>& Enemies)
 {
 	enemies = &Enemies;
+	timeToSpawn = SPAWNER_COOLDOWN;
 }
 
 void Spawner::Spawn(float elapsedSeconds)
@@ -30,7 +33,7 @@ void Spawner::Spawn(float elapsedSeconds)
 		timeToSpawn -= elapsedSeconds;
 		return;
 	}
-	timeToSpawn = 1.5;
+	timeToSpawn = SPAWNER_COOLDOWN;
 
 	for (unsigned char i = 0; i < amountEnemiesToSpawn; ++i)
 	{

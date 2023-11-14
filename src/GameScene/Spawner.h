@@ -1,8 +1,7 @@
 #ifndef _SPAWNER_H_
 #define _SPAWNER_H_
 
-#include "Entity/Entity.h"
-#include "Entity/Enemy.h"
+#include "../Entity/Enemy.h"
 #include <memory>
 #include <vector>
 #include <random>
@@ -30,7 +29,7 @@ class Spawner
  private:
 	std::vector<std::shared_ptr<Enemy>>* enemies;
 	unsigned char amountEnemiesToSpawn = 2;
-	float timeToSpawn = 1.5;
+	float timeToSpawn;
 	Randomer randomer = {0, 11};
 };
 

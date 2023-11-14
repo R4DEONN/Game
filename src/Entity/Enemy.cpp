@@ -12,7 +12,7 @@ Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 {
 	health = 0;
 	type = EntityType::ENEMY;
-	speed = 120.f;
+	speed = BLOCK_SIZE * 2;
 }
 
 void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Enemy>>& enemies, Player& player)

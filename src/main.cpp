@@ -1,4 +1,4 @@
-#include "GameScene.h"
+#include "GameScene/GameScene.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
