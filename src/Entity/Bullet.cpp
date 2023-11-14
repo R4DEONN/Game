@@ -12,8 +12,8 @@ Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction 
 	type = EntityType::BULLET;
 	speed = 500.f;
 	shape.setSize({
-		GameConstants::BLOCK_SIZE / 4,
-		GameConstants::BLOCK_SIZE / 4,
+		BLOCK_SIZE / 4,
+		BLOCK_SIZE / 4,
 	});
 	switch (direction)
 	{

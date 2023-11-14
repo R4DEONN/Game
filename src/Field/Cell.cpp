@@ -10,7 +10,7 @@ Cell::Cell(CellCategory Category, sf::Vector2f position, sf::Vector2f size)
 	{
 	case CellCategory::WALL:
 		texture.loadFromFile("../res/Tree.png");
-		bounds.setTextureRect(sf::IntRect(0, 0, GameConstants::BLOCK_SIZE, GameConstants::BLOCK_SIZE));
+		bounds.setTextureRect(sf::IntRect(0, 0, BLOCK_SIZE, BLOCK_SIZE));
 		break;
 	case CellCategory::SAND:
 		texture.loadFromFile("../res/sand.png");

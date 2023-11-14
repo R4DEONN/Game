@@ -20,9 +20,6 @@ static sf::Vector2f getCenterCoordinates()
 
 static sf::Vector2f getFieldPoint(const int x, const int y)
 {
-	const float BLOCK_SIZE = GameConstants::BLOCK_SIZE;
-	const float CENTER_OFFSET_X = GameConstants::CENTER_OFFSET_X;
-	const float CENTER_OFFSET_Y = GameConstants::CENTER_OFFSET_Y;
 	return {
 		x * BLOCK_SIZE + CENTER_OFFSET_X + BLOCK_SIZE / 2,
 		y * BLOCK_SIZE + CENTER_OFFSET_Y + BLOCK_SIZE / 2

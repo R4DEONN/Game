@@ -13,15 +13,15 @@ Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 	}
 
 	shape.setSize({
-		GameConstants::BLOCK_SIZE,
-		GameConstants::BLOCK_SIZE,
+		BLOCK_SIZE,
+		BLOCK_SIZE,
 	});
 	shape.setPosition(position);
 	shape.setTexture(&texture);
-	shape.setTextureRect(sf::IntRect(0, 0, GameConstants::BLOCK_SIZE, GameConstants::BLOCK_SIZE));
+	shape.setTextureRect(sf::IntRect(0, 0, BLOCK_SIZE, BLOCK_SIZE));
 	shape.setOrigin(
-		GameConstants::BLOCK_SIZE / 2,
-		GameConstants::BLOCK_SIZE / 2
+		BLOCK_SIZE / 2,
+		BLOCK_SIZE / 2
 	);
 
 	health = 1;
@@ -104,7 +104,7 @@ sf::Vector2f Entity::getMovement(const float elapsedTime, Field& field)
 
 sf::Vector2f Entity::getPosition()
 {
-	float x = shape.getPosition().x + GameConstants::BLOCK_SIZE / 2;
-	float y = shape.getPosition().y + GameConstants::BLOCK_SIZE / 2;
+	float x = shape.getPosition().x + BLOCK_SIZE / 2;
+	float y = shape.getPosition().y + BLOCK_SIZE / 2;
 	return {x, y};
 }

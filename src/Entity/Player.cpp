@@ -8,8 +8,8 @@
 #include <cmath>
 #include <memory>
 
-const float BODY_SIZE = GameConstants::BLOCK_SIZE * 39 / 48;
-const float FOOT_SIZE = GameConstants::BLOCK_SIZE * 9 / 48;
+const float BODY_SIZE = BLOCK_SIZE * 39 / 48;
+const float FOOT_SIZE = BLOCK_SIZE * 9 / 48;
 
 Player::Player(const std::string& bodyTexturePath, const std::string& footTexturePath, sf::Vector2f position)
 	: Entity(bodyTexturePath, position)
@@ -22,11 +22,11 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 	}
 
 	shape.setSize({
-		GameConstants::BLOCK_SIZE,
+		BLOCK_SIZE,
 		BODY_SIZE,
 	});
 	foot.setSize({
-        GameConstants::BLOCK_SIZE * 32 / 48,
+        BLOCK_SIZE * 32 / 48,
 		FOOT_SIZE
 	});
 	foot.setTexture(&footTexture);

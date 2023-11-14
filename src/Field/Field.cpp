@@ -5,10 +5,6 @@
 #include "../Common/GameConstants.h"
 #include "../Utils/Utils.h"
 
-const float BLOCK_SIZE = GameConstants::BLOCK_SIZE;
-const float CENTER_OFFSET_X = GameConstants::CENTER_OFFSET_X;
-const float CENTER_OFFSET_Y = GameConstants::CENTER_OFFSET_Y;
-
 //TODO Сделать проходы по 3 ячейки
 static const char FIELD_MAZE[] = {
 	1, 1, 1, 1, 1, 1, 1, 4, 3, 4, 1, 1, 1, 1, 1, 1,
