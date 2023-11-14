@@ -18,24 +18,19 @@ const sf::Vector2f SPAWN_POINTS[] = {
 	getFieldPoint(0, 9),
 };
 
-void Spawner::setEntities(std::vector<std::shared_ptr<Entity>>& Entities)
+Spawner::Spawner(std::vector<std::shared_ptr<Enemy>>& Enemies)
 {
-	entities = &Entities;
+	enemies = &Enemies;
 }
 
 void Spawner::Spawn(float elapsedSeconds)
 {
-	if (entities->empty())
-	{
-		return;
-	}
-
 	if (timeToSpawn > 0)
 	{
 		timeToSpawn -= elapsedSeconds;
 		return;
 	}
-	timeToSpawn = 1;
+	timeToSpawn = 1.5;
 
 	for (unsigned char i = 0; i < amountEnemiesToSpawn; ++i)
 	{
@@ -45,6 +40,11 @@ void Spawner::Spawn(float elapsedSeconds)
 			"../res/orc.png",
 			point
 		);
-		entities->push_back(enemy);
+		enemies->push_back(enemy);
 	}
+}
+
+void Spawner::restartSpawner()
+{
+	timeToSpawn = 1.5;
 }

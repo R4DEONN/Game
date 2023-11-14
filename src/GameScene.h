@@ -4,6 +4,10 @@
 #include "Field/Field.h"
 #include "Entity/Entity.h"
 #include "Spawner.h"
+#include "Entity/Player.h"
+#include "Utils/Utils.h"
+#include "Entity/Enemy.h"
+#include "Entity/Bullet.h"
 #include <vector>
 #include <SFML/Audio.hpp>
 
@@ -19,8 +23,9 @@ enum class GameState
 {
  public:
 	GameScene();
-	std::vector<std::shared_ptr<Entity>>& getEntities();
-	std::shared_ptr<Entity> getPlayer();
+	std::vector<std::shared_ptr<Enemy>>& getEnemies();
+	std::vector<std::shared_ptr<Bullet>>& getBullets();
+	Player& getPlayer();
 	Field& getField();
 	void setState(GameState newState);
 	void restartGame();
@@ -29,9 +34,11 @@ enum class GameState
  private:
 	sf::Music music;
 	Field field;
-	std::vector<std::shared_ptr<Entity>> entities;
+	std::vector<std::shared_ptr<Enemy>> enemies;
+	std::vector<std::shared_ptr<Bullet>> bullets;
+	Player player = Player("../res/body.png", "../res/foot.png", getCenterCoordinates());
 	GameState gameState = GameState::PLAYING;
-	Spawner spawner;
+	Spawner spawner = Spawner(enemies);
 
     bool handleCollision();
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

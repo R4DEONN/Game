@@ -7,12 +7,14 @@
 #include "../Common/Direction.h"
 #include "SFML/Audio/Sound.hpp"
 #include "SFML/Audio/SoundBuffer.hpp"
+#include "Bullet.h"
 
 class Player : public Entity
 {
  public:
 	Player(const std::string& texturePath, const std::string& footTexturePath, sf::Vector2f position);
-	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities) override;
+	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets);
+	void movePlayerToCenter();
  private:
 	float secondsFromLastShot = 1;
 	Direction attackDirection = Direction::NONE;

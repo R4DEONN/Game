@@ -9,22 +9,23 @@ GameScene::GameScene()
 {
 	music.openFromFile("../res/Overworld.wav");
 
-	spawner.setEntities(entities);
-	std::shared_ptr<Player> player = std::make_shared<Player>("../res/body.png", "../res/foot.png", getPlayerStartPosition());
-	entities.push_back(player);
-
 	music.play();
 	music.setLoop(true);
 }
 
-std::vector<std::shared_ptr<Entity>>& GameScene::getEntities()
+std::vector<std::shared_ptr<Enemy>>& GameScene::getEnemies()
 {
-	return entities;
+	return enemies;
 }
 
-std::shared_ptr<Entity> GameScene::getPlayer()
+std::vector<std::shared_ptr<Bullet>>& GameScene::getBullets()
 {
-	return entities[0];
+	return bullets;
+}
+
+Player& GameScene::getPlayer()
+{
+	return player;
 }
 
 Field& GameScene::getField()
@@ -39,13 +40,11 @@ void GameScene::setState(GameState newState)
 
 void GameScene::restartGame()
 {
-	const int entitiesSize = entities.size();
-    std::cout << entitiesSize << std::endl;
-	for (int i = 1; i < entitiesSize; i++)
-	{
-        std::cout << i << std::endl;
-		entities.erase(entities.begin() + i);
-	}
+	enemies.clear();
+	bullets.clear();
+
+	player.movePlayerToCenter();
+	spawner.restartSpawner();
 }
 
 void GameScene::update(float elapsedSeconds)
@@ -56,60 +55,75 @@ void GameScene::update(float elapsedSeconds)
 	}
 	spawner.Spawn(elapsedSeconds);
 	field.update(elapsedSeconds);
-	std::vector<int> indexesToDelete;
-	for (int i = 0; i < entities.size(); i++)
+	if (player.getHealth() < 0)
 	{
-		if (entities[i]->getHealth() >= 0)
+		setState(GameState::LOSE);
+	}
+	else
+	{
+		player.update(elapsedSeconds, field, bullets);
+	}
+	std::vector<int> indexesToDelete;
+	for (int i = 0; i < bullets.size(); i++)
+	{
+		if (bullets[i]->getHealth() >= 0)
 		{
-			entities[i]->update(elapsedSeconds, field, entities);
+			bullets[i]->update(elapsedSeconds, field);
 		}
 		else
 		{
-            if (entities[i]->getType() == EntityType::PLAYER)
-            {
-                setState(GameState::LOSE);
-            }
-            else
-            {
-                indexesToDelete.push_back(i);
-            }
+			indexesToDelete.push_back(i);
+		}
+	}
+	for (int i = indexesToDelete.size() - 1; i >= 0; --i)
+	{
+		bullets.erase(bullets.begin() + indexesToDelete[i]);
+	}
+	indexesToDelete.clear();
+	for (int i = 0; i < enemies.size(); i++)
+	{
+		if (enemies[i]->getHealth() >= 0)
+		{
+			enemies[i]->update(elapsedSeconds, field, enemies, player);
+		}
+		else
+		{
+			indexesToDelete.push_back(i);
 		}
 	}
 	if (!handleCollision())
-    {
-        for (int i = indexesToDelete.size() - 1; i >= 0; --i)
-        {
-            entities.erase(entities.begin() + indexesToDelete[i]);
-        }
-    }
+	{
+		for (int i = indexesToDelete.size() - 1; i >= 0; --i)
+		{
+			enemies.erase(enemies.begin() + indexesToDelete[i]);
+		}
+	}
 }
 
-void GameScene::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void GameScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(field, states);
-	for (const auto& entity : entities)
+	target.draw(player, states);
+	for (const auto& bullet: bullets)
 	{
-		target.draw(*entity, states);
+		target.draw(*bullet, states);
+	}
+	for (const auto& enemy: enemies)
+	{
+		target.draw(*enemy, states);
 	}
 }
 
 bool GameScene::handleCollision()
 {
-	const auto player = getPlayer();
-	const sf::FloatRect playerBounds = player->getShape().getGlobalBounds();
-    for (const auto& entity : entities)
+	const sf::FloatRect playerBounds = player.getShape().getGlobalBounds();
+	for (const auto& enemy: enemies)
 	{
-		if (entity->getType() == EntityType::PLAYER
-			|| entity->getType() == EntityType::BULLET)
-		{
-			continue;
-		}
-
-		const sf::FloatRect enemyBounds = entity->getShape().getGlobalBounds();
+		const sf::FloatRect enemyBounds = enemy->getShape().getGlobalBounds();
 		if (playerBounds.intersects(enemyBounds))
 		{
-			player->decrementHealth();
-			if (player->getHealth() < 0)
+			player.decrementHealth();
+			if (player.getHealth() < 0)
 			{
 				gameState = GameState::LOSE;
 			}
@@ -118,6 +132,16 @@ bool GameScene::handleCollision()
 				restartGame();
 			}
 			return true;
+		}
+		for (const auto& bullet: bullets)
+		{
+			const auto bulletBound = bullet->getShape().getGlobalBounds();
+			if (bulletBound.intersects(enemyBounds))
+			{
+				bullet->decrementHealth();
+				enemy->decrementHealth();
+				return true;
+			}
 		}
 	}
 	return false;

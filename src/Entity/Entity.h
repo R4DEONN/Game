@@ -21,13 +21,10 @@ class Entity : public sf::Drawable
 		const std::string& texturePath,
 		sf::Vector2f position
 		);
-	virtual void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities);
-	bool getIsAlive() const;
 	float getSpeed() const;
 	int getHealth() const;
 	void decrementHealth();
 	sf::Vector2f getPosition();
-	void setIsAlive(bool IsAlive);
 	sf::RectangleShape getShape();
 	EntityType getType();
  private:
@@ -37,7 +34,6 @@ class Entity : public sf::Drawable
 	float moveTimer = 0;
 	EntityType type;
 	sf::RectangleShape shape;
-	bool isAlive;
 	int health;
 	float speed = 0;
 	Direction moveDirection = Direction::NONE;

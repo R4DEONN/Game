@@ -2,7 +2,6 @@
 #include <cmath>
 #include "Entity.h"
 #include "../Common/GameConstants.h"
-#include "../Common/Direction.h"
 
 Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 {
@@ -25,13 +24,7 @@ Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 		GameConstants::BLOCK_SIZE / 2
 	);
 
-	isAlive = true;
 	health = 1;
-}
-
-bool Entity::getIsAlive() const
-{
-	return isAlive;
 }
 
 float Entity::getSpeed() const
@@ -46,10 +39,6 @@ int Entity::getHealth() const
 
 void Entity::decrementHealth()
 {
-    if (type == EntityType::PLAYER)
-    {
-        std::cout << "Before dec: " << health << std::endl;
-    }
 	health--;
 }
 
@@ -62,14 +51,6 @@ EntityType Entity::getType()
 {
 	return type;
 }
-
-void Entity::setIsAlive(bool IsAlive)
-{
-	isAlive = IsAlive;
-}
-
-void Entity::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities)
-{}
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {

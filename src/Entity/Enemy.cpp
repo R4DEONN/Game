@@ -5,6 +5,7 @@
 #include "../Common/GameConstants.h"
 #include "../Field/Field.h"
 #include "../Utils/Utils.h"
+#include "Player.h"
 
 Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 	: Entity(texturePath, position)
@@ -14,7 +15,7 @@ Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 	speed = 120.f;
 }
 
-void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities)
+void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Enemy>>& enemies, Player& player)
 {
 	moveTimer += elapsedTime;
 	const char maxImages = 2;
@@ -27,21 +28,21 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 		moveTimer = 0;
 	}
 
-	updateDirection(entities[0]->getPosition());
+	updateDirection(player.getPosition());
 	auto movement = getMovement(elapsedTime, field);
-	handleEnemiesCollision(movement, entities);
+	handleEnemiesCollision(movement, enemies);
 	//TODO Вынести move в Player
 	shape.move(movement);
-	for (const auto& entity : entities)
+	for (const auto& enemy : enemies)
 	{
 		const auto enemyBounds = shape.getGlobalBounds();
-		if (entity->getType() == EntityType::BULLET)
+		if (enemy->getType() == EntityType::BULLET)
 		{
-			sf::FloatRect bulletBounds = entity->getShape().getGlobalBounds();
+			sf::FloatRect bulletBounds = enemy->getShape().getGlobalBounds();
 			if (enemyBounds.intersects(bulletBounds))
 			{
 				decrementHealth();
-				entity->decrementHealth();
+				enemy->decrementHealth();
 				return;
 			}
 		}
@@ -98,22 +99,21 @@ void Enemy::updateDirection(sf::Vector2f playerPosition)
 	}
 }
 
-void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shared_ptr<Entity>>& entities)
+void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shared_ptr<Enemy>>& enemies)
 {
 	const sf::FloatRect oldBounds = shape.getGlobalBounds();
 	sf::FloatRect newBounds = moveRect(oldBounds, movement);
-	for (const auto& entity : entities)
+	for (const auto& enemy : enemies)
 	{
-		if (entity->getType() != EntityType::ENEMY
-			|| entity->getPosition() == getPosition())
+		if (enemy->getPosition() == getPosition())
 		{
 			continue;
 		}
 
-		sf::FloatRect entityBound = entity->getShape().getGlobalBounds();
+		sf::FloatRect entityBound = enemy->getShape().getGlobalBounds();
 		if (newBounds.intersects(entityBound))
 		{
-			const auto delta = entity->getPosition() - getPosition();
+			const auto delta = enemy->getPosition() - getPosition();
 
 			if (delta.y < 0
 				&& std::abs(delta.y) >= std::abs(delta.x)

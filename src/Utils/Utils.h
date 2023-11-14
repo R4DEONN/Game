@@ -9,7 +9,7 @@ static sf::FloatRect moveRect(const sf::FloatRect& rect, const sf::Vector2f& off
 	return { rect.left + offset.x, rect.top + offset.y, rect.width, rect.height };
 }
 
-static sf::Vector2f getPlayerStartPosition()
+static sf::Vector2f getCenterCoordinates()
 {
 	sf::Vector2f position(
 		sf::VideoMode::getDesktopMode().width / 2,

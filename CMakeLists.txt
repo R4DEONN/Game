@@ -13,7 +13,7 @@ find_package(Freetype REQUIRED)
 find_package(JPEG REQUIRED)
 find_package(SFML 2 COMPONENTS audio window graphics system REQUIRED)
 
-file(GLOB SRC "src/*.cpp" "src/*.h")
+file(GLOB SRC "src/*.cpp" "src/*.h" "src/*/*.cpp" "src/*/*.h")
 add_executable(game ${SRC})
 target_include_directories(game PRIVATE ${SFML_INCLUDE_DIR} ${JPEG_INCLUDE_DIR} ${FREETYPE_INCLUDE_DIRS})
 target_compile_features(game PUBLIC cxx_std_17)

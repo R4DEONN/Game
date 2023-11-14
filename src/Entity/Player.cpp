@@ -1,9 +1,9 @@
 #include "Player.h"
-#include "../Field/Field.h"
 #include "Bullet.h"
 #include "SFML/Audio/SoundBuffer.hpp"
 #include "../Common/GameConstants.h"
 #include "SFML/Graphics.hpp"
+#include "../Utils/Utils.h"
 #include <iostream>
 #include <cmath>
 #include <memory>
@@ -41,7 +41,7 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 	type = EntityType::PLAYER;
 }
 
-void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Entity>>& entities)
+void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets)
 {
 	updateDirection(
 		moveDirection,
@@ -115,9 +115,17 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 			playerCenter,
 			attackDirection
 			);
-		entities.push_back(bullet);
+		bullets.push_back(bullet);
 		shoot.play();
 	}
+}
+
+void Player::movePlayerToCenter()
+{
+	const sf::Vector2f position = getCenterCoordinates();
+	const sf::Vector2f delta = {-26, 19};
+	shape.setPosition(position);
+	foot.setPosition(position + delta);
 }
 
 void Player::updateDirection(
