@@ -18,7 +18,7 @@ private:
 	sf::Texture clockTexture;
 	sf::RectangleShape clockShape;
 	sf::RectangleShape timeLine;
-	sf::Font eightBits;
+	sf::Font font;
 	sf::Text healthPoints;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

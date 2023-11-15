@@ -17,13 +17,13 @@ Overlay::Overlay(float SecondsToEnd, int PlayerHealth)
 		CENTER_OFFSET_X - 2 * BLOCK_SIZE,
 		CENTER_OFFSET_Y + float(1.5 * BLOCK_SIZE)
 	});
-	eightBits.loadFromFile("../res/EightBits.ttf");
-	healthPoints.setFont(eightBits);
+	font.loadFromFile("../res/Minecraft Rus NEW.otf");
+	healthPoints.setFont(font);
 	healthPoints.setFillColor(sf::Color::White);
-	healthPoints.setCharacterSize(BLOCK_SIZE);
+	healthPoints.setCharacterSize(BLOCK_SIZE / 2);
 	healthPoints.setPosition({
 		CENTER_OFFSET_X - BLOCK_SIZE,
-		CENTER_OFFSET_Y + float(1.25 * BLOCK_SIZE)
+		CENTER_OFFSET_Y + float(1.7 * BLOCK_SIZE)
 	});
 	healthPoints.setString("x" + std::to_string(PlayerHealth));
 

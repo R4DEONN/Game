@@ -55,12 +55,25 @@ void GameScene::restartGame()
 	gameState = GameState::PLAYING;
 }
 
-void GameScene::update(float elapsedSeconds)
+bool GameScene::update(float elapsedSeconds)
 {
+	if (gameState == GameState::STARTING)
+	{
+		const int flag = mainMenu.update();
+		if (flag == 1)
+		{
+			gameState = GameState::PLAYING;
+		}
+		else if (flag == 0)
+		{
+			return true;
+		}
+		return false;
+	}
 	if (gameState == GameState::LOSE)
 	{
 		restartGame();
-		return;
+		return false;
 	}
 	if (secondsToEnd >= 0)
 	{
@@ -72,10 +85,16 @@ void GameScene::update(float elapsedSeconds)
 	player.update(elapsedSeconds, field, bullets);
 	updateBullets(elapsedSeconds);
 	updateEnemies(elapsedSeconds);
+	return false;
 }
 
 void GameScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	if (gameState == GameState::STARTING)
+	{
+		target.draw(mainMenu, states);
+		return;
+	}
 	target.draw(field, states);
 	target.draw(overlay, states);
 	target.draw(player, states);

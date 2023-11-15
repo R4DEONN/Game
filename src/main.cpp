@@ -11,13 +11,14 @@ void createWindow(sf::RenderWindow& window)
 	settings.antialiasingLevel = ANTIALIASING_LEVEL;
 	window.create(
 		sf::VideoMode::getDesktopMode(),
-		"Journey of the Prairie King", sf::Style::Close, settings);
+		"Journey of the Prairie King", sf::Style::Fullscreen, settings);
 	window.setFramerateLimit(MAX_FPS);
+	window.setMouseCursorVisible(false);
 }
 
 void handleEvents(sf::RenderWindow& window)
 {
-	sf::Event event;
+	sf::Event event{};
 	while (window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
@@ -27,17 +28,19 @@ void handleEvents(sf::RenderWindow& window)
 	}
 }
 
-void update(sf::Clock& clock, GameScene& scene)
+void update(sf::Clock& clock, GameScene& scene, sf::RenderWindow& window)
 {
 	const float elapsedSeconds = clock.getElapsedTime().asSeconds();
 	clock.restart();
-	scene.update(elapsedSeconds);
+	if (scene.update(elapsedSeconds))
+	{
+		window.close();
+	}
 }
 
 void render(sf::RenderWindow& window, GameScene& scene)
 {
 	window.clear();
-	//TODO Убрать отрисовку через поле
 	window.draw(scene);
 	window.display();
 }
@@ -53,7 +56,7 @@ int main(int, char* [])
 	while (window.isOpen())
 	{
 		handleEvents(window);
-		update(clock, scene);
+		update(clock, scene, window);
 		render(window, scene);
 	}
 

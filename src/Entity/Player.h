@@ -24,7 +24,7 @@ class Player : public Entity
 	sf::Texture footTexture;
 	sf::RectangleShape foot;
 
-	void updateDirection(
+	static void updateDirection(
 		Direction& direction,
 		sf::Keyboard::Key UpKey,
 		sf::Keyboard::Key LeftKey,

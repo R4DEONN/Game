@@ -11,6 +11,7 @@
 #include "./Overlay.h"
 #include <vector>
 #include "SFML/Audio.hpp"
+#include "MainMenu.h"
 
 enum class GameState
 {
@@ -32,15 +33,16 @@ enum class GameState
 	void clearField();
 	void restartGame();
 
-	void update(float elapsedSeconds);
+	bool update(float elapsedSeconds);
  private:
+	MainMenu mainMenu;
 	float secondsToEnd = 100;
 	sf::Music music;
 	Field field;
 	std::vector<std::shared_ptr<Enemy>> enemies;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	Player player = Player("../res/body.png", "../res/foot.png", getCenterCoordinates());
-	GameState gameState = GameState::PLAYING;
+	GameState gameState = GameState::STARTING;
 	Overlay overlay = Overlay(secondsToEnd, player.getHealth());
 	Spawner spawner = Spawner(enemies);
 
