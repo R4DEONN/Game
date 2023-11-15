@@ -38,7 +38,7 @@ void GameScene::setState(GameState newState)
 	gameState = newState;
 }
 
-void GameScene::restartGame()
+void GameScene::clearField()
 {
 	enemies.clear();
 	bullets.clear();
@@ -47,14 +47,26 @@ void GameScene::restartGame()
 	spawner.restartSpawner();
 }
 
+void GameScene::restartGame()
+{
+	clearField();
+	secondsToEnd = 100;
+	player.restoreHealth();
+	gameState = GameState::PLAYING;
+}
+
 void GameScene::update(float elapsedSeconds)
 {
 	if (gameState == GameState::LOSE)
 	{
+		restartGame();
 		return;
 	}
-	secondsToEnd -= elapsedSeconds;
-	spawner.Spawn(elapsedSeconds);
+	if (secondsToEnd >= 0)
+	{
+		secondsToEnd -= elapsedSeconds;
+		spawner.Spawn(elapsedSeconds);
+	}
 	field.update(elapsedSeconds);
 	overlay.update(secondsToEnd, player.getHealth());
 	player.update(elapsedSeconds, field, bullets);
@@ -92,7 +104,7 @@ bool GameScene::handleCollision()
 			}
 			else
 			{
-				restartGame();
+				clearField();
 			}
 			return true;
 		}

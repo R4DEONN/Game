@@ -67,7 +67,7 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 	{
 		moveTimer += elapsedTime;
 		const char maxImages = 4;
-	const float frameDuration = 0.15;
+		const float frameDuration = 0.15;
 		const char frameSize = 32;
 		const int curPixel = (int(moveTimer / frameDuration) % maxImages) * 9;
 		foot.setTextureRect(sf::IntRect(0, curPixel, frameSize, 9));
@@ -126,6 +126,11 @@ void Player::movePlayerToCenter()
 	const sf::Vector2f delta = {-26, 19};
 	shape.setPosition(position);
 	foot.setPosition(position + delta);
+}
+
+void Player::restoreHealth()
+{
+	health = 3;
 }
 
 void Player::updateDirection(

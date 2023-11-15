@@ -29,6 +29,7 @@ enum class GameState
 	Player& getPlayer();
 	Field& getField();
 	void setState(GameState newState);
+	void clearField();
 	void restartGame();
 
 	void update(float elapsedSeconds);

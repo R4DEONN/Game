@@ -15,6 +15,7 @@ class Player : public Entity
 	Player(const std::string& texturePath, const std::string& footTexturePath, sf::Vector2f position);
 	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets);
 	void movePlayerToCenter();
+	void restoreHealth();
  private:
 	float secondsFromLastShot = 1;
 	Direction attackDirection = Direction::NONE;
@@ -22,7 +23,6 @@ class Player : public Entity
 	sf::SoundBuffer shootBuffer;
 	sf::Texture footTexture;
 	sf::RectangleShape foot;
-	float footMoveTimer;
 
 	void updateDirection(
 		Direction& direction,
