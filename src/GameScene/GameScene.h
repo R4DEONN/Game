@@ -12,6 +12,7 @@
 #include <vector>
 #include "SFML/Audio.hpp"
 #include "MainMenu.h"
+#include "GameOverMenu.h"
 
 enum class GameState
 {
@@ -36,6 +37,7 @@ enum class GameState
 	bool update(float elapsedSeconds);
  private:
 	MainMenu mainMenu;
+	GameOverMenu gameOverMenu;
 	float secondsToEnd = 100;
 	sf::Music music;
 	Field field;

@@ -52,7 +52,6 @@ void GameScene::restartGame()
 	clearField();
 	secondsToEnd = 100;
 	player.restoreHealth();
-	gameState = GameState::PLAYING;
 }
 
 bool GameScene::update(float elapsedSeconds)
@@ -72,6 +71,15 @@ bool GameScene::update(float elapsedSeconds)
 	}
 	if (gameState == GameState::LOSE)
 	{
+		const int flag = gameOverMenu.update();
+		if (flag == 1)
+		{
+			gameState = GameState::PLAYING;
+		}
+		else if (flag == 0)
+		{
+			return true;
+		}
 		restartGame();
 		return false;
 	}
@@ -93,6 +101,11 @@ void GameScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	if (gameState == GameState::STARTING)
 	{
 		target.draw(mainMenu, states);
+		return;
+	}
+	if (gameState == GameState::LOSE)
+	{
+		target.draw(gameOverMenu, states);
 		return;
 	}
 	target.draw(field, states);
