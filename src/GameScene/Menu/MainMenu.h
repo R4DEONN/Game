@@ -5,7 +5,7 @@
 #ifndef GAME_MAINMENU_H
 #define GAME_MAINMENU_H
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 #include "Menu.h"
 
 class MainMenu : public Menu

@@ -11,8 +11,8 @@
 #include "./Overlay.h"
 #include <vector>
 #include "SFML/Audio.hpp"
-#include "MainMenu.h"
-#include "GameOverMenu.h"
+#include "Menu/MainMenu.h"
+#include "Menu/GameOverMenu.h"
 
 enum class GameState
 {
@@ -44,7 +44,7 @@ enum class GameState
 	std::vector<std::shared_ptr<Enemy>> enemies;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	Player player = Player("../res/body.png", "../res/foot.png", getCenterCoordinates());
-	GameState gameState = GameState::STARTING;
+	GameState gameState = GameState::LOSE;
 	Overlay overlay = Overlay(secondsToEnd, player.getHealth());
 	Spawner spawner = Spawner(enemies);
 

@@ -1,5 +1,5 @@
 #include "Menu.h"
-#include "../Common/GameConstants.h"
+#include "../../Common/GameConstants.h"
 
 const sf::Vector2f DEFAULT_POSITION = {
 	0.5f * sf::VideoMode::getDesktopMode().width,

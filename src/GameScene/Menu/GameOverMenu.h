@@ -3,19 +3,15 @@
 #ifndef GAME_GAMEOVERMENU_H
 #define GAME_GAMEOVERMENU_H
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
+#include "Menu.h"
 
-class GameOverMenu : public sf::Drawable
+class GameOverMenu : public Menu
 {
 public:
 	GameOverMenu();
-	int update();
 private:
-	sf::ConvexShape triangle;
-	sf::Font font;
-	sf::Text endGame;
-	sf::Text again;
-	sf::Text exit;
+	sf::Text title;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };

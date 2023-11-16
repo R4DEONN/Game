@@ -5,7 +5,7 @@
 #ifndef GAME_MENU_H
 #define GAME_MENU_H
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 #include <memory>
 
 class Menu : public sf::Drawable
@@ -17,9 +17,9 @@ public:
 protected:
 	std::vector<std::shared_ptr<sf::Text>> texts;
 	sf::ConvexShape triangle;
+	sf::Font font;
 
 private:
-	sf::Font font;
 	int selectedId;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

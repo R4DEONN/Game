@@ -72,15 +72,15 @@ bool GameScene::update(float elapsedSeconds)
 	if (gameState == GameState::LOSE)
 	{
 		const int flag = gameOverMenu.update();
-		if (flag == 1)
+		if (flag == 0)
 		{
 			gameState = GameState::PLAYING;
+			restartGame();
 		}
-		else if (flag == 0)
+		else if (flag == 1)
 		{
 			return true;
 		}
-		restartGame();
 		return false;
 	}
 	if (secondsToEnd >= 0)

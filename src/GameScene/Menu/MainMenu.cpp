@@ -3,7 +3,7 @@
 //
 
 #include "MainMenu.h"
-#include "../Common/GameConstants.h"
+#include "../../Common/GameConstants.h"
 #include <array>
 
 const std::wstring messages[] = {
@@ -12,7 +12,7 @@ const std::wstring messages[] = {
 };
 
 MainMenu::MainMenu()
-: Menu(messages, std::size(messages))
+	: Menu(messages, std::size(messages))
 {
 	logoTexture.loadFromFile("../res/JOPK_logo_RU.png");
 	logoShape.setTexture(&logoTexture);
