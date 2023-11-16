@@ -59,11 +59,11 @@ bool GameScene::update(float elapsedSeconds)
 	if (gameState == GameState::STARTING)
 	{
 		const int flag = mainMenu.update();
-		if (flag == 1)
+		if (flag == 0)
 		{
 			gameState = GameState::PLAYING;
 		}
-		else if (flag == 0)
+		else if (flag == 1)
 		{
 			return true;
 		}

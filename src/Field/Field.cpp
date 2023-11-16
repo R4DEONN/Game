@@ -5,7 +5,6 @@
 #include "../Common/GameConstants.h"
 #include "../Utils/Utils.h"
 
-//TODO Сделать проходы по 3 ячейки
 static const char FIELD_MAZE[] = {
 	1, 1, 1, 1, 1, 1, 1, 4, 3, 4, 1, 1, 1, 1, 1, 1,
 	1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1,

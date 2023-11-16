@@ -33,8 +33,8 @@ enum class GameState
 	void setState(GameState newState);
 	void clearField();
 	void restartGame();
-
 	bool update(float elapsedSeconds);
+
  private:
 	MainMenu mainMenu;
 	GameOverMenu gameOverMenu;
