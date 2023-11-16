@@ -44,7 +44,7 @@ enum class GameState
 	std::vector<std::shared_ptr<Enemy>> enemies;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	Player player = Player("../res/body.png", "../res/foot.png", getCenterCoordinates());
-	GameState gameState = GameState::LOSE;
+	GameState gameState = GameState::STARTING;
 	Overlay overlay = Overlay(secondsToEnd, player.getHealth());
 	Spawner spawner = Spawner(enemies);
 

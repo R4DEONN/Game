@@ -8,8 +8,6 @@
 GameScene::GameScene()
 {
 	music.openFromFile("../res/Overworld.wav");
-
-	music.play();
 	music.setLoop(true);
 }
 
@@ -62,6 +60,7 @@ bool GameScene::update(float elapsedSeconds)
 		if (flag == 0)
 		{
 			gameState = GameState::PLAYING;
+			music.play();
 		}
 		else if (flag == 1)
 		{
@@ -156,6 +155,7 @@ bool GameScene::handleCollision()
 
 void GameScene::updateEnemies(float elapsedSeconds)
 {
+	//TODO Улучшить код
 	std::vector<int> indexesToDelete;
 	for (int i = 0; i < enemies.size(); i++)
 	{
