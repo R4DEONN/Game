@@ -54,9 +54,34 @@ void GameScene::restartGame()
 
 bool GameScene::update(float elapsedSeconds)
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+	{
+		gameState = GameState::PAUSE;
+		music.pause();
+	}
+	if (gameState == GameState::PAUSE)
+	{
+		const int flag = pauseMenu.update(elapsedSeconds);
+		if (flag == 0)
+		{
+			gameState = GameState::PLAYING;
+			music.play();
+		}
+		else if (flag == 1)
+		{
+			restartGame();
+			music.play();
+			gameState = GameState::PLAYING;
+		}
+		else if (flag == 2)
+		{
+			return true;
+		}
+		return false;
+	}
 	if (gameState == GameState::STARTING)
 	{
-		const int flag = mainMenu.update();
+		const int flag = mainMenu.update(elapsedSeconds);
 		if (flag == 0)
 		{
 			gameState = GameState::PLAYING;
@@ -70,7 +95,7 @@ bool GameScene::update(float elapsedSeconds)
 	}
 	if (gameState == GameState::LOSE)
 	{
-		const int flag = gameOverMenu.update();
+		const int flag = gameOverMenu.update(elapsedSeconds);
 		if (flag == 0)
 		{
 			gameState = GameState::PLAYING;
@@ -97,6 +122,11 @@ bool GameScene::update(float elapsedSeconds)
 
 void GameScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	if (gameState == GameState::PAUSE)
+	{
+		target.draw(pauseMenu, states);
+		return;
+	}
 	if (gameState == GameState::STARTING)
 	{
 		target.draw(mainMenu, states);

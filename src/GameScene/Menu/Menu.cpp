@@ -38,10 +38,12 @@ Menu::Menu(const std::wstring strings[], int count)
 	texts[selectedId]->setPosition(texts[selectedId]->getPosition() + SELECTED_MARGIN);
 }
 
-int Menu::update()
+int Menu::update(float elapsedSeconds)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	delay -= elapsedSeconds;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && delay <= 0)
 	{
+		delay = 0.15;
 		if (selectedId >= texts.size() - 1)
 		{
 			return -1;
@@ -55,8 +57,9 @@ int Menu::update()
 			texts[selectedId]->getPosition() + SELECTED_MARGIN
 		);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && delay <= 0)
 	{
+		delay = 0.15;
 		if (selectedId <= 0)
 		{
 			return -1;

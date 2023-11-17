@@ -11,7 +11,7 @@
 class MainMenu : public Menu
 {
 public:
-	MainMenu();
+	MainMenu(const std::wstring strings[], int count);
 private:
 	sf::Texture logoTexture;
 	sf::RectangleShape logoShape;

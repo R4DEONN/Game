@@ -14,11 +14,22 @@
 #include "Menu/MainMenu.h"
 #include "Menu/GameOverMenu.h"
 
+const std::wstring MAIN_MENU_MESSAGES[] = {
+	L"Начать игру",
+	L"Выйти из игры"
+};
+
+const std::wstring PAUSE_MENU_MESSAGES[] = {
+	L"Продолжить игру",
+	L"Заново",
+	L"Выйти из игры"
+};
+
 enum class GameState
 {
 	STARTING,
 	PLAYING,
-	RESTARTING,
+	PAUSE,
 	LOSE
 };
 
@@ -36,7 +47,8 @@ enum class GameState
 	bool update(float elapsedSeconds);
 
  private:
-	MainMenu mainMenu;
+	MainMenu mainMenu = MainMenu(MAIN_MENU_MESSAGES, 2);
+	MainMenu pauseMenu = MainMenu(PAUSE_MENU_MESSAGES, 3);
 	GameOverMenu gameOverMenu;
 	float secondsToEnd = 100;
 	sf::Music music;

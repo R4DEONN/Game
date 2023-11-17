@@ -6,13 +6,8 @@
 #include "../../Common/GameConstants.h"
 #include <array>
 
-const std::wstring messages[] = {
-	L"Начать игру",
-	L"Выйти из игры"
-};
-
-MainMenu::MainMenu()
-	: Menu(messages, std::size(messages))
+MainMenu::MainMenu(const std::wstring strings[], int count)
+	: Menu(strings, count)
 {
 	logoTexture.loadFromFile("../res/JOPK_logo_RU.png");
 	logoShape.setTexture(&logoTexture);

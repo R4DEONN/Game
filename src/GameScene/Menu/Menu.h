@@ -12,7 +12,7 @@ class Menu : public sf::Drawable
 {
 public:
 	explicit Menu(const std::wstring* strings, int count);
-	int update();
+	int update(float elapsedSeconds);
 
 protected:
 	std::vector<std::shared_ptr<sf::Text>> texts;
@@ -21,6 +21,8 @@ protected:
 
 private:
 	int selectedId;
+	sf::Keyboard::Key lastKey;
+	float delay = 0;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
