@@ -1,5 +1,3 @@
-//TODO Выделить родителя
-
 #ifndef GAME_GAMEOVERMENU_H
 #define GAME_GAMEOVERMENU_H
 

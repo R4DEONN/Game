@@ -52,6 +52,7 @@ Field::Field()
 			case 5:
 				category = CellCategory::GRASS;
 			}
+
 			const sf::Vector2f position = {
 				x * BLOCK_SIZE + CENTER_OFFSET_X,
 				y * BLOCK_SIZE + CENTER_OFFSET_Y
@@ -86,32 +87,39 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, con
 		sf::FloatRect cellBound = cell->getBounds().getGlobalBounds();
 		if (newBounds.intersects(cellBound))
 		{
-			//TODO Вынести в булевы переменные
 			const sf::Vector2f cellPosition = {cellBound.left, cellBound.top};
 			const sf::Vector2f playerPosition = {oldBounds.left, oldBounds.top};
 			const auto delta = cellPosition - playerPosition;
 
-			if (delta.y < 0
-				&& std::abs(delta.y) >= std::abs(delta.x)
-				&& newMovement.y < 0)
+			const bool topCollision = delta.y < 0
+									  && std::abs(delta.y) >= std::abs(delta.x)
+									  && newMovement.y < 0;
+
+			const bool bottomCollision = delta.y > 0
+										 && std::abs(delta.y) >= std::abs(delta.x)
+										 && newMovement.y > 0;
+
+			const bool leftCollision = delta.x < 0
+									   && std::abs(delta.y) <= std::abs(delta.x)
+									   && newMovement.x < 0;
+
+			const bool rightCollision = delta.x > 0
+										&& std::abs(delta.y) <= std::abs(delta.x)
+										&& newMovement.x > 0;
+
+			if (topCollision)
 			{
 				newMovement.y = cellBound.top + cellBound.height - oldBounds.top;
 			}
-			else if (delta.y > 0
-					 && std::abs(delta.y) >= std::abs(delta.x)
-					 && newMovement.y > 0)
+			else if (bottomCollision)
 			{
 				newMovement.y = cellBound.top - oldBounds.height - oldBounds.top;
 			}
-			else if (delta.x < 0
-					 && std::abs(delta.y) <= std::abs(delta.x)
-					 && newMovement.x < 0)
+			else if (leftCollision)
 			{
 				newMovement.x = cellBound.left + cellBound.width - oldBounds.left;
 			}
-			else if (delta.x > 0
-					 && std::abs(delta.y) <= std::abs(delta.x)
-					 && newMovement.x > 0)
+			else if (rightCollision)
 			{
 				newMovement.x = cellBound.left - oldBounds.width - oldBounds.left;
 			}
@@ -122,28 +130,37 @@ sf::Vector2f Field::checkFieldWallsCollision(const sf::FloatRect& oldBounds, con
 	return newMovement;
 }
 
-sf::Vector2f Field::checkFieldGameCollision(const sf::FloatRect& oldBounds, const sf::Vector2f& movement)
+sf::Vector2f Field::checkFieldGameCollision(const sf::FloatRect& oldBounds, const sf::Vector2f& movement) const
 {
 	auto newBounds = moveRect(oldBounds, movement);
 	auto newMovement = movement;
-	//TODO Вынести в булевы переменные
-	if (newBounds.top < CENTER_OFFSET_Y
-		&& movement.y < 0)
+
+	const bool topCollision = newBounds.top < CENTER_OFFSET_Y
+							  && movement.y < 0;
+
+	const bool bottomCollision = newBounds.top + newBounds.height > height * BLOCK_SIZE + CENTER_OFFSET_Y
+								 && movement.y > 0;
+
+	const bool leftCollision = newBounds.left < CENTER_OFFSET_X
+							   && movement.x < 0;
+
+	const bool rightCollision = newBounds.left + newBounds.width > width * BLOCK_SIZE + CENTER_OFFSET_X
+								&& movement.x > 0;
+
+	if (topCollision)
 	{
 		newMovement.y = -oldBounds.top + CENTER_OFFSET_Y;
 	}
-	if (newBounds.top + newBounds.height > height * BLOCK_SIZE + CENTER_OFFSET_Y
-		&& movement.y > 0)
+	else if (bottomCollision)
 	{
 		newMovement.y = height * BLOCK_SIZE - (oldBounds.top + oldBounds.height) + CENTER_OFFSET_Y;
 	}
-	if (newBounds.left < CENTER_OFFSET_X
-		&& movement.x < 0)
+
+	if (leftCollision)
 	{
 		newMovement.x = -oldBounds.left + CENTER_OFFSET_X;
 	}
-	if (newBounds.left + newBounds.width > width * BLOCK_SIZE + CENTER_OFFSET_X
-		&& movement.x > 0)
+	else if (rightCollision)
 	{
 		newMovement.x = width * BLOCK_SIZE + CENTER_OFFSET_X - (oldBounds.left + oldBounds.width);
 	}

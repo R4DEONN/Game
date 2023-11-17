@@ -59,9 +59,7 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 	);
 
 	auto movement = getMovement(elapsedTime, field);
-	//TODO Вынести move в Player
-	shape.move(movement);
-	foot.move(movement);
+	move(movement);
 
 	if (movement.x != 0 || movement.y != 0)
 	{
@@ -131,6 +129,12 @@ void Player::movePlayerToCenter()
 void Player::restoreHealth()
 {
 	health = 3;
+}
+
+void Player::move(const sf::Vector2f movement)
+{
+	shape.move(movement);
+	foot.move(movement);
 }
 
 void Player::updateDirection(

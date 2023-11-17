@@ -31,8 +31,8 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 	updateDirection(player.getPosition());
 	auto movement = getMovement(elapsedTime, field);
 	handleEnemiesCollision(movement, enemies);
-	//TODO Вынести move в Player
 	shape.move(movement);
+
 	for (const auto& enemy : enemies)
 	{
 		const auto enemyBounds = shape.getGlobalBounds();
@@ -115,27 +115,35 @@ void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shar
 		{
 			const auto delta = enemy->getPosition() - getPosition();
 
-			if (delta.y < 0
-				&& std::abs(delta.y) >= std::abs(delta.x)
-				&& movement.y < 0)
+			const bool topCollision = delta.y < 0
+								 && std::abs(delta.y) >= std::abs(delta.x)
+								 && movement.y < 0;
+
+			const bool bottomCollision = delta.y > 0
+										&& std::abs(delta.y) >= std::abs(delta.x)
+										&& movement.y > 0;
+
+			const bool leftCollision = delta.x < 0
+									   && std::abs(delta.y) <= std::abs(delta.x)
+									   && movement.x < 0;
+
+			const bool rightCollision = delta.x > 0
+										&& std::abs(delta.y) <= std::abs(delta.x)
+										&& movement.x > 0;
+
+			if (topCollision)
 			{
 				movement.y = entityBound.top + entityBound.height - oldBounds.top;
 			}
-			else if (delta.y > 0
-					 && std::abs(delta.y) >= std::abs(delta.x)
-					 && movement.y > 0)
+			else if (bottomCollision)
 			{
 				movement.y = entityBound.top - oldBounds.height - oldBounds.top;
 			}
-			else if (delta.x < 0
-					 && std::abs(delta.y) <= std::abs(delta.x)
-					 && movement.x < 0)
+			else if (leftCollision)
 			{
 				movement.x = entityBound.left + entityBound.width - oldBounds.left;
 			}
-			else if (delta.x > 0
-					 && std::abs(delta.y) <= std::abs(delta.x)
-					 && movement.x > 0)
+			else if (rightCollision)
 			{
 				movement.x = entityBound.left - oldBounds.width - oldBounds.left;
 			}

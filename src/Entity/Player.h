@@ -24,6 +24,8 @@ class Player : public Entity
 	sf::Texture footTexture;
 	sf::RectangleShape foot;
 
+	void move(const sf::Vector2f movement);
+
 	static void updateDirection(
 		Direction& direction,
 		sf::Keyboard::Key UpKey,

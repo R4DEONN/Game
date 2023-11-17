@@ -97,7 +97,6 @@ sf::Vector2f Entity::getMovement(const float elapsedTime, Field& field)
 	}
 
 	const sf::FloatRect playerBounds = shape.getGlobalBounds();
-	//TODO сделать функцию статичной
 	movement = field.checkFieldWallsCollision(playerBounds, movement);
 
 	return movement;
