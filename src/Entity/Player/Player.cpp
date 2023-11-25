@@ -1,9 +1,9 @@
 #include "Player.h"
-#include "Bullet.h"
+#include "../Bullet.h"
 #include "SFML/Audio/SoundBuffer.hpp"
-#include "../Common/GameConstants.h"
+#include "../../Common/GameConstants.h"
 #include "SFML/Graphics.hpp"
-#include "../Utils/Utils.h"
+#include "../../Utils/Utils.h"
 #include <iostream>
 #include <cmath>
 #include <memory>
@@ -12,16 +12,16 @@ const float BODY_SIZE = BLOCK_SIZE * 39 / 48;
 const float FOOT_SIZE = BLOCK_SIZE * 9 / 48;
 
 Player::Player(const std::string& bodyTexturePath, const std::string& footTexturePath, sf::Vector2f position)
-	: Entity(bodyTexturePath, position)
+: entity(bodyTexturePath, position)
 {
 	if (!footTexture.loadFromFile(footTexturePath))
 	{
-		//TODO Нормальео обрабатывать ошибку
+		//TODO Нормально обрабатывать ошибку
 		std::wcerr << L"Не удалось загрузить изображение" << std::endl;
 		exit(1);
 	}
 
-	shape.setSize({
+	entity.shape.setSize({
 		BLOCK_SIZE,
 		BODY_SIZE,
 	});
@@ -31,20 +31,25 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 	});
 	foot.setTexture(&footTexture);
 	foot.setTextureRect(sf::IntRect(0, 9, 32, 9));
-	foot.setPosition(shape.getPosition().x - 26, shape.getPosition().y + 19);
-	shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
+	foot.setPosition(entity.shape.getPosition().x - 26, entity.shape.getPosition().y + 19);
+	entity.shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 
 	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
 	shoot.setBuffer(shootBuffer);
-	health = 3;
-	speed = BLOCK_SIZE * 4;
-	type = EntityType::PLAYER;
+	entity.setHealth(3);
+	entity.setSpeed(BLOCK_SIZE * 4);
+	entity.setType(EntityType::PLAYER);
+}
+
+void Player::setSpeed(float newSpeed)
+{
+	entity.setSpeed(newSpeed);
 }
 
 void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets)
 {
 	updateDirection(
-		moveDirection,
+		entity.getMoveDirection(),
 		sf::Keyboard::W,
 		sf::Keyboard::A,
 		sf::Keyboard::S,
@@ -58,20 +63,20 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 		sf::Keyboard::Right
 	);
 
-	auto movement = getMovement(elapsedTime, field);
+	auto movement = entity.getMovement(elapsedTime, field);
 	move(movement);
 
 	if (movement.x != 0 || movement.y != 0)
 	{
-		moveTimer += elapsedTime;
+		entity.setMoveTimer(entity.getMoveTimer() + elapsedTime);
 		const char maxImages = 4;
 		const float frameDuration = 0.15;
 		const char frameSize = 32;
-		const int curPixel = (int(moveTimer / frameDuration) % maxImages) * 9;
+		const int curPixel = (int(entity.getMoveTimer() / frameDuration) % maxImages) * 9;
 		foot.setTextureRect(sf::IntRect(0, curPixel, frameSize, 9));
-		if (moveTimer > maxImages * frameDuration)
+		if (entity.getMoveTimer() > maxImages * frameDuration)
 		{
-			moveTimer = 0;
+			entity.setMoveTimer(0);
 		}
 
 		if (movement.y < 0
@@ -79,18 +84,18 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 			&& attackDirection != Direction::DOWN_RIGHT
 			&& attackDirection != Direction::DOWN_LEFT)
 		{
-			shape.setTextureRect(sf::IntRect(0, 0, 48, 39));
+			entity.shape.setTextureRect(sf::IntRect(0, 0, 48, 39));
 		}
 		else
 		{
-			shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
+			entity.shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 		}
 	}
 	else
 	{
-		moveTimer = 0;
+		entity.setMoveTimer(0);
 		foot.setTextureRect(sf::IntRect(0, 9, 32, 9));
-		shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
+		entity.shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 	}
 
 
@@ -103,10 +108,10 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 	if (attackDirection != Direction::NONE)
 	{
 		secondsFromLastShot = 0;
-		const sf::FloatRect playerBounds = shape.getGlobalBounds();
+		const sf::FloatRect playerBounds = entity.getShape().getGlobalBounds();
 		const sf::Vector2f playerCenter = {
-			shape.getPosition().x + playerBounds.width / 2,
-			shape.getPosition().y + playerBounds.height / 2,
+			entity.getShape().getPosition().x + playerBounds.width / 2,
+			entity.getShape().getPosition().y + playerBounds.height / 2,
 		};
 		std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(
 			"../res/Bullet.png",
@@ -122,18 +127,18 @@ void Player::movePlayerToCenter()
 {
 	const sf::Vector2f position = getCenterCoordinates();
 	const sf::Vector2f delta = {-26, 19};
-	shape.setPosition(position);
+	entity.shape.setPosition(position);
 	foot.setPosition(position + delta);
 }
 
 void Player::restoreHealth()
 {
-	health = 3;
+	entity.setHealth(3);
 }
 
 void Player::move(const sf::Vector2f movement)
 {
-	shape.move(movement);
+	entity.shape.move(movement);
 	foot.move(movement);
 }
 
@@ -212,5 +217,50 @@ void Player::updateDirection(
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(foot, states);
-	target.draw(shape, states);
+	target.draw(entity.getShape(), states);
+}
+
+sf::RectangleShape Player::getShape() const
+{
+	return entity.getShape();
+}
+
+int Player::getHealth()
+{
+	return entity.getHealth();
+}
+
+sf::Vector2f Player::getPosition()
+{
+	return entity.getPosition();
+}
+
+Direction& Player::getMoveDirection()
+{
+	return entity.getMoveDirection();
+}
+
+float Player::getMoveTimer()
+{
+	return entity.getMoveTimer();
+}
+
+void Player::setMoveTimer(float newTime)
+{
+	entity.setMoveTimer(newTime);
+}
+
+void Player::setHealth(int newHealth)
+{
+	entity.setHealth(newHealth);
+}
+
+void Player::setType(EntityType newType)
+{
+	entity.setType(newType);
+}
+
+void Player::decrementHealth()
+{
+	entity.decrementHealth();
 }

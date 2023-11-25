@@ -20,10 +20,11 @@ class Cell : public sf::Drawable
 	CellCategory getCategory();
 	sf::RectangleShape& getBounds();
  private:
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	CellCategory category;
 	sf::RectangleShape bounds;
 	sf::Texture texture;
+
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 };
 
 #endif //_CELL_H_

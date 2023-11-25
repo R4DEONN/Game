@@ -1,9 +1,6 @@
 #include <iostream>
 #include "GameScene.h"
-#include "../Field/Field.h"
-#include "../Entity/Player.h"
-#include "../Entity/Enemy.h"
-#include "../Utils/Utils.h"
+#include "../Entity/Player/FastPlayerDecorator.h"
 
 GameScene::GameScene()
 {
@@ -11,37 +8,12 @@ GameScene::GameScene()
 	music.setLoop(true);
 }
 
-std::vector<std::shared_ptr<Enemy>>& GameScene::getEnemies()
-{
-	return enemies;
-}
-
-std::vector<std::shared_ptr<Bullet>>& GameScene::getBullets()
-{
-	return bullets;
-}
-
-Player& GameScene::getPlayer()
-{
-	return player;
-}
-
-Field& GameScene::getField()
-{
-	return field;
-}
-
-void GameScene::setState(GameState newState)
-{
-	gameState = newState;
-}
-
 void GameScene::clearField()
 {
 	enemies.clear();
 	bullets.clear();
 
-	player.movePlayerToCenter();
+	player->movePlayerToCenter();
 	spawner.restartSpawner();
 }
 
@@ -49,7 +21,8 @@ void GameScene::restartGame()
 {
 	clearField();
 	secondsToEnd = 100;
-	player.restoreHealth();
+	player->restoreHealth();
+	player = std::make_shared<FastPlayerDecorator>(player);
 }
 
 bool GameScene::update(float elapsedSeconds)
@@ -59,6 +32,7 @@ bool GameScene::update(float elapsedSeconds)
 		gameState = GameState::PAUSE;
 		music.pause();
 	}
+	//TODO вынести логику в switch
 	if (gameState == GameState::PAUSE)
 	{
 		const int flag = pauseMenu.update(elapsedSeconds);
@@ -113,8 +87,8 @@ bool GameScene::update(float elapsedSeconds)
 		spawner.Spawn(elapsedSeconds);
 	}
 	field.update(elapsedSeconds);
-	overlay.update(secondsToEnd, player.getHealth());
-	player.update(elapsedSeconds, field, bullets);
+	overlay.update(secondsToEnd, player->getHealth());
+	player->update(elapsedSeconds, field, bullets);
 	updateBullets(elapsedSeconds);
 	updateEnemies(elapsedSeconds);
 	return false;
@@ -139,7 +113,7 @@ void GameScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	target.draw(field, states);
 	target.draw(overlay, states);
-	target.draw(player, states);
+	target.draw(*player, states);
 	for (const auto& bullet: bullets)
 	{
 		target.draw(*bullet, states);
@@ -152,14 +126,14 @@ void GameScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool GameScene::handleCollision()
 {
-	const sf::FloatRect playerBounds = player.getShape().getGlobalBounds();
+	const sf::FloatRect playerBounds = player->getShape().getGlobalBounds();
 	for (const auto& enemy: enemies)
 	{
 		const sf::FloatRect enemyBounds = enemy->getShape().getGlobalBounds();
 		if (playerBounds.intersects(enemyBounds))
 		{
-			player.decrementHealth();
-			if (player.getHealth() < 0)
+			player->decrementHealth();
+			if (player->getHealth() < 0)
 			{
 				gameState = GameState::LOSE;
 			}
@@ -191,7 +165,8 @@ void GameScene::updateEnemies(float elapsedSeconds)
 	{
 		if (enemies[i]->getHealth() >= 0)
 		{
-			enemies[i]->update(elapsedSeconds, field, enemies, player);
+			sf::Vector2f playerPosition = player->getPosition();
+			enemies[i]->update(elapsedSeconds, field, enemies, playerPosition);
 		}
 		else
 		{

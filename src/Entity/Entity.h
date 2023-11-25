@@ -6,15 +6,10 @@
 #include "../Field/Field.h"
 #include "memory"
 #include "../Common/Direction.h"
+#include "IEntity.h"
+#include "EntityType.h"
 
-enum class EntityType
-{
-	PLAYER,
-	ENEMY,
-	BULLET
-};
-
-class Entity : public sf::Drawable
+class Entity : public IEntity
 {
  public:
 	Entity(
@@ -22,23 +17,28 @@ class Entity : public sf::Drawable
 		sf::Vector2f position
 		);
 	float getSpeed() const;
-	int getHealth() const;
-	void decrementHealth();
-	sf::Vector2f getPosition();
-	sf::RectangleShape getShape();
+	void setSpeed(float newSpeed) override;
+	Direction& getMoveDirection() override;
+	int getHealth() override;
+	void setHealth(int newHealth) override;
+	void decrementHealth() override;
+	sf::Vector2f getPosition() override;
+	sf::RectangleShape getShape() const override;
 	EntityType getType();
+	void setType(EntityType newType) override;
+	float getMoveTimer() override;
+	void setMoveTimer(float newTime) override;
+	sf::Vector2f getMovement(float elapsedTime, Field& field);
+	sf::RectangleShape shape;
  private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	sf::Texture texture;
  protected:
 	float moveTimer = 0;
-	EntityType type;
-	sf::RectangleShape shape;
+	EntityType type = EntityType::ENEMY;
 	int health;
 	float speed = 0;
 	Direction moveDirection = Direction::NONE;
-
-	sf::Vector2f getMovement(float elapsedTime, Field& field);
 };
 
 #endif //_ENTITY_H_

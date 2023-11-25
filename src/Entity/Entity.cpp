@@ -32,9 +32,19 @@ float Entity::getSpeed() const
 	return speed;
 }
 
-int Entity::getHealth() const
+void Entity::setSpeed(float newSpeed)
+{
+	speed = newSpeed;
+}
+
+int Entity::getHealth()
 {
 	return health;
+}
+
+void Entity::setHealth(int newHealth)
+{
+	health = newHealth;
 }
 
 void Entity::decrementHealth()
@@ -42,14 +52,24 @@ void Entity::decrementHealth()
 	health--;
 }
 
-sf::RectangleShape Entity::getShape()
+sf::RectangleShape Entity::getShape() const
 {
 	return shape;
+}
+
+Direction& Entity::getMoveDirection()
+{
+	return moveDirection;
 }
 
 EntityType Entity::getType()
 {
 	return type;
+}
+
+void Entity::setType(EntityType newType)
+{
+	type = newType;
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -107,4 +127,14 @@ sf::Vector2f Entity::getPosition()
 	float x = shape.getPosition().x + BLOCK_SIZE / 2;
 	float y = shape.getPosition().y + BLOCK_SIZE / 2;
 	return {x, y};
+}
+
+float Entity::getMoveTimer()
+{
+	return moveTimer;
+}
+
+void Entity::setMoveTimer(float newTime)
+{
+	moveTimer = newTime;
 }

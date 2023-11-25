@@ -2,9 +2,8 @@
 #define _GAMESCENE_H_
 
 #include "../Field/Field.h"
-#include "../Entity/Entity.h"
 #include "Spawner.h"
-#include "../Entity/Player.h"
+#include "../Entity/Player/Player.h"
 #include "../Utils/Utils.h"
 #include "../Entity/Enemy.h"
 #include "../Entity/Bullet.h"
@@ -37,11 +36,6 @@ enum class GameState
 {
  public:
 	GameScene();
-	std::vector<std::shared_ptr<Enemy>>& getEnemies();
-	std::vector<std::shared_ptr<Bullet>>& getBullets();
-	Player& getPlayer();
-	Field& getField();
-	void setState(GameState newState);
 	void clearField();
 	void restartGame();
 	bool update(float elapsedSeconds);
@@ -55,9 +49,9 @@ enum class GameState
 	Field field;
 	std::vector<std::shared_ptr<Enemy>> enemies;
 	std::vector<std::shared_ptr<Bullet>> bullets;
-	Player player = Player("../res/body.png", "../res/foot.png", getCenterCoordinates());
+	std::shared_ptr<IPlayer> player = std::make_shared<Player>("../res/body.png", "../res/foot.png", getCenterCoordinates());
 	GameState gameState = GameState::STARTING;
-	Overlay overlay = Overlay(secondsToEnd, player.getHealth());
+	Overlay overlay = Overlay(secondsToEnd, player->getHealth());
 	Spawner spawner = Spawner(enemies);
 
 	void updateEnemies(float elapsedSeconds);

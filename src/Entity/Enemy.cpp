@@ -5,7 +5,7 @@
 #include "../Common/GameConstants.h"
 #include "../Field/Field.h"
 #include "../Utils/Utils.h"
-#include "Player.h"
+#include "Player/Player.h"
 
 Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 	: Entity(texturePath, position)
@@ -15,7 +15,7 @@ Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
 	speed = BLOCK_SIZE * 2;
 }
 
-void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Enemy>>& enemies, Player& player)
+void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Enemy>>& enemies, sf::Vector2f playerPosition)
 {
 	moveTimer += elapsedTime;
 	const char maxImages = 2;
@@ -28,7 +28,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 		moveTimer = 0;
 	}
 
-	updateDirection(player.getPosition());
+	updateDirection(playerPosition);
 	auto movement = getMovement(elapsedTime, field);
 	handleEnemiesCollision(movement, enemies);
 	shape.move(movement);

@@ -3,13 +3,13 @@
 
 #include "Entity.h"
 #include "../Common/Direction.h"
-#include "Player.h"
+#include "Player/Player.h"
 
 class Enemy : public Entity
 {
  public:
 	Enemy(const std::string& texturePath, sf::Vector2f position);
-	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Enemy>>& enemies, Player& player);
+	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Enemy>>& enemies, sf::Vector2f playerPosition);
  private:
 	void updateDirection(sf::Vector2f playerPosition);
 	void handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shared_ptr<Enemy>>& enemies);
