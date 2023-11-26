@@ -11,10 +11,10 @@
 const float BODY_SIZE = BLOCK_SIZE * 39 / 48;
 const float FOOT_SIZE = BLOCK_SIZE * 9 / 48;
 
-Player::Player(const std::string& bodyTexturePath, const std::string& footTexturePath, sf::Vector2f position)
-: entity(bodyTexturePath, position)
+Player::Player(int playerHealth, sf::Vector2f position)
+: entity("../res/body.png", position)
 {
-	if (!footTexture.loadFromFile(footTexturePath))
+	if (!footTexture.loadFromFile("../res/foot.png"))
 	{
 		//TODO Нормально обрабатывать ошибку
 		std::wcerr << L"Не удалось загрузить изображение" << std::endl;
@@ -36,7 +36,7 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 
 	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
 	shoot.setBuffer(shootBuffer);
-	entity.setHealth(3);
+	entity.setHealth(playerHealth);
 	entity.setSpeed(BLOCK_SIZE * 4.5);
 	entity.setType(EntityType::PLAYER);
 }

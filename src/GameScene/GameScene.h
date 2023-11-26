@@ -51,11 +51,15 @@ enum class GameState
 	std::vector<std::shared_ptr<Enemy>> enemies;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	std::vector<std::shared_ptr<IItem>> items;
-	std::shared_ptr<IPlayer> player = std::make_shared<Player>("../res/body.png", "../res/foot.png", getCenterCoordinates());
+	std::shared_ptr<IPlayer> player = std::make_shared<Player>(3, getCenterCoordinates());
 	GameState gameState = GameState::STARTING;
 	Overlay overlay = Overlay(secondsToEnd, player->getHealth());
 	Spawner spawner = Spawner(enemies);
+	Randomer itemTypeRandomer = {1, 2};
+	Randomer itemDropRandomer = {0, 100};
 
+	void takeItem(const std::shared_ptr<IItem>& item);
+	void spawnItemWithChance(sf::Vector2f position);
 	void useItem(ItemType itemType);
 	void updateEnemies(float elapsedSeconds);
 	void updateBullets(float elapsedSeconds);

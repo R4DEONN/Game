@@ -11,7 +11,7 @@ class Overlay : public sf::Drawable
 {
 public:
 	Overlay(float SecondsToEnd, int PlayerHealth);
-	void update(float secondsToEnd, int playerHealth);
+	void update(float secondsToEnd, int playerHealth, float elapsedTime);
 private:
 	sf::Texture healthTexture;
 	sf::RectangleShape healthShape;
@@ -22,6 +22,7 @@ private:
 	sf::RectangleShape currentItemField;
 	sf::Font font;
 	sf::Text healthPoints;
+	sf::Text fps;
 
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };

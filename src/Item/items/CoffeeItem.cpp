@@ -16,17 +16,3 @@ CoffeeItem::CoffeeItem(sf::Vector2f itemPosition)
 		BLOCK_SIZE,
 	});
 }
-
-void CoffeeItem::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(shape, states);
-}
-
-void CoffeeItem::use()
-{
-}
-
-void CoffeeItem::setPosition(sf::Vector2f newPosition)
-{
-	shape.setPosition(newPosition);
-}

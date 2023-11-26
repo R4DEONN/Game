@@ -8,8 +8,8 @@
 enum class ItemType
 {
 	NONE = 0,
-	EXTRA_HP,
 	COFFEE,
+	EXTRA_HP,
 	MACHINE_GUN,
 	SHOTGUN,
 	WAGON_WHEEL,

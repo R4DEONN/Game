@@ -16,7 +16,7 @@
 class Player : public IPlayer
 {
  public:
-	Player(const std::string& texturePath, const std::string& footTexturePath, sf::Vector2f position);
+	Player(int playerHealth, sf::Vector2f position);
 	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets) override;
 	void movePlayerToCenter() override;
 	void restoreHealth() override;

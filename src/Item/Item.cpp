@@ -17,14 +17,9 @@ Item::Item(sf::Vector2f itemPosition)
 	type = ItemType::NONE;
 }
 
-void Item::use()
-{
-
-}
-
 void Item::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-
+	target.draw(shape, states);
 }
 
 sf::RectangleShape Item::getImmutableShape() const

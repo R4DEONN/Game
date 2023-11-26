@@ -12,7 +12,6 @@ class Item : public IItem
 {
 public:
 	explicit Item(sf::Vector2f itemPosition);
-	void use() override;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	sf::RectangleShape getImmutableShape() const override;
 	void setPosition(sf::Vector2f newPosition) override;

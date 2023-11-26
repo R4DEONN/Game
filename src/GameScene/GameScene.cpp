@@ -15,7 +15,7 @@ void GameScene::clearField()
 	bullets.clear();
 	items.clear();
 
-	player = std::make_shared<Player>("../res/body.png", "../res/foot.png", getCenterCoordinates());
+	player = std::make_shared<Player>(player->getHealth(), getCenterCoordinates());
 	spawner.restartSpawner();
 }
 
@@ -95,7 +95,7 @@ bool GameScene::update(float elapsedSeconds)
 		spawner.Spawn(elapsedSeconds);
 	}
 	field.update(elapsedSeconds);
-	overlay.update(secondsToEnd, player->getHealth());
+	overlay.update(secondsToEnd, player->getHealth(), elapsedSeconds);
 	player->update(elapsedSeconds, field, bullets);
 	updateBullets(elapsedSeconds);
 	updateEnemies(elapsedSeconds);
@@ -171,11 +171,26 @@ bool GameScene::handleCollision()
 		const sf::FloatRect itemBounds = items[i]->getImmutableShape().getGlobalBounds();
 		if (playerBounds.intersects(itemBounds))
 		{
-			player->setItem(items[i]);
+			takeItem(items[i]);
 			items.erase(items.begin() + i);
 		}
 	}
 	return false;
+}
+
+void GameScene::takeItem(const std::shared_ptr<IItem>& item)
+{
+	switch (item->getType())
+	{
+	case ItemType::EXTRA_HP:
+		player->setHealth(player->getHealth() + 1);
+		break;
+	case ItemType::COFFEE:
+		player->setItem(item);
+		break;
+	default:
+		player->setItem(item);
+	}
 }
 
 void GameScene::useItem(ItemType itemType)
@@ -205,7 +220,7 @@ void GameScene::updateEnemies(float elapsedSeconds)
 		}
 		else
 		{
-			items.push_back(ItemCreator::createItem(ItemType::COFFEE, enemies[i]->getPosition()));
+			spawnItemWithChance(enemies[i]->getPosition());
 			indexesToDelete.push_back(i);
 		}
 	}
@@ -235,5 +250,14 @@ void GameScene::updateBullets(float elapsedSeconds)
 	for (int i = indexesToDelete.size() - 1; i >= 0; --i)
 	{
 		bullets.erase(bullets.begin() + indexesToDelete[i]);
+	}
+}
+
+void GameScene::spawnItemWithChance(sf::Vector2f position)
+{
+//	if (itemDropRandomer() < 10)
+	{
+		auto itemType = ItemType(itemTypeRandomer());
+		items.push_back(ItemCreator::createItem(itemType, position));
 	}
 }
