@@ -23,6 +23,7 @@ public:
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	void setItem(std::shared_ptr<IItem> newItem) override;
 	std::shared_ptr<IItem> getItem() override;
+	void setDelayToShot(float newDelay) override;
 };
 
 

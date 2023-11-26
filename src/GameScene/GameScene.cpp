@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "../Entity/Player/FastPlayerDecorator.h"
 #include "../Item/ItemCreator.h"
+#include "../Entity/Player/MachineGunPlayerDecorator.h"
 
 GameScene::GameScene()
 {
@@ -186,6 +187,7 @@ void GameScene::takeItem(const std::shared_ptr<IItem>& item)
 		player->setHealth(player->getHealth() + 1);
 		break;
 	case ItemType::COFFEE:
+	case ItemType::MACHINE_GUN:
 		player->setItem(item);
 		break;
 	default:
@@ -199,6 +201,9 @@ void GameScene::useItem(ItemType itemType)
 	{
 	case ItemType::COFFEE:
 		player = std::make_shared<FastPlayerDecorator>(player);
+		break;
+	case ItemType::MACHINE_GUN:
+		player = std::make_shared<MachineGunPlayerDecorator>(player);
 		break;
 	default:
 		break;

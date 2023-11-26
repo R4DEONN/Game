@@ -99,7 +99,7 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 	}
 
 
-	if (secondsFromLastShot < 0.3)
+	if (secondsFromLastShot < delayToShot)
 	{
 		secondsFromLastShot += elapsedTime;
 		return;
@@ -281,4 +281,9 @@ void Player::setItem(std::shared_ptr<IItem> newItem)
 std::shared_ptr<IItem> Player::getItem()
 {
 	return item;
+}
+
+void Player::setDelayToShot(float newDelay)
+{
+	delayToShot = newDelay;
 }

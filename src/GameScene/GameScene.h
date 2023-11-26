@@ -55,7 +55,7 @@ enum class GameState
 	GameState gameState = GameState::STARTING;
 	Overlay overlay = Overlay(secondsToEnd, player->getHealth());
 	Spawner spawner = Spawner(enemies);
-	Randomer itemTypeRandomer = {1, 2};
+	Randomer itemTypeRandomer = {1, 3};
 	Randomer itemDropRandomer = {0, 100};
 
 	void takeItem(const std::shared_ptr<IItem>& item);

@@ -33,9 +33,11 @@ class Player : public IPlayer
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void setItem(std::shared_ptr<IItem> newItem) override;
 	std::shared_ptr<IItem> getItem() override;
+	void setDelayToShot(float newDelay) override;
  private:
 	Entity entity;
 	std::shared_ptr<IItem> item = nullptr;
+	float delayToShot = 0.3;
 	float secondsFromLastShot = 1;
 	Direction attackDirection = Direction::NONE;
 	sf::Sound shoot;

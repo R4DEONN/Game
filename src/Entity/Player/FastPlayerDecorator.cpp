@@ -91,3 +91,8 @@ std::shared_ptr<IItem> FastPlayerDecorator::getItem()
 {
 	return player->getItem();
 }
+
+void FastPlayerDecorator::setDelayToShot(float newDelay)
+{
+	player->setDelayToShot(newDelay);
+}
