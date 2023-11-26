@@ -18,6 +18,8 @@ private:
 	sf::Texture clockTexture;
 	sf::RectangleShape clockShape;
 	sf::RectangleShape timeLine;
+	sf::Texture currentItemFieldTexture;
+	sf::RectangleShape currentItemField;
 	sf::Font font;
 	sf::Text healthPoints;
 

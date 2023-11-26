@@ -124,8 +124,8 @@ sf::Vector2f Entity::getMovement(const float elapsedTime, Field& field)
 
 sf::Vector2f Entity::getPosition()
 {
-	float x = shape.getPosition().x + BLOCK_SIZE / 2;
-	float y = shape.getPosition().y + BLOCK_SIZE / 2;
+	float x = shape.getPosition().x;
+	float y = shape.getPosition().y;
 	return {x, y};
 }
 

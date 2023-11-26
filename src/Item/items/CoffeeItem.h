@@ -15,6 +15,7 @@ public:
 	explicit CoffeeItem(sf::Vector2f itemPosition);
 	void use() override;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	void setPosition(sf::Vector2f newPosition) override;
 };
 
 

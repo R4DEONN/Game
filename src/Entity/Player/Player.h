@@ -9,6 +9,9 @@
 #include "SFML/Audio/SoundBuffer.hpp"
 #include "../Bullet.h"
 #include "IPlayer.h"
+#include "../../Item/Item.h"
+#include "../../Common/GameConstants.h"
+#include <memory>
 
 class Player : public IPlayer
 {
@@ -28,8 +31,11 @@ class Player : public IPlayer
 	void setType(EntityType newType) override;
 	void decrementHealth() override;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void setItem(std::shared_ptr<IItem> newItem) override;
+	std::shared_ptr<IItem> getItem() override;
  private:
 	Entity entity;
+	std::shared_ptr<IItem> item = nullptr;
 	float secondsFromLastShot = 1;
 	Direction attackDirection = Direction::NONE;
 	sf::Sound shoot;

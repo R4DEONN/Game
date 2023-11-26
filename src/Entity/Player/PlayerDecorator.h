@@ -20,6 +20,8 @@ public:
 	Direction& getMoveDirection() override;
 	float getMoveTimer() override;
 	sf::RectangleShape getShape() const override;
+	void setItem(std::shared_ptr<IItem> newItem) override;
+	std::shared_ptr<IItem> getItem() override;
 	void setMoveTimer(float newTime) override;
 	void setHealth(int newHealth) override;
 	void setType(EntityType newType) override;

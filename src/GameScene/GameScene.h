@@ -56,6 +56,7 @@ enum class GameState
 	Overlay overlay = Overlay(secondsToEnd, player->getHealth());
 	Spawner spawner = Spawner(enemies);
 
+	void useItem(ItemType itemType);
 	void updateEnemies(float elapsedSeconds);
 	void updateBullets(float elapsedSeconds);
     bool handleCollision();

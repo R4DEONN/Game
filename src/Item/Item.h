@@ -14,12 +14,13 @@ public:
 	explicit Item(sf::Vector2f itemPosition);
 	void use() override;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-	sf::RectangleShape getShape() override;
+	sf::RectangleShape getImmutableShape() const override;
+	void setPosition(sf::Vector2f newPosition) override;
+	ItemType getType() const override;
 protected:
 	ItemType type;
 	sf::RectangleShape shape;
 	sf::Texture texture;
-	sf::Vector2f position;
 };
 
 

@@ -7,12 +7,14 @@
 
 Item::Item(sf::Vector2f itemPosition)
 {
-	position = itemPosition;
-	shape.setPosition(position);
+	shape.setPosition(itemPosition);
+	shape.setPosition(itemPosition);
 	shape.setOrigin({
-		BLOCK_SIZE,
-		BLOCK_SIZE,
+		BLOCK_SIZE / 2,
+		BLOCK_SIZE / 2,
 	});
+
+	type = ItemType::NONE;
 }
 
 void Item::use()
@@ -25,7 +27,17 @@ void Item::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 }
 
-sf::RectangleShape Item::getShape()
+sf::RectangleShape Item::getImmutableShape() const
 {
 	return shape;
+}
+
+void Item::setPosition(sf::Vector2f newPosition)
+{
+	shape.setPosition(newPosition);
+}
+
+ItemType Item::getType() const
+{
+	return type;
 }

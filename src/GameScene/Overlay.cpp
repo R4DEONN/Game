@@ -27,6 +27,20 @@ Overlay::Overlay(float SecondsToEnd, int PlayerHealth)
 	});
 	healthPoints.setString("x" + std::to_string(PlayerHealth));
 
+	currentItemFieldTexture.loadFromFile("../res/itemField.png");
+	currentItemField.setTexture(&currentItemFieldTexture);
+	currentItemField.setSize({
+		float(BLOCK_SIZE * 1.375),
+		float(BLOCK_SIZE * 1.375),
+	});
+	currentItemField.setPosition({
+		CENTER_OFFSET_X - float(BLOCK_SIZE * 1.375) / 2 - 15,
+		CENTER_OFFSET_Y + float(BLOCK_SIZE * 1.375) / 2
+	});
+	currentItemField.setOrigin({
+		float(BLOCK_SIZE * 1.375) / 2,
+		float(BLOCK_SIZE * 1.375) / 2,
+	});
 
 	clockTexture.loadFromFile("../res/clock.png");
 	clockShape.setTexture(&clockTexture);
@@ -65,4 +79,5 @@ void Overlay::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(healthPoints, states);
 	target.draw(clockShape, states);
 	target.draw(timeLine, states);
+	target.draw(currentItemField, states);
 }

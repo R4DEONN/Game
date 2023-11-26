@@ -7,7 +7,8 @@
 
 enum class ItemType
 {
-	EXTRA_HP = 0,
+	NONE = 0,
+	EXTRA_HP,
 	COFFEE,
 	MACHINE_GUN,
 	SHOTGUN,

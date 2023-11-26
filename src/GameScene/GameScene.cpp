@@ -13,6 +13,7 @@ void GameScene::clearField()
 {
 	enemies.clear();
 	bullets.clear();
+	items.clear();
 
 	player = std::make_shared<Player>("../res/body.png", "../res/foot.png", getCenterCoordinates());
 	spawner.restartSpawner();
@@ -29,7 +30,10 @@ bool GameScene::update(float elapsedSeconds)
 {
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-
+		if (player->getItem())
+		{
+			useItem(player->getItem()->getType());
+		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
@@ -117,11 +121,11 @@ void GameScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	target.draw(field, states);
 	target.draw(overlay, states);
+	target.draw(*player, states);
 	for (const auto& item: items)
 	{
 		target.draw(*item, states);
 	}
-	target.draw(*player, states);
 	for (const auto& bullet: bullets)
 	{
 		target.draw(*bullet, states);
@@ -164,14 +168,28 @@ bool GameScene::handleCollision()
 	}
 	for (int i = 0; i < items.size(); i++)
 	{
-		const sf::FloatRect itemBounds = items[i]->getShape().getGlobalBounds();
+		const sf::FloatRect itemBounds = items[i]->getImmutableShape().getGlobalBounds();
 		if (playerBounds.intersects(itemBounds))
 		{
-			player = std::make_shared<FastPlayerDecorator>(player);
+			player->setItem(items[i]);
 			items.erase(items.begin() + i);
 		}
 	}
 	return false;
+}
+
+void GameScene::useItem(ItemType itemType)
+{
+	switch (itemType)
+	{
+	case ItemType::COFFEE:
+		player = std::make_shared<FastPlayerDecorator>(player);
+		break;
+	default:
+		break;
+	}
+
+	player->setItem(std::make_shared<Item>(sf::Vector2f{0, 0}));
 }
 
 void GameScene::updateEnemies(float elapsedSeconds)

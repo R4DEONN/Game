@@ -76,3 +76,13 @@ void PlayerDecorator::draw(sf::RenderTarget& target, sf::RenderStates states) co
 {
 	target.draw(*player, states);
 }
+
+void PlayerDecorator::setItem(std::shared_ptr<IItem> newItem)
+{
+	player->setItem(newItem);
+}
+
+std::shared_ptr<IItem> PlayerDecorator::getItem()
+{
+	return player->getItem();
+}

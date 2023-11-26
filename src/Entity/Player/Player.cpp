@@ -37,7 +37,7 @@ Player::Player(const std::string& bodyTexturePath, const std::string& footTextur
 	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
 	shoot.setBuffer(shootBuffer);
 	entity.setHealth(3);
-	entity.setSpeed(BLOCK_SIZE * 4);
+	entity.setSpeed(BLOCK_SIZE * 4.5);
 	entity.setType(EntityType::PLAYER);
 }
 
@@ -218,6 +218,10 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(foot, states);
 	target.draw(entity.getShape(), states);
+	if (item)
+	{
+		target.draw(item->getImmutableShape(), states);
+	}
 }
 
 sf::RectangleShape Player::getShape() const
@@ -263,4 +267,18 @@ void Player::setType(EntityType newType)
 void Player::decrementHealth()
 {
 	entity.decrementHealth();
+}
+
+void Player::setItem(std::shared_ptr<IItem> newItem)
+{
+	item = newItem;
+	item->setPosition({
+		CENTER_OFFSET_X - float(BLOCK_SIZE * 1.375) / 2 - 15,
+		CENTER_OFFSET_Y + float(BLOCK_SIZE * 1.375) / 2
+	});
+}
+
+std::shared_ptr<IItem> Player::getItem()
+{
+	return item;
 }

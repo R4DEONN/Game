@@ -81,3 +81,13 @@ void FastPlayerDecorator::draw(sf::RenderTarget& target, sf::RenderStates states
 {
 	target.draw(*player, states);
 }
+
+void FastPlayerDecorator::setItem(std::shared_ptr<IItem> newItem)
+{
+	player->setItem(newItem);
+}
+
+std::shared_ptr<IItem> FastPlayerDecorator::getItem()
+{
+	return player->getItem();
+}

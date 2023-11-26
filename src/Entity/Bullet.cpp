@@ -10,7 +10,7 @@ Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction 
 	health = 0;
 	shape.setTextureRect(sf::IntRect(0, 0, 12, 12));
 	type = EntityType::BULLET;
-	speed = 500.f;
+	speed = BLOCK_SIZE * 8;
 	shape.setSize({
 		BLOCK_SIZE / 4,
 		BLOCK_SIZE / 4,
