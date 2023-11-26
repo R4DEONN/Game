@@ -5,13 +5,21 @@
 #ifndef GAME_ITEM_H
 #define GAME_ITEM_H
 
-#include <SFML/Graphics.hpp>
+#include "IItem.h"
+#include "ItemType.h"
 
-class Item : public sf::Drawable
+class Item : public IItem
 {
 public:
-private:
+	explicit Item(sf::Vector2f itemPosition);
+	void use() override;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+	sf::RectangleShape getShape() override;
+protected:
+	ItemType type;
+	sf::RectangleShape shape;
+	sf::Texture texture;
+	sf::Vector2f position;
 };
 
 

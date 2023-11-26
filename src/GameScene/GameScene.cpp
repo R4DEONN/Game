@@ -1,6 +1,7 @@
 #include <iostream>
 #include "GameScene.h"
 #include "../Entity/Player/FastPlayerDecorator.h"
+#include "../Item/ItemCreator.h"
 
 GameScene::GameScene()
 {
@@ -13,7 +14,7 @@ void GameScene::clearField()
 	enemies.clear();
 	bullets.clear();
 
-	player->movePlayerToCenter();
+	player = std::make_shared<Player>("../res/body.png", "../res/foot.png", getCenterCoordinates());
 	spawner.restartSpawner();
 }
 
@@ -22,11 +23,14 @@ void GameScene::restartGame()
 	clearField();
 	secondsToEnd = 100;
 	player->restoreHealth();
-	player = std::make_shared<FastPlayerDecorator>(player);
 }
 
 bool GameScene::update(float elapsedSeconds)
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+
+	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
 	{
 		gameState = GameState::PAUSE;
@@ -113,6 +117,10 @@ void GameScene::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	target.draw(field, states);
 	target.draw(overlay, states);
+	for (const auto& item: items)
+	{
+		target.draw(*item, states);
+	}
 	target.draw(*player, states);
 	for (const auto& bullet: bullets)
 	{
@@ -154,6 +162,15 @@ bool GameScene::handleCollision()
 			}
 		}
 	}
+	for (int i = 0; i < items.size(); i++)
+	{
+		const sf::FloatRect itemBounds = items[i]->getShape().getGlobalBounds();
+		if (playerBounds.intersects(itemBounds))
+		{
+			player = std::make_shared<FastPlayerDecorator>(player);
+			items.erase(items.begin() + i);
+		}
+	}
 	return false;
 }
 
@@ -170,6 +187,7 @@ void GameScene::updateEnemies(float elapsedSeconds)
 		}
 		else
 		{
+			items.push_back(ItemCreator::createItem(ItemType::COFFEE, enemies[i]->getPosition()));
 			indexesToDelete.push_back(i);
 		}
 	}

@@ -12,6 +12,7 @@
 #include "SFML/Audio.hpp"
 #include "Menu/MainMenu.h"
 #include "Menu/GameOverMenu.h"
+#include "../Item/IItem.h"
 
 const std::wstring MAIN_MENU_MESSAGES[] = {
 	L"Начать игру",
@@ -49,6 +50,7 @@ enum class GameState
 	Field field;
 	std::vector<std::shared_ptr<Enemy>> enemies;
 	std::vector<std::shared_ptr<Bullet>> bullets;
+	std::vector<std::shared_ptr<IItem>> items;
 	std::shared_ptr<IPlayer> player = std::make_shared<Player>("../res/body.png", "../res/foot.png", getCenterCoordinates());
 	GameState gameState = GameState::STARTING;
 	Overlay overlay = Overlay(secondsToEnd, player->getHealth());
