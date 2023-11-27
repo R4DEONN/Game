@@ -91,3 +91,13 @@ void PlayerDecorator::setDelayToShot(float newDelay)
 {
 	player->setDelayToShot(newDelay);
 }
+
+void PlayerDecorator::setTripleShoot(bool isTripleShoot)
+{
+	player->setTripleShoot(isTripleShoot);
+}
+
+void PlayerDecorator::setEightShoot(bool isEightShoot)
+{
+	player->setEightShoot(isEightShoot);
+}

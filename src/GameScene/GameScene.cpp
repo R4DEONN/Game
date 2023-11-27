@@ -3,6 +3,7 @@
 #include "../Entity/Player/FastPlayerDecorator.h"
 #include "../Item/ItemCreator.h"
 #include "../Entity/Player/MachineGunPlayerDecorator.h"
+#include "../Entity/Player/ShotgunPlayerDecorator.h"
 
 GameScene::GameScene()
 {
@@ -204,6 +205,9 @@ void GameScene::useItem(ItemType itemType)
 		break;
 	case ItemType::MACHINE_GUN:
 		player = std::make_shared<MachineGunPlayerDecorator>(player);
+		break;
+	case ItemType::SHOTGUN:
+		player = std::make_shared<ShotgunPlayerDecorator>(player);
 		break;
 	default:
 		break;

@@ -28,6 +28,9 @@ public:
 	void decrementHealth() override;
 	void setDelayToShot(float newDelay) override;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
+//	void shoot(std::vector<std::shared_ptr<Bullet>> &bullets, Direction direction) override;
+	void setTripleShoot(bool isTripleShoot) override;
+	void setEightShoot(bool isEightShoot) override;
 protected:
 	std::shared_ptr<IPlayer> player;
 };

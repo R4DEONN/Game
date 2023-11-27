@@ -34,13 +34,15 @@ class Player : public IPlayer
 	void setItem(std::shared_ptr<IItem> newItem) override;
 	std::shared_ptr<IItem> getItem() override;
 	void setDelayToShot(float newDelay) override;
+	void setTripleShoot(bool isTripleShoot) override;
+	void setEightShoot(bool isEightShoot) override;
  private:
 	Entity entity;
 	std::shared_ptr<IItem> item = nullptr;
 	float delayToShot = 0.3;
 	float secondsFromLastShot = 1;
 	Direction attackDirection = Direction::NONE;
-	sf::Sound shoot;
+	sf::Sound shootSound;
 	sf::SoundBuffer shootBuffer;
 	sf::Texture footTexture;
 	sf::RectangleShape foot;
@@ -48,7 +50,7 @@ class Player : public IPlayer
 	bool isEightShoot = false;
 
 	void move(sf::Vector2f movement);
-
+	void shoot(std::vector<std::shared_ptr<Bullet>>& bullets);
 	void updateDirection(
 		Direction& direction,
 		sf::Keyboard::Key UpKey,

@@ -3,6 +3,8 @@
 #include "../Common/GameConstants.h"
 
 const float FORTY_FIVE_DEGREES_COEF = float(std::sqrt(2)) / 2;
+const float THIRTY_DEGREES_COEF = 1.f / 2;
+const float SIXTY_DEGREES_COEF = float(std::sqrt(3)) / 2;
 
 Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction direction)
 : Entity(texturePath, position)
@@ -19,6 +21,30 @@ Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction 
 	{
 	case Direction::UP:
 		step = {0, -speed};
+		break;
+	case Direction::UP_RIGHT_THIRTY:
+		step = {+speed * THIRTY_DEGREES_COEF, -speed * SIXTY_DEGREES_COEF};
+		break;
+	case Direction::UP_RIGHT_SIXTY:
+		step = {+speed * SIXTY_DEGREES_COEF, -speed * THIRTY_DEGREES_COEF};
+		break;
+	case Direction::DOWN_RIGHT_THIRTY:
+		step = {+speed * THIRTY_DEGREES_COEF, +speed * SIXTY_DEGREES_COEF};
+		break;
+	case Direction::DOWN_RIGHT_SIXTY:
+		step = {+speed * SIXTY_DEGREES_COEF, +speed * THIRTY_DEGREES_COEF};
+		break;
+	case Direction::UP_LEFT_THIRTY:
+		step = {-speed * THIRTY_DEGREES_COEF, -speed * SIXTY_DEGREES_COEF};
+		break;
+	case Direction::UP_LEFT_SIXTY:
+		step = {-speed * SIXTY_DEGREES_COEF, -speed * THIRTY_DEGREES_COEF};
+		break;
+	case Direction::DOWN_LEFT_THIRTY:
+		step = {-speed * THIRTY_DEGREES_COEF, +speed * SIXTY_DEGREES_COEF};
+		break;
+	case Direction::DOWN_LEFT_SIXTY:
+		step = {-speed * SIXTY_DEGREES_COEF, +speed * THIRTY_DEGREES_COEF};
 		break;
 	case Direction::UP_LEFT:
 		step = {-speed * FORTY_FIVE_DEGREES_COEF, -speed * FORTY_FIVE_DEGREES_COEF};

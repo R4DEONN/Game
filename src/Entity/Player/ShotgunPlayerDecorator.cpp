@@ -1,7 +1,8 @@
 #include "ShotgunPlayerDecorator.h"
 
 ShotgunPlayerDecorator::ShotgunPlayerDecorator(const std::shared_ptr<IPlayer>& player)
-: PlayerDecorator(player)
+	: PlayerDecorator(player)
 {
 	this->player = player;
+	this->player->setTripleShoot(true);
 }

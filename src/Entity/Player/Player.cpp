@@ -35,7 +35,7 @@ Player::Player(int playerHealth, sf::Vector2f position)
 	entity.shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 
 	shootBuffer.loadFromFile("../res/bullet_sound.ogg");
-	shoot.setBuffer(shootBuffer);
+	shootSound.setBuffer(shootBuffer);
 	entity.setHealth(playerHealth);
 	entity.setSpeed(BLOCK_SIZE * 4.5);
 	entity.setType(EntityType::PLAYER);
@@ -86,7 +86,6 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 		entity.shape.setTextureRect(sf::IntRect(48 * 2, 0, 48, 39));
 	}
 
-
 	if (secondsFromLastShot < delayToShot)
 	{
 		secondsFromLastShot += elapsedTime;
@@ -96,19 +95,54 @@ void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr
 	if (attackDirection != Direction::NONE)
 	{
 		secondsFromLastShot = 0;
-		const sf::FloatRect playerBounds = entity.getShape().getGlobalBounds();
-		const sf::Vector2f playerCenter = {
-			entity.getShape().getPosition().x + playerBounds.width / 2,
-			entity.getShape().getPosition().y + playerBounds.height / 2,
-		};
-		std::shared_ptr<Bullet> bullet = std::make_shared<Bullet>(
-			"../res/Bullet.png",
-			playerCenter,
-			attackDirection
-			);
-		bullets.push_back(bullet);
-		shoot.play();
+		shoot(bullets);
+		shootSound.play();
 	}
+}
+
+void makeBullet(sf::Vector2f playerCenter, Direction direction, std::vector<std::shared_ptr<Bullet>>& bullets)
+{
+	auto bullet = std::make_shared<Bullet>(
+		"../res/Bullet.png",
+		playerCenter,
+		direction
+	);
+
+	bullets.push_back(bullet);
+}
+
+void Player::shoot(std::vector<std::shared_ptr<Bullet>>& bullets)
+{
+	const sf::FloatRect playerBounds = entity.getShape().getGlobalBounds();
+	const sf::Vector2f playerCenter = {
+		entity.getShape().getPosition().x + playerBounds.width / 2,
+		entity.getShape().getPosition().y + playerBounds.height / 2,
+	};
+	if (!isTripleShoot && !isEightShoot)
+	{
+		makeBullet(playerCenter, attackDirection, bullets);
+		return;
+	}
+	else if (isEightShoot)
+	{
+		makeBullet(playerCenter, Direction::UP, bullets);
+		makeBullet(playerCenter, Direction::UP_RIGHT, bullets);
+		makeBullet(playerCenter, Direction::RIGHT, bullets);
+		makeBullet(playerCenter, Direction::DOWN_RIGHT, bullets);
+		makeBullet(playerCenter, Direction::DOWN, bullets);
+		makeBullet(playerCenter, Direction::DOWN_LEFT, bullets);
+		makeBullet(playerCenter, Direction::LEFT, bullets);
+		makeBullet(playerCenter, Direction::UP_LEFT, bullets);
+		return;
+	}
+
+	Direction firstBulletDirection = int(attackDirection) - 1 == 0 ? Direction(16) : Direction(int(attackDirection) - 1);
+
+	Direction thirdBulletDirection = int(attackDirection) + 1 == 17 ? Direction(1) : Direction(int(attackDirection) + 1);
+
+	makeBullet(playerCenter, firstBulletDirection, bullets);
+	makeBullet(playerCenter, attackDirection, bullets);
+	makeBullet(playerCenter, thirdBulletDirection, bullets);
 }
 
 void Player::movePlayerToCenter()
@@ -274,4 +308,14 @@ std::shared_ptr<IItem> Player::getItem()
 void Player::setDelayToShot(float newDelay)
 {
 	delayToShot = newDelay;
+}
+
+void Player::setTripleShoot(bool isTripleShoot)
+{
+	this->isTripleShoot = isTripleShoot;
+}
+
+void Player::setEightShoot(bool isEightShoot)
+{
+	this->isEightShoot = isEightShoot;
 }
