@@ -1,11 +1,8 @@
-//
-// Created by admin on 26.11.2023.
-//
-
 #include "ItemCreator.h"
 #include "items/CoffeeItem.h"
 #include "items/HpItem.h"
 #include "items/MachineGunItem.h"
+#include "items/ShotgunItem.h"
 
 std::shared_ptr<IItem> ItemCreator::createItem(ItemType type, sf::Vector2f position)
 {
@@ -17,6 +14,8 @@ std::shared_ptr<IItem> ItemCreator::createItem(ItemType type, sf::Vector2f posit
 		return std::make_shared<HpItem>(position);
 	case ItemType::MACHINE_GUN:
 		return std::make_shared<MachineGunItem>(position);
+	case ItemType::SHOTGUN:
+		return std::make_shared<ShotgunItem>(position);
 	default:
 		return std::make_shared<Item>(position);
 	}

@@ -48,20 +48,8 @@ void Player::setSpeed(float newSpeed)
 
 void Player::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets)
 {
-	updateDirection(
-		entity.getMoveDirection(),
-		sf::Keyboard::W,
-		sf::Keyboard::A,
-		sf::Keyboard::S,
-		sf::Keyboard::D
-	);
-	updateDirection(
-		attackDirection,
-		sf::Keyboard::Up,
-		sf::Keyboard::Left,
-		sf::Keyboard::Down,
-		sf::Keyboard::Right
-	);
+	updateDirection(entity.getMoveDirection(), sf::Keyboard::W, sf::Keyboard::A, sf::Keyboard::S, sf::Keyboard::D);
+	updateDirection(attackDirection, sf::Keyboard::Up, sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Right);
 
 	auto movement = entity.getMovement(elapsedTime, field);
 	move(movement);

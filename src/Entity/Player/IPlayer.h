@@ -19,9 +19,6 @@ public:
 	virtual void setItem(std::shared_ptr<IItem> newItem) = 0;
 	virtual std::shared_ptr<IItem> getItem() = 0;
 	virtual void setDelayToShot(float newDelay) = 0;
-//	virtual void setSpeed(float newSpeed) = 0;
-//	virtual sf::RectangleShape getShape() = 0;
-//	virtual sf::
 };
 
 #endif //GAME_IPLAYER_H
