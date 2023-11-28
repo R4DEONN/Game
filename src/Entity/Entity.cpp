@@ -47,11 +47,6 @@ void Entity::setHealth(int newHealth)
 	health = newHealth;
 }
 
-void Entity::decrementHealth()
-{
-	health--;
-}
-
 sf::RectangleShape Entity::getShape() const
 {
 	return shape;

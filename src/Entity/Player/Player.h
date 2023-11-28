@@ -18,8 +18,6 @@ class Player : public IPlayer
  public:
 	Player(int playerHealth, sf::Vector2f position);
 	void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets) override;
-	void movePlayerToCenter() override;
-	void restoreHealth() override;
 	void setSpeed(float newSpeed) override;
 	sf::RectangleShape getShape() const override;
 	int getHealth() override;
@@ -29,7 +27,6 @@ class Player : public IPlayer
 	void setMoveTimer(float newTime) override;
 	void setHealth(int newHealth) override;
 	void setType(EntityType newType) override;
-	void decrementHealth() override;
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void setItem(std::shared_ptr<IItem> newItem) override;
 	std::shared_ptr<IItem> getItem() override;

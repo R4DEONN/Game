@@ -19,7 +19,6 @@ public:
 	virtual void setType(EntityType newType) = 0;
 	virtual float getMoveTimer() = 0;
 	virtual void setMoveTimer(float newTime) = 0;
-	virtual void decrementHealth() = 0;
 	virtual sf::RectangleShape getShape() const = 0;
 };
 

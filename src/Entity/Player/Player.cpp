@@ -145,19 +145,6 @@ void Player::shoot(std::vector<std::shared_ptr<Bullet>>& bullets)
 	makeBullet(playerCenter, thirdBulletDirection, bullets);
 }
 
-void Player::movePlayerToCenter()
-{
-	const sf::Vector2f position = getCenterCoordinates();
-	const sf::Vector2f delta = {-26, 19};
-	entity.shape.setPosition(position);
-	foot.setPosition(position + delta);
-}
-
-void Player::restoreHealth()
-{
-	entity.setHealth(3);
-}
-
 void Player::move(const sf::Vector2f movement)
 {
 	entity.shape.move(movement);
@@ -284,11 +271,6 @@ void Player::setHealth(int newHealth)
 void Player::setType(EntityType newType)
 {
 	entity.setType(newType);
-}
-
-void Player::decrementHealth()
-{
-	entity.decrementHealth();
 }
 
 void Player::setItem(std::shared_ptr<IItem> newItem)

@@ -81,7 +81,7 @@ void Bullet::update(float elapsedTime, Field& field)
 
 	if (movement != newMovement)
 	{
-        decrementHealth();
+        setHealth(getHealth() - 1);
 	}
 	else
 	{

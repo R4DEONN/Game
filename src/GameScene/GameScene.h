@@ -13,6 +13,7 @@
 #include "Menu/MainMenu.h"
 #include "Menu/GameOverMenu.h"
 #include "../Item/IItem.h"
+#include "../Entity/MultiplicationEntityManager.h"
 
 const std::wstring MAIN_MENU_MESSAGES[] = {
 	L"Начать игру",
@@ -37,7 +38,6 @@ enum class GameState
 {
  public:
 	GameScene();
-	void clearField();
 	void restartGame();
 	bool update(float elapsedSeconds);
 
@@ -48,22 +48,10 @@ enum class GameState
 	float secondsToEnd = 100;
 	sf::Music music;
 	Field field;
-	std::vector<std::shared_ptr<Enemy>> enemies;
-	std::vector<std::shared_ptr<Bullet>> bullets;
-	std::vector<std::shared_ptr<IItem>> items;
-	std::shared_ptr<IPlayer> player = std::make_shared<Player>(3, getCenterCoordinates());
+	MultiplicationEntityManager entityManager;
 	GameState gameState = GameState::STARTING;
-	Overlay overlay = Overlay(secondsToEnd, player->getHealth());
-	Spawner spawner = Spawner(enemies);
-	Randomer itemTypeRandomer = {1, 4};
-	Randomer itemDropRandomer = {0, 100};
+	Overlay overlay = Overlay(secondsToEnd, entityManager.getPlayer()->getHealth());
 
-	void takeItem(const std::shared_ptr<IItem>& item);
-	void spawnItemWithChance(sf::Vector2f position);
-	void useItem(ItemType itemType);
-	void updateEnemies(float elapsedSeconds);
-	void updateBullets(float elapsedSeconds);
-    bool handleCollision();
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 

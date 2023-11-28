@@ -21,7 +21,6 @@ class Entity : public IEntity
 	Direction& getMoveDirection() override;
 	int getHealth() override;
 	void setHealth(int newHealth) override;
-	void decrementHealth() override;
 	sf::Vector2f getPosition() override;
 	sf::RectangleShape getShape() const override;
 	EntityType getType();

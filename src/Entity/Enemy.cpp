@@ -41,8 +41,8 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 			sf::FloatRect bulletBounds = enemy->getShape().getGlobalBounds();
 			if (enemyBounds.intersects(bulletBounds))
 			{
-				decrementHealth();
-				enemy->decrementHealth();
+				setHealth(getHealth() - 1);
+				enemy->setHealth(enemy->getHealth() - 1);
 				return;
 			}
 		}
