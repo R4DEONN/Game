@@ -31,59 +31,76 @@ bool GameScene::update(float elapsedSeconds)
 		gameState = GameState::PAUSE;
 		music.pause();
 	}
-	//TODO вынести логику в switch
-	if (gameState == GameState::PAUSE)
+
+	bool isExitFromGame = false;
+	switch (gameState)
 	{
-		const int flag = pauseMenu.update(elapsedSeconds);
-		if (flag == 0)
-		{
-			gameState = GameState::PLAYING;
-			music.play();
-		}
-		else if (flag == 1)
-		{
-			restartGame();
-			music.play();
-			gameState = GameState::PLAYING;
-		}
-		else if (flag == 2)
-		{
-			return true;
-		}
-		return false;
-	}
-	if (gameState == GameState::STARTING)
-	{
-		const int flag = mainMenu.update(elapsedSeconds);
-		if (flag == 0)
-		{
-			gameState = GameState::PLAYING;
-			music.play();
-		}
-		else if (flag == 1)
-		{
-			return true;
-		}
-		return false;
-	}
-	if (gameState == GameState::LOSE)
-	{
-		const int flag = gameOverMenu.update(elapsedSeconds);
-		if (flag == 0)
-		{
-			gameState = GameState::PLAYING;
-			restartGame();
-		}
-		else if (flag == 1)
-		{
-			return true;
-		}
-		return false;
+	case GameState::PAUSE:
+		isExitFromGame = updatePauseMenu(elapsedSeconds);
+		break;
+	case GameState::STARTING:
+		isExitFromGame = updateMainMenu(elapsedSeconds);
+		break;
+	case GameState::LOSE:
+		isExitFromGame = updateGameOverMenu(elapsedSeconds);
+		break;
+	case GameState::PLAYING:
+		field.update(elapsedSeconds);
+		overlay.update(secondsToEnd, player->getHealth(), elapsedSeconds);
+		entityManager.update(elapsedSeconds, secondsToEnd);
 	}
 
-	field.update(elapsedSeconds);
-	overlay.update(secondsToEnd, player->getHealth(), elapsedSeconds);
-	entityManager.update(elapsedSeconds, secondsToEnd);
+	return isExitFromGame;
+}
+
+bool GameScene::updatePauseMenu(float elapsedSeconds)
+{
+	const int flag = pauseMenu.update(elapsedSeconds);
+	if (flag == 0)
+	{
+		gameState = GameState::PLAYING;
+		music.play();
+	}
+	else if (flag == 1)
+	{
+		restartGame();
+		music.play();
+		gameState = GameState::PLAYING;
+	}
+	else if (flag == 2)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool GameScene::updateMainMenu(float elapsedSeconds)
+{
+	const int flag = mainMenu.update(elapsedSeconds);
+	if (flag == 0)
+	{
+		gameState = GameState::PLAYING;
+		music.play();
+	}
+	else if (flag == 1)
+	{
+		return true;
+	}
+	return false;
+}
+
+bool GameScene::updateGameOverMenu(float elapsedSeconds)
+{
+	const int flag = gameOverMenu.update(elapsedSeconds);
+	if (flag == 0)
+	{
+		gameState = GameState::PLAYING;
+		restartGame();
+	}
+	else if (flag == 1)
+	{
+		return true;
+	}
 	return false;
 }
 

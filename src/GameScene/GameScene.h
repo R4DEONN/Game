@@ -52,6 +52,10 @@ enum class GameState
 	GameState gameState = GameState::STARTING;
 	Overlay overlay = Overlay(secondsToEnd, entityManager.getPlayer()->getHealth());
 
+	bool updatePauseMenu(float elapsedSeconds);
+	bool updateMainMenu(float elapsedSeconds);
+	bool updateGameOverMenu(float elapsedSeconds);
+
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 
