@@ -1,10 +1,5 @@
-//
-// Created by admin on 28.11.2023.
-//
-
 #ifndef GAME_MULTIPLICATIONENTITYMANAGER_H
 #define GAME_MULTIPLICATIONENTITYMANAGER_H
-
 
 #include <memory>
 #include <vector>
@@ -13,6 +8,8 @@
 #include "../Utils/Utils.h"
 #include "../GameScene/Spawner.h"
 #include "../Utils/Randomer.h"
+
+static const constexpr int DEFAULT_PLAYER_HP = 3;
 
 class MultiplicationEntityManager
 {
@@ -39,6 +36,5 @@ private:
 	bool handleCollision();
 	void spawnItemWithChance(sf::Vector2f position);
 };
-
 
 #endif //GAME_MULTIPLICATIONENTITYMANAGER_H

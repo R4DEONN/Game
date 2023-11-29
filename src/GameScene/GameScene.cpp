@@ -1,6 +1,8 @@
 #include <iostream>
 #include "GameScene.h"
 
+const constexpr float GAME_DURATION = 100;
+
 GameScene::GameScene()
 : entityManager(field)
 {
@@ -11,9 +13,8 @@ GameScene::GameScene()
 void GameScene::restartGame()
 {
 	entityManager.restart();
-	//TODO remove magic numbers
-	secondsToEnd = 100;
-	entityManager.getPlayer()->setHealth(3);
+	secondsToEnd = GAME_DURATION;
+	entityManager.getPlayer()->setHealth(DEFAULT_PLAYER_HP);
 }
 
 bool GameScene::update(float elapsedSeconds)
