@@ -77,30 +77,32 @@ bool GameScene::updatePauseMenu(float elapsedSeconds)
 bool GameScene::updateMainMenu(float elapsedSeconds)
 {
 	const int flag = mainMenu.update(elapsedSeconds);
-	if (flag == 0)
+	switch (flag)
 	{
+	case 0:
 		gameState = GameState::PLAYING;
 		music.play();
-	}
-	else if (flag == 1)
-	{
+		break;
+	case 1:
 		return true;
 	}
+
 	return false;
 }
 
 bool GameScene::updateGameOverMenu(float elapsedSeconds)
 {
 	const int flag = gameOverMenu.update(elapsedSeconds);
-	if (flag == 0)
+	switch (flag)
 	{
+	case 0:
 		gameState = GameState::PLAYING;
 		restartGame();
-	}
-	else if (flag == 1)
-	{
+		break;
+	case 1:
 		return true;
 	}
+
 	return false;
 }
 
