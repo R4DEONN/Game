@@ -1,6 +1,6 @@
 #include "Spawner.h"
 #include "../Field/Field.h"
-#include "../Entity/Enemy.h"
+#include "../Entity/Enemy/Enemy.h"
 #include "../Utils/Utils.h"
 
 const constexpr float SPAWNER_COOLDOWN = 1.5;
@@ -20,7 +20,7 @@ const sf::Vector2f SPAWN_POINTS[] = {
 	getFieldPoint(0, 9),
 };
 
-Spawner::Spawner(std::vector<std::shared_ptr<Enemy>>& Enemies)
+Spawner::Spawner(std::vector<std::shared_ptr<IEnemy>>& Enemies)
 {
 	enemies = &Enemies;
 	timeToSpawn = SPAWNER_COOLDOWN;
@@ -37,13 +37,14 @@ void Spawner::Spawn(float elapsedSeconds)
 
 	for (unsigned char i = 0; i < amountEnemiesToSpawn; ++i)
 	{
-		const auto index = randomer();
+		const auto index = pointRandomer();
 		const auto point = SPAWN_POINTS[index];
-		std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(
-			"../res/orc.png",
-			point
-		);
-		enemies->push_back(enemy);
+//		std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(
+//			"../res/orc.png",
+//			point
+//		);
+		auto enemyType = EnemyType(enemyTypeRandomer());
+		enemies->push_back(EnemyCreator::createEnemy(enemyType, point));
 	}
 }
 

@@ -89,7 +89,7 @@ void MultiplicationEntityManager::updateBullets(float elapsedSeconds)
 
 void MultiplicationEntityManager::spawnItemWithChance(sf::Vector2f position)
 {
-	if (itemDropRandomer() < 10)
+	if (itemDropRandomer() < 5)
 	{
 		auto itemType = ItemType(itemTypeRandomer());
 		items.push_back(ItemCreator::createItem(itemType, position));

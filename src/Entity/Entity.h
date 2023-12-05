@@ -24,7 +24,7 @@ class Entity : public IEntity
 	sf::Vector2f getPosition() override;
 	sf::RectangleShape getShape() const override;
 	EntityType getType();
-	void setType(EntityType newType) override;
+	void setType(EntityType newType);
 	float getMoveTimer() override;
 	void setMoveTimer(float newTime) override;
 	sf::Vector2f getMovement(float elapsedTime, Field& field);

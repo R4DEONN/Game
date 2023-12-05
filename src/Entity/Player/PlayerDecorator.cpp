@@ -52,11 +52,6 @@ void PlayerDecorator::setHealth(int newHealth)
 	player->setHealth(newHealth);
 }
 
-void PlayerDecorator::setType(EntityType newType)
-{
-	player->setType(newType);
-}
-
 void PlayerDecorator::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(*player, states);
@@ -85,4 +80,9 @@ void PlayerDecorator::setTripleShoot(bool isTripleShoot)
 void PlayerDecorator::setEightShoot(bool isEightShoot)
 {
 	player->setEightShoot(isEightShoot);
+}
+
+EntityType PlayerDecorator::getType()
+{
+	return player->getType();
 }

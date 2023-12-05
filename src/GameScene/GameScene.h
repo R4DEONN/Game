@@ -5,7 +5,7 @@
 #include "Spawner.h"
 #include "../Entity/Player/Player.h"
 #include "../Utils/Utils.h"
-#include "../Entity/Enemy.h"
+#include "../Entity/Enemy/Enemy.h"
 #include "../Entity/Bullet.h"
 #include "./Overlay.h"
 #include <vector>

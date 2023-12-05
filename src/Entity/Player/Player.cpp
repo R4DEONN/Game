@@ -11,14 +11,15 @@
 const float BODY_SIZE = BLOCK_SIZE * 39 / 48;
 const float FOOT_SIZE = BLOCK_SIZE * 9 / 48;
 
+const std::string BODY_TEXTURE_PATH = "../res/body.png";
+const std::string FOOT_TEXTURE_PATH = "../res/foot.png";
+
 Player::Player(int playerHealth, sf::Vector2f position)
-: entity("../res/body.png", position)
+: entity(BODY_TEXTURE_PATH, position)
 {
-	if (!footTexture.loadFromFile("../res/foot.png"))
+	if (!footTexture.loadFromFile(FOOT_TEXTURE_PATH))
 	{
-		//TODO Нормально обрабатывать ошибку
-		std::wcerr << L"Не удалось загрузить изображение" << std::endl;
-		exit(1);
+		throw "Wrong file name";
 	}
 
 	entity.shape.setSize({
@@ -268,11 +269,6 @@ void Player::setHealth(int newHealth)
 	entity.setHealth(newHealth);
 }
 
-void Player::setType(EntityType newType)
-{
-	entity.setType(newType);
-}
-
 void Player::setItem(std::shared_ptr<IItem> newItem)
 {
 	item = newItem;
@@ -300,4 +296,9 @@ void Player::setTripleShoot(bool isTripleShoot)
 void Player::setEightShoot(bool isEightShoot)
 {
 	this->isEightShoot = isEightShoot;
+}
+
+EntityType Player::getType()
+{
+	return entity.getType();
 }

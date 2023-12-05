@@ -111,8 +111,8 @@ sf::Vector2f Entity::getMovement(const float elapsedTime, Field& field)
 		break;
 	}
 
-	const sf::FloatRect playerBounds = shape.getGlobalBounds();
-	movement = field.checkFieldWallsCollision(playerBounds, movement);
+	const sf::FloatRect entityBounds = shape.getGlobalBounds();
+	movement = field.checkFieldWallsCollision(entityBounds, movement);
 
 	return movement;
 }

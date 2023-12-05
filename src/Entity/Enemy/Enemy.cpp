@@ -2,40 +2,40 @@
 #include <iostream>
 #include <functional>
 #include "Enemy.h"
-#include "../Common/GameConstants.h"
-#include "../Field/Field.h"
-#include "../Utils/Utils.h"
-#include "Player/Player.h"
+#include "../../Common/GameConstants.h"
+#include "../../Field/Field.h"
+#include "../../Utils/Utils.h"
+#include "../Player/Player.h"
 
 Enemy::Enemy(const std::string& texturePath, sf::Vector2f position)
-	: Entity(texturePath, position)
+	: entity(texturePath, position)
 {
-	health = 0;
-	type = EntityType::ENEMY;
-	speed = BLOCK_SIZE * 2.5;
+	entity.setType(EntityType::ENEMY);
+	entity.setSpeed(BLOCK_SIZE * 2.5);
+	entity.setHealth(0);
 }
 
-void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Enemy>>& enemies, sf::Vector2f playerPosition)
+void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<IEnemy>>& enemies, sf::Vector2f playerPosition)
 {
-	moveTimer += elapsedTime;
+	entity.setMoveTimer(entity.getMoveTimer() + elapsedTime);
 	const char maxImages = 2;
 	const float frameDuration = 0.25;
 	const char frameSize = 48;
-	const int curPixel = (int(moveTimer / frameDuration) % maxImages) * frameSize;
-	shape.setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
-	if (moveTimer > maxImages * frameDuration)
+	const int curPixel = (int(entity.getMoveTimer() / frameDuration) % maxImages) * frameSize;
+	entity.shape.setTextureRect(sf::IntRect(curPixel, 0, frameSize, frameSize));
+	if (entity.getMoveTimer() > maxImages * frameDuration)
 	{
-		moveTimer = 0;
+		entity.setMoveTimer(0);
 	}
 
-	updateDirection(playerPosition);
-	auto movement = getMovement(elapsedTime, field);
+	updateDirection(entity.getMoveDirection(), playerPosition);
+	auto movement = entity.getMovement(elapsedTime, field);
 	handleEnemiesCollision(movement, enemies);
-	shape.move(movement);
+	entity.shape.move(movement);
 
 	for (const auto& enemy : enemies)
 	{
-		const auto enemyBounds = shape.getGlobalBounds();
+		const auto enemyBounds = entity.getShape().getGlobalBounds();
 		if (enemy->getType() == EntityType::BULLET)
 		{
 			sf::FloatRect bulletBounds = enemy->getShape().getGlobalBounds();
@@ -49,7 +49,7 @@ void Enemy::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<
 	}
 }
 
-void Enemy::updateDirection(sf::Vector2f playerPosition)
+void Enemy::updateDirection(Direction& moveDirection, sf::Vector2f playerPosition)
 {
 	sf::Vector2f enemyPosition = getPosition();
 	float delta = std::abs(playerPosition.x - enemyPosition.x) - std::abs(playerPosition.y - enemyPosition.y);
@@ -99,9 +99,9 @@ void Enemy::updateDirection(sf::Vector2f playerPosition)
 	}
 }
 
-void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shared_ptr<Enemy>>& enemies)
+void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shared_ptr<IEnemy>>& enemies)
 {
-	const sf::FloatRect oldBounds = shape.getGlobalBounds();
+	const sf::FloatRect oldBounds = entity.getShape().getGlobalBounds();
 	sf::FloatRect newBounds = moveRect(oldBounds, movement);
 	for (const auto& enemy : enemies)
 	{
@@ -151,4 +151,54 @@ void Enemy::handleEnemiesCollision(sf::Vector2f& movement, std::vector<std::shar
 			newBounds = moveRect(oldBounds, movement);
 		}
 	}
+}
+
+EntityType Enemy::getType()
+{
+	return entity.getType();
+}
+
+sf::RectangleShape Enemy::getShape() const
+{
+	return entity.getShape();
+}
+
+int Enemy::getHealth()
+{
+	return entity.getHealth();
+}
+
+sf::Vector2f Enemy::getPosition()
+{
+	return entity.getPosition();
+}
+
+Direction& Enemy::getMoveDirection()
+{
+	return entity.getMoveDirection();
+}
+
+float Enemy::getMoveTimer()
+{
+	return entity.getMoveTimer();
+}
+
+void Enemy::setSpeed(float newSpeed)
+{
+	entity.setSpeed(newSpeed);
+}
+
+void Enemy::setHealth(int newHealth)
+{
+	entity.setHealth(newHealth);
+}
+
+void Enemy::setMoveTimer(float newTime)
+{
+	entity.setMoveTimer(newTime);
+}
+
+void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(entity.getShape(), states);
 }

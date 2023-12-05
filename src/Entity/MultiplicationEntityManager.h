@@ -3,7 +3,7 @@
 
 #include <memory>
 #include <vector>
-#include "Enemy.h"
+#include "Enemy/Enemy.h"
 #include "Bullet.h"
 #include "../Utils/Utils.h"
 #include "../GameScene/Spawner.h"
@@ -21,7 +21,7 @@ public:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 private:
 	Field& field;
-	std::vector<std::shared_ptr<Enemy>> enemies;
+	std::vector<std::shared_ptr<IEnemy>> enemies;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	std::vector<std::shared_ptr<IItem>> items;
 	std::shared_ptr<IPlayer> player = std::make_shared<Player>(3, getCenterCoordinates());

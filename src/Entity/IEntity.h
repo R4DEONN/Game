@@ -7,6 +7,7 @@
 
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "EntityType.h"
+#include "../Common/Direction.h"
 
 class IEntity : public sf::Drawable
 {
@@ -16,9 +17,9 @@ public:
 	virtual int getHealth() = 0;
 	virtual void setHealth(int newHealth) = 0;
 	virtual void setSpeed(float newSpeed) = 0;
-	virtual void setType(EntityType newType) = 0;
 	virtual float getMoveTimer() = 0;
 	virtual void setMoveTimer(float newTime) = 0;
+	virtual EntityType getType() = 0;
 	virtual sf::RectangleShape getShape() const = 0;
 };
 
