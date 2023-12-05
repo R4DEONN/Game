@@ -1,5 +1,5 @@
 #include "FastPlayerDecorator.h"
-#include "../../Common/GameConstants.h"
+#include "../../../Common/GameConstants.h"
 
 FastPlayerDecorator::FastPlayerDecorator(const std::shared_ptr<IPlayer>& player)
 : PlayerDecorator(player)

@@ -6,7 +6,7 @@
 #define GAME_ORC_H
 
 
-#include "Enemy.h"
+#include "../Enemy.h"
 
 class Orc : public Enemy
 {

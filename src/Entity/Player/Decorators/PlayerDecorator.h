@@ -5,7 +5,7 @@
 #ifndef GAME_PLAYERDECORATOR_H
 #define GAME_PLAYERDECORATOR_H
 
-#include "IPlayer.h"
+#include "../IPlayer.h"
 
 class PlayerDecorator : public IPlayer
 {

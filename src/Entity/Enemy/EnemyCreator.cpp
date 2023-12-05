@@ -1,5 +1,5 @@
 #include "EnemyCreator.h"
-#include "Orc.h"
+#include "Enemies/Orc.h"
 
 std::shared_ptr<IEnemy> EnemyCreator::createEnemy(EnemyType type, sf::Vector2f position)
 {

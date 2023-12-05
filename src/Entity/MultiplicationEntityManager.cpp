@@ -1,8 +1,8 @@
 #include "MultiplicationEntityManager.h"
 #include "../Item/ItemCreator.h"
-#include "Player/FastPlayerDecorator.h"
-#include "Player/MachineGunPlayerDecorator.h"
-#include "Player/ShotgunPlayerDecorator.h"
+#include "Player/decorators/FastPlayerDecorator.h"
+#include "Player/decorators/MachineGunPlayerDecorator.h"
+#include "Player/decorators/ShotgunPlayerDecorator.h"
 
 MultiplicationEntityManager::MultiplicationEntityManager(Field& field)
 : field(field)

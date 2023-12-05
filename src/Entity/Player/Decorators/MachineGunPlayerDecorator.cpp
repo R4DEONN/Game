@@ -1,5 +1,5 @@
 #include "MachineGunPlayerDecorator.h"
-#include "../../Common/GameConstants.h"
+#include "../../../Common/GameConstants.h"
 
 MachineGunPlayerDecorator::MachineGunPlayerDecorator(const std::shared_ptr<IPlayer>& player)
 : PlayerDecorator(player)
