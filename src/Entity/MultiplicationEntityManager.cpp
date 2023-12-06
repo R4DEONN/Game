@@ -31,7 +31,7 @@ void MultiplicationEntityManager::update(float elapsedSeconds, float& secondsToE
 	}
 
 	auto item = player->getItem();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && item->getType() != ItemType::NONE)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && item && item->getType() != ItemType::NONE)
 	{
 		useItem(item->getType());
 	}
@@ -57,7 +57,6 @@ void MultiplicationEntityManager::restart()
 	{
 		decoratorDuration.second = 0;
 	}
-//	decoratePlayer();
 	player = std::make_shared<Player>(player->getHealth(), getCenterCoordinates());
 	spawner.restartSpawner();
 }
@@ -171,13 +170,23 @@ void MultiplicationEntityManager::takeItem(const std::shared_ptr<IItem>& item)
 
 void MultiplicationEntityManager::useItem(ItemType itemType)
 {
-	if (std::find(decoratorsList.begin(), decoratorsList.end(), itemType) == decoratorsList.end())
+	if (itemType == ItemType::NUKE)
 	{
-		decoratorsList.push_back(itemType);
+		enemies.clear();
+		spawner.restartSpawner();
 	}
-	decoratorsDuration[itemType] = ITEM_DURATION;
-	decoratePlayer();
-	player->setItem(std::make_shared<Item>(sf::Vector2f{0, 0}));
+	else
+	{
+		if (std::find(decoratorsList.begin(), decoratorsList.end(), itemType) == decoratorsList.end())
+		{
+			decoratorsList.push_back(itemType);
+		}
+		decoratorsDuration[itemType] = ITEM_DURATION;
+		decoratePlayer();
+	}
+
+	auto item = std::make_shared<Item>(sf::Vector2f{0, 0});
+	player->setItem(item);
 }
 
 void MultiplicationEntityManager::draw(sf::RenderTarget& target, sf::RenderStates states) const

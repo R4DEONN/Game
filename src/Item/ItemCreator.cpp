@@ -4,6 +4,7 @@
 #include "items/MachineGunItem.h"
 #include "items/ShotgunItem.h"
 #include "Items/WagonWheelItem.h"
+#include "Items/NukeItem.h"
 
 std::shared_ptr<IItem> ItemCreator::createItem(ItemType type, sf::Vector2f position)
 {
@@ -19,6 +20,8 @@ std::shared_ptr<IItem> ItemCreator::createItem(ItemType type, sf::Vector2f posit
 		return std::make_shared<ShotgunItem>(position);
 	case ItemType::WAGON_WHEEL:
 		return std::make_shared<WagonWheelItem>(position);
+	case ItemType::NUKE:
+		return std::make_shared<NukeItem>(position);
 	default:
 		return std::make_shared<Item>(position);
 	}
