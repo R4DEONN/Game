@@ -28,7 +28,7 @@ private:
 	std::map<ItemType, float> decoratorsDuration{};
 	std::shared_ptr<IPlayer> player = std::make_shared<Player>(3, getCenterCoordinates());
 	Spawner spawner = Spawner(enemies);
-	Randomer itemTypeRandomer = {1, 4};
+	Randomer itemTypeRandomer = {1, 5};
 	Randomer itemDropRandomer = {0, 5};
 
 	void decoratePlayer();

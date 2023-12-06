@@ -3,6 +3,7 @@
 #include "Player/decorators/FastPlayerDecorator.h"
 #include "Player/decorators/MachineGunPlayerDecorator.h"
 #include "Player/decorators/ShotgunPlayerDecorator.h"
+#include "Player/Decorators/WagonWheelPlayerDecorator.h"
 
 constexpr const float ITEM_DURATION = 10.f;
 
@@ -219,6 +220,9 @@ void MultiplicationEntityManager::decoratePlayer()
 		case ItemType::SHOTGUN:
 			player = std::make_shared<ShotgunPlayerDecorator>(player);
 			continue;
+		case ItemType::WAGON_WHEEL:
+			player = std::make_shared<WagonWheelPlayerDecorator>(player);
+		case ItemType::EXTRA_HP:
 		default:
 			continue;
 		}
