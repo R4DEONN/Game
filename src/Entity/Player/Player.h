@@ -31,8 +31,7 @@ class Player : public IPlayer
 	void setItem(std::shared_ptr<IItem> newItem) override;
 	std::shared_ptr<IItem> getItem() override;
 	void setDelayToShot(float newDelay) override;
-	void setTripleShoot(bool isTripleShoot) override;
-	void setEightShoot(bool isEightShoot) override;
+	void setShootingType(ShootingType type) override;
  private:
 	Entity entity;
 	std::shared_ptr<IItem> item = nullptr;
@@ -43,8 +42,7 @@ class Player : public IPlayer
 	sf::SoundBuffer shootBuffer;
 	sf::Texture footTexture;
 	sf::RectangleShape foot;
-	bool isTripleShoot = false;
-	bool isEightShoot = false;
+	ShootingType shootingType = ShootingType::SINGLE;
 
 	void move(sf::Vector2f movement);
 	void shoot(std::vector<std::shared_ptr<Bullet>>& bullets);

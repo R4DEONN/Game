@@ -10,6 +10,13 @@
 #include "../IEntity.h"
 #include "../../Item/Item.h"
 
+enum class ShootingType
+{
+	SINGLE,
+	TRIPLE,
+	EIGHT,
+};
+
 class IPlayer : public IEntity
 {
 public:
@@ -17,9 +24,7 @@ public:
 	virtual void setItem(std::shared_ptr<IItem> newItem) = 0;
 	virtual std::shared_ptr<IItem> getItem() = 0;
 	virtual void setDelayToShot(float newDelay) = 0;
-	//TODO выделить тип стрельбы
-	virtual void setTripleShoot(bool isTripleShoot) = 0;
-	virtual void setEightShoot(bool isEightShoot) = 0;
+	virtual void setShootingType(ShootingType type) = 0;
 };
 
 #endif //GAME_IPLAYER_H

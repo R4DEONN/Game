@@ -130,15 +130,7 @@ bool MultiplicationEntityManager::handleCollision()
 		if (playerBounds.intersects(enemyBounds))
 		{
 			player->setHealth(player->getHealth() - 1);
-			if (player->getHealth() < 0)
-			{
-				//TODO fix
-//				gameState = GameState::LOSE;
-			}
-			else
-			{
-				restart();
-			}
+			restart();
 			return true;
 		}
 		for (const auto& bullet: bullets)

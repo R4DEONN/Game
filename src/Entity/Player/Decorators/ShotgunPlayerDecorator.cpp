@@ -4,5 +4,5 @@ ShotgunPlayerDecorator::ShotgunPlayerDecorator(const std::shared_ptr<IPlayer>& p
 	: PlayerDecorator(player)
 {
 	this->player = player;
-	this->player->setTripleShoot(true);
+	this->player->setShootingType(ShootingType::TRIPLE);
 }

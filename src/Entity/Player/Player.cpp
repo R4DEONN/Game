@@ -119,12 +119,12 @@ void Player::shoot(std::vector<std::shared_ptr<Bullet>>& bullets)
 		entity.getShape().getPosition().x + playerBounds.width / 2,
 		entity.getShape().getPosition().y + playerBounds.height / 2,
 	};
-	if (!isTripleShoot && !isEightShoot)
+	if (shootingType == ShootingType::SINGLE)
 	{
 		makeBullet(playerCenter, attackDirection, bullets);
 		return;
 	}
-	else if (isEightShoot)
+	else if (shootingType == ShootingType::EIGHT)
 	{
 		makeBullet(playerCenter, Direction::UP, bullets);
 		makeBullet(playerCenter, Direction::UP_RIGHT, bullets);
@@ -288,14 +288,9 @@ void Player::setDelayToShot(float newDelay)
 	delayToShot = newDelay;
 }
 
-void Player::setTripleShoot(bool isTripleShoot)
+void Player::setShootingType(ShootingType type)
 {
-	this->isTripleShoot = isTripleShoot;
-}
-
-void Player::setEightShoot(bool isEightShoot)
-{
-	this->isEightShoot = isEightShoot;
+	shootingType = type;
 }
 
 EntityType Player::getType()

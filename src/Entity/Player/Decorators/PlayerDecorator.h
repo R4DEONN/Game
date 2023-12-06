@@ -25,9 +25,7 @@ public:
 	void setHealth(int newHealth) override;
 	void setDelayToShot(float newDelay) override;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-	void setTripleShoot(bool isTripleShoot) override;
-	void setEightShoot(bool isEightShoot) override;
-	std::shared_ptr<IPlayer> removeDecorator();
+	void setShootingType(ShootingType type) override;
 protected:
 	std::shared_ptr<IPlayer> player;
 };
