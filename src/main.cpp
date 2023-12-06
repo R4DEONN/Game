@@ -45,7 +45,7 @@ void render(sf::RenderWindow& window, GameScene& scene)
 	window.display();
 }
 
-int main(int, char* [])
+int main()
 {
 	sf::RenderWindow window;
 	createWindow(window);

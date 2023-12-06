@@ -3,7 +3,7 @@
 #include "../Common/GameConstants.h"
 
 const float FORTY_FIVE_DEGREES_COEF = float(std::sqrt(2)) / 2;
-const float THIRTY_DEGREES_COEF = 1.f / 2;
+const constexpr float THIRTY_DEGREES_COEF = 1.f / 2;
 const float SIXTY_DEGREES_COEF = float(std::sqrt(3)) / 2;
 
 Bullet::Bullet(const std::string& texturePath, sf::Vector2f position, Direction direction)

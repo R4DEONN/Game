@@ -4,14 +4,33 @@
 #include "Player/decorators/MachineGunPlayerDecorator.h"
 #include "Player/decorators/ShotgunPlayerDecorator.h"
 
+constexpr const float ITEM_DURATION = 10.f;
+
 MultiplicationEntityManager::MultiplicationEntityManager(Field& field)
 : field(field)
 {}
 
 void MultiplicationEntityManager::update(float elapsedSeconds, float& secondsToEnd)
 {
+	for (auto& duration : decoratorsDuration)
+	{
+		duration.second -= elapsedSeconds;
+		if (duration.second <= 0)
+		{
+			duration.second = 0;
+		}
+	}
+
+	for (auto decorator : decoratorsList)
+	{
+		if (decoratorsDuration[decorator] == 0)
+		{
+			removeDecorator(decorator);
+		}
+	}
+
 	auto item = player->getItem();
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && item)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && item->getType() != ItemType::NONE)
 	{
 		useItem(item->getType());
 	}
@@ -32,6 +51,12 @@ void MultiplicationEntityManager::restart()
 	bullets.clear();
 	items.clear();
 
+	decoratorsList.clear();
+	for (auto decoratorDuration : decoratorsDuration)
+	{
+		decoratorDuration.second = 0;
+	}
+//	decoratePlayer();
 	player = std::make_shared<Player>(player->getHealth(), getCenterCoordinates());
 	spawner.restartSpawner();
 }
@@ -153,21 +178,12 @@ void MultiplicationEntityManager::takeItem(const std::shared_ptr<IItem>& item)
 
 void MultiplicationEntityManager::useItem(ItemType itemType)
 {
-	switch (itemType)
+	if (std::find(decoratorsList.begin(), decoratorsList.end(), itemType) == decoratorsList.end())
 	{
-	case ItemType::COFFEE:
-		player = std::make_shared<FastPlayerDecorator>(player);
-		break;
-	case ItemType::MACHINE_GUN:
-		player = std::make_shared<MachineGunPlayerDecorator>(player);
-		break;
-	case ItemType::SHOTGUN:
-		player = std::make_shared<ShotgunPlayerDecorator>(player);
-		break;
-	default:
-		break;
+		decoratorsList.push_back(itemType);
 	}
-
+	decoratorsDuration[itemType] = ITEM_DURATION;
+	decoratePlayer();
 	player->setItem(std::make_shared<Item>(sf::Vector2f{0, 0}));
 }
 
@@ -185,5 +201,34 @@ void MultiplicationEntityManager::draw(sf::RenderTarget& target, sf::RenderState
 	for (const auto& enemy: enemies)
 	{
 		target.draw(*enemy, states);
+	}
+}
+
+void MultiplicationEntityManager::removeDecorator(ItemType itemType)
+{
+	auto it = std::remove(decoratorsList.begin(), decoratorsList.end(), itemType);
+	decoratorsList.erase(it, decoratorsList.end());
+	decoratePlayer();
+}
+
+void MultiplicationEntityManager::decoratePlayer()
+{
+	player = std::make_shared<Player>(player->getHealth(), player->getPosition());
+	for (auto decorator : decoratorsList)
+	{
+		switch (decorator)
+		{
+		case ItemType::COFFEE:
+			player = std::make_shared<FastPlayerDecorator>(player);
+			continue;
+		case ItemType::MACHINE_GUN:
+			player = std::make_shared<MachineGunPlayerDecorator>(player);
+			continue;
+		case ItemType::SHOTGUN:
+			player = std::make_shared<ShotgunPlayerDecorator>(player);
+			continue;
+		default:
+			continue;
+		}
 	}
 }

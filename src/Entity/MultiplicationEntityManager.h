@@ -24,11 +24,15 @@ private:
 	std::vector<std::shared_ptr<IEnemy>> enemies;
 	std::vector<std::shared_ptr<Bullet>> bullets;
 	std::vector<std::shared_ptr<IItem>> items;
+	std::vector<ItemType> decoratorsList{};
+	std::map<ItemType, float> decoratorsDuration{};
 	std::shared_ptr<IPlayer> player = std::make_shared<Player>(3, getCenterCoordinates());
 	Spawner spawner = Spawner(enemies);
 	Randomer itemTypeRandomer = {1, 4};
-	Randomer itemDropRandomer = {0, 100};
+	Randomer itemDropRandomer = {0, 5};
 
+	void decoratePlayer();
+	void removeDecorator(ItemType itemType);
 	void takeItem(const std::shared_ptr<IItem>& item);
 	void useItem(ItemType itemType);
 	void updateEnemies(float elapsedSeconds);

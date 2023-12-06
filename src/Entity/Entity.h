@@ -23,7 +23,7 @@ class Entity : public IEntity
 	void setHealth(int newHealth) override;
 	sf::Vector2f getPosition() override;
 	sf::RectangleShape getShape() const override;
-	EntityType getType();
+	EntityType getType() override;
 	void setType(EntityType newType);
 	float getMoveTimer() override;
 	void setMoveTimer(float newTime) override;
