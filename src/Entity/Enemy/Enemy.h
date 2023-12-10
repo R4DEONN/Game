@@ -18,6 +18,7 @@ class Enemy : public IEnemy
 	sf::Vector2f getPosition() override;
 	Direction& getMoveDirection() override;
 	float getMoveTimer() override;
+	float getSpeed() override;
 	void setSpeed(float newSpeed) override;
 	void setHealth(int newHealth) override;
 	void setMoveTimer(float newTime) override;

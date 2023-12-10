@@ -202,3 +202,8 @@ void Enemy::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(entity.getShape(), states);
 }
+
+float Enemy::getSpeed()
+{
+	return entity.getSpeed();
+}

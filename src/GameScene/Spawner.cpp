@@ -39,10 +39,6 @@ void Spawner::Spawn(float elapsedSeconds)
 	{
 		const auto index = pointRandomer();
 		const auto point = SPAWN_POINTS[index];
-//		std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(
-//			"../res/orc.png",
-//			point
-//		);
 		auto enemyType = EnemyType(enemyTypeRandomer());
 		enemies->push_back(EnemyCreator::createEnemy(enemyType, point));
 	}

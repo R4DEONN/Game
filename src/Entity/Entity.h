@@ -16,7 +16,7 @@ class Entity : public IEntity
 		const std::string& texturePath,
 		sf::Vector2f position
 		);
-	float getSpeed() const;
+	float getSpeed();
 	void setSpeed(float newSpeed) override;
 	Direction& getMoveDirection() override;
 	int getHealth() override;

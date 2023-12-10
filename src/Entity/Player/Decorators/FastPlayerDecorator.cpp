@@ -4,11 +4,8 @@
 FastPlayerDecorator::FastPlayerDecorator(const std::shared_ptr<IPlayer>& player)
 : PlayerDecorator(player)
 {
-	this->player = player;
+	player->setSpeed(player->getSpeed() * 1.5);
 }
 
 void FastPlayerDecorator::update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets)
-{
-	player->setSpeed(BLOCK_SIZE * 6);
-	player->update(elapsedTime, field, bullets);
-}
+{}

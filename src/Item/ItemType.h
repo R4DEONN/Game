@@ -14,6 +14,7 @@ enum class ItemType
 	SHOTGUN,
 	WAGON_WHEEL,
 	NUKE,
+	SHERIFF_BADGE,
 };
 
 #endif //GAME_ITEMTYPE_H

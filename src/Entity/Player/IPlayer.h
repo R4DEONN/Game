@@ -23,6 +23,7 @@ public:
 	virtual void update(float elapsedTime, Field& field, std::vector<std::shared_ptr<Bullet>>& bullets) = 0;
 	virtual void setItem(std::shared_ptr<IItem> newItem) = 0;
 	virtual std::shared_ptr<IItem> getItem() = 0;
+	virtual float getDelayToShot() = 0;
 	virtual void setDelayToShot(float newDelay) = 0;
 	virtual void setShootingType(ShootingType type) = 0;
 };

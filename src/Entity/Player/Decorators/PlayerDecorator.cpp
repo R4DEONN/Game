@@ -81,3 +81,13 @@ void PlayerDecorator::setShootingType(ShootingType type)
 {
 	player->setShootingType(type);
 }
+
+float PlayerDecorator::getDelayToShot()
+{
+	return player->getDelayToShot();
+}
+
+float PlayerDecorator::getSpeed()
+{
+	return player->getSpeed();
+}

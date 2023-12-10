@@ -12,6 +12,7 @@ class PlayerDecorator : public IPlayer
 public:
 	explicit PlayerDecorator(std::shared_ptr<IPlayer> player);
 	void update(float elapsedTime, Field &field, std::vector<std::shared_ptr<Bullet>> &bullets) override;
+	float getSpeed() override;
 	void setSpeed(float newSpeed) override;
 	int getHealth() override;
 	sf::Vector2f getPosition() override;
@@ -26,6 +27,7 @@ public:
 	void setDelayToShot(float newDelay) override;
 	void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 	void setShootingType(ShootingType type) override;
+	float getDelayToShot() override;
 protected:
 	std::shared_ptr<IPlayer> player;
 };

@@ -27,7 +27,7 @@ Entity::Entity(const std::string& texturePath, const sf::Vector2f position)
 	health = 1;
 }
 
-float Entity::getSpeed() const
+float Entity::getSpeed()
 {
 	return speed;
 }

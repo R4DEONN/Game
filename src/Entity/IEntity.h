@@ -16,6 +16,7 @@ public:
 	virtual sf::Vector2f getPosition() = 0;
 	virtual int getHealth() = 0;
 	virtual void setHealth(int newHealth) = 0;
+	virtual float getSpeed() = 0;
 	virtual void setSpeed(float newSpeed) = 0;
 	virtual float getMoveTimer() = 0;
 	virtual void setMoveTimer(float newTime) = 0;

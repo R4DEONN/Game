@@ -297,3 +297,13 @@ EntityType Player::getType()
 {
 	return entity.getType();
 }
+
+float Player::getDelayToShot()
+{
+	return delayToShot;
+}
+
+float Player::getSpeed()
+{
+	return entity.getSpeed();
+}
